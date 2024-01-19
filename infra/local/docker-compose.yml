@@ -1,0 +1,40 @@
+version: '3'
+
+networks:
+  internal:
+    name: internal
+
+services:
+  database:
+    container_name: database
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=app
+      - MONGO_INITDB_ROOT_PASSWORD=local
+    networks:
+      - internal
+    command: mongod --quiet --logpath /dev/null 
+    ports:
+      - 27017
+
+  api:
+    container_name: api
+    image: api:latest
+    networks:
+      - internal
+    ports:
+      - "127.0.0.1:80:80"
+    environment:
+      - DATABASE_URI=mongodb://app:local@database:27017/
+
+  hub:
+    container_name: hub
+    image: hub:latest
+    networks:
+      - internal
+    volumes:
+      - //var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DATABASE_URI=mongodb://app:local@database:27017/
+      - MATCHMAKER=simple
+      - INFRA_DRIVER=docker
