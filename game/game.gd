@@ -51,12 +51,13 @@ func _server_client_disconnected(id):
 		return
 	$level/level_root/players.get_node(str(id)).queue_free()
 
-func _server_change_level(scene):
-	print("server change level")
+func _remove_level():
 	for c in $level.get_children():
 		$level.remove_child(c)
 		c.queue_free()
-	
+
+func _server_change_level(scene):
+	_remove_level()
 	$level.add_child(scene.instantiate())
 
 func _client_init():
@@ -67,33 +68,31 @@ func _client_init():
 	if direct_conn != "":
 		remove_child(splash_ui)
 
-		_client_match_ready({
-			'address': direct_conn
-		})
+		_client_match_fetched({ 'address': direct_conn })
 	else:
 		util.make_req("/profile", HTTPClient.METHOD_GET, _client_profile_loaded)
 
 func _client_profile_loaded(data):
 	print("profile: ", data)
 	
-	add_child(load("res://levels/base.tscn").instantiate())
+	$level.add_child(load("res://levels/base.tscn").instantiate())
 	remove_child(splash_ui)
 
 func client_join_match(match_id):
 	print("join ", match_id)
-	util.make_req("/match/" + match_id, HTTPClient.METHOD_GET, _client_match_ready)
+	util.make_req("/match/" + match_id, HTTPClient.METHOD_GET, _client_match_fetched)
 
-func _client_match_ready(match_data):
+func _client_match_fetched(match_data):
 	print("joining match ", match_data)
+
+	_remove_level()
 	
+	multiplayer.connected_to_server.connect(_client_connected)
+
 	var address_parts = match_data["address"].split(":")
 	var host = address_parts[0]
 	var port = int(address_parts[1])
 	
-	print(host, " ", port)
-	
-	multiplayer.connected_to_server.connect(_client_connected)
-
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_client(host, port)
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
