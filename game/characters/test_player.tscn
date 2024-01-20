@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://kk45b15t4ny7"]
+[gd_scene load_steps=9 format=3 uid="uid://kk45b15t4ny7"]
 
 [ext_resource type="Script" path="res://characters/test_player.gd" id="1_nn6m6"]
+[ext_resource type="Script" path="res://characters/test_player_input.gd" id="2_3tfjj"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xg1k5"]
 radius = 0.35
@@ -14,6 +15,28 @@ material = SubResource("StandardMaterial3D_0061o")
 radius = 0.4
 height = 1.5
 
+[sub_resource type="BoxMesh" id="BoxMesh_6ifke"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_r37wx"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:player")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_su84c"]
+properties/0/path = NodePath("input_sync:move_direction")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("input_sync:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [node name="test_player" type="CharacterBody3D"]
 script = ExtResource("1_nn6m6")
 
@@ -24,5 +47,17 @@ shape = SubResource("CapsuleShape3D_xg1k5")
 mesh = SubResource("CapsuleMesh_50jhi")
 skeleton = NodePath("../collider")
 
+[node name="backindicator" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.468884)
+mesh = SubResource("BoxMesh_6ifke")
+skeleton = NodePath("../..")
+
 [node name="camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="server_sync" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_r37wx")
+
+[node name="input_sync" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_su84c")
+script = ExtResource("2_3tfjj")

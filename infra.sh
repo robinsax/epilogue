@@ -5,8 +5,10 @@ set -e
 env=$1
 op=$2
 
-if [[ $env = "local" ]]; then    
+if [[ $env = "local" ]]; then
     if [[ $op == "up" ]]; then
+        ./dev.sh clean
+
         log "local up"
 
         builds=(
@@ -28,6 +30,9 @@ if [[ $env = "local" ]]; then
             fi
             if [ -d "$src_dir" ]; then
                 cp -r $src_dir $build_src_dir
+            fi
+            if [ -f "$build_dir/prebuild.sh" ]; then
+                . $build_dir/prebuild.sh
             fi
 
             pushd $build_dir

@@ -18,6 +18,9 @@ class Context:
 def get_ctx() -> Context:
     return request.ctx
 
+def require_god():
+    pass
+
 def to_json(data, status=200):
     if '_id' in data:
         data['id'] = data.pop('_id')

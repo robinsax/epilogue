@@ -12,7 +12,7 @@ def get_profile():
         'username': ctx.user.id
     })
     if not profile:
-        request.db.profiles.insert_one(
+        ctx.db.profiles.insert_one(
             create_default_profile(ctx.user.id)
         )
         profile = ctx.db.profiles.find_one({

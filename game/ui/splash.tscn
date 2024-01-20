@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://c70x8ayd07tgd"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ctcmc"]
+
+[sub_resource type="Gradient" id="Gradient_wh4pu"]
+colors = PackedColorArray(0, 0, 0, 1, 0.0475577, 0.0475576, 0.0475576, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6tooc"]
+gradient = SubResource("Gradient_wh4pu")
+
+[node name="splash" type="Control"]
+material = SubResource("CanvasItemMaterial_ctcmc")
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="bg" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1150.0
+offset_bottom = 648.0
+texture = SubResource("GradientTexture1D_6tooc")
+
+[node name="label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 10.0
+offset_bottom = -4.0
+text = "loading profile"
+horizontal_alignment = 1
+vertical_alignment = 1

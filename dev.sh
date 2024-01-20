@@ -5,9 +5,43 @@ set -e
 op=$1
 
 if [[ $op == "engine" ]]; then
-    ./godot/Godot_v4.2.1-stable_win64.exe ./game/project.godot
+    run_godot -e
+elif [[ $op == "run" ]]; then
+    which=$2
+    if [[ $which == "server" ]]; then
+        PORT=5000 run_godot --headless
+    elif [[ $which == "client-direct" ]]; then
+        name=$3
+        if [[ $name == "" ]]; then
+            name="from-dev.sh"
+        fi
+        CLIENT_NAME=$name DIRECT_CONNECT="127.0.0.1:5000" run_godot
+    elif [[ $which == "client" ]]; then
+        name=$3
+        if [[ $name == "" ]]; then
+            name="from-dev.sh"
+        fi
+        CLIENT_NAME=$name run_godot
+    else
+        err_exit "invalid thing to run"
+    fi
+elif [[ $op == "clean" ]]; then
+    running=$(docker ps -q)
+    if [[ $running != "" ]]; then
+        docker kill $running
+    fi
+
+    stopped=$(docker ps -aq)
+    if [[ $stopped != "" ]]; then
+        docker rm $stopped
+    fi
 elif [[ $op == "dummy-queue" ]]; then
-    curl -X POST http://localhost/queue?user=dummy
+    user=$2
+    if [[ $user = "" ]]; then
+        user="dummy"
+    fi
+
+    curl -X POST http://localhost/queue?user=$user
 else
     err_exit "invalid op"
 fi

@@ -28,6 +28,4 @@ shape = SubResource("WorldBoundaryShape3D_msmoq")
 transform = Transform3D(0.584757, -0.100493, 0.80496, -0.267003, 0.913164, 0.307964, -0.766008, -0.395011, 0.507147, -4.90866, 1.97851, 0)
 
 [node name="join_trigger" parent="." instance=ExtResource("2_5pfi3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.45191, 0.546875, 4.40351)
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+transform = Transform3D(-0.732804, 0, 0.680439, 0, 1, 0, -0.680439, 0, -0.732804, -2.45191, 0.546875, 4.40351)

@@ -13,8 +13,8 @@ def get_match(match_id=None):
         return to_json({ 'error': 'invalid id' }, 400)
 
     match = ctx.db.matches.find_one({
-        'user_ids': ctx.user.id,
-        '_id': match_id
+        '_id': match_id,
+        'user_ids': ctx.user.id
     })
     if not match:
         return to_json({ 'error': 'not found' }, 404)

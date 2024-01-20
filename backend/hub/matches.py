@@ -11,10 +11,7 @@ def manage_matches(ctx: Context):
         'state': { '$ne': 'complete' }
     }))
 
-    print('%d matches'%len(matches))
-
     for match in matches:
-        print(match)
         if match['state'] == 'pending':
             print('allocate %s'%match['_id'])
 
@@ -26,10 +23,12 @@ def manage_matches(ctx: Context):
                 # todo: ???
                 continue
 
+            print('at %s'%address)
+
             ctx.db.matches.update_one(
                 { '_id': match['_id'] },
                 { '$set': {
-                    'state': 'provisioned',
+                    'state': 'allocated',
                     'address': address
                 } }
             )
@@ -55,8 +54,6 @@ def manage_matches(ctx: Context):
 def do_matchmaking(ctx: Context):
     queue = list(ctx.db.queue.find({ 'state': 'pending' }))
 
-    print('queue size %d'%len(queue))
-
     matched = get_matchmaker().match(queue)
     # todo rm from queue if not refetched for interval
 
@@ -70,6 +67,7 @@ def do_matchmaking(ctx: Context):
             'user_ids': user_ids,
             'state': 'pending',
             'created_at': datetime.now(),
+            'started_at': None,
             'ended_at': None,
             'address': None
         })

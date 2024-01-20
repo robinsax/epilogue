@@ -1,27 +1,42 @@
 [gd_scene load_steps=4 format=3 uid="uid://gc1qd8lwjsse"]
 
-[ext_resource type="PackedScene" uid="uid://kk45b15t4ny7" path="res://characters/test_player.tscn" id="1_2fq63"]
+[ext_resource type="Script" path="res://levels/level.gd" id="1_igh82"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_y0h66"]
 size = Vector2(100, 100)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_msmoq"]
 
-[node name="level" type="Node3D"]
+[node name="level_root" type="Node3D"]
+script = ExtResource("1_igh82")
 
-[node name="test_player" parent="." instance=ExtResource("1_2fq63")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="world" type="Node3D" parent="."]
 
-[node name="environment" type="Node3D" parent="."]
+[node name="floor" type="StaticBody3D" parent="world"]
 
-[node name="floor" type="StaticBody3D" parent="environment"]
-
-[node name="mesh" type="MeshInstance3D" parent="environment/floor"]
+[node name="mesh" type="MeshInstance3D" parent="world/floor"]
 mesh = SubResource("PlaneMesh_y0h66")
 skeleton = NodePath("../../..")
 
-[node name="collider" type="CollisionShape3D" parent="environment/floor"]
+[node name="collider" type="CollisionShape3D" parent="world/floor"]
 shape = SubResource("WorldBoundaryShape3D_msmoq")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="world"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.18926, 0.380228, 0)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="world"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8266, 0.236804, 3.3856)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.373596, 0)
 
 [node name="lamp" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.584757, -0.100493, 0.80496, -0.267003, 0.913164, 0.307964, -0.766008, -0.395011, 0.507147, -4.90866, 1.97851, 0)
+shadow_enabled = true
+
+[node name="players" type="Node3D" parent="."]
+
+[node name="spawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://characters/test_player.tscn")
+spawn_path = NodePath("../players")
+spawn_limit = 8

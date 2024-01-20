@@ -36,7 +36,8 @@ class DockerInfraDriver(InfraDriver):
                 --detach
                 --name match-{ match_id }
                 --network internal
-                --expose { port }
+                --publish 127.0.0.1:{ port }:{ port }/tcp
+                --publish 127.0.0.1:{ port }:{ port }/udp
                 --env MATCH_ID={ match_id }
                 --env PORT={ port }
                 --env DATABASE_URI={ os.environ['DATABASE_URI'] }
@@ -50,7 +51,7 @@ class DockerInfraDriver(InfraDriver):
         if result.returncode != 0:
             raise InfraError(result.stderr)
         
-        return f'localhost:{ port }'
+        return f'127.0.0.1:{ port }'
 
     def deallocate(self, match: dict):
         match_id = str(match['_id'])

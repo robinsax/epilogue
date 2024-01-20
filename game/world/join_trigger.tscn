@@ -15,3 +15,7 @@ shape = SubResource("BoxShape3D_4f2rj")
 
 [node name="mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_1s706")
+
+[node name="text" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.876192, 0)
+text = "join game"

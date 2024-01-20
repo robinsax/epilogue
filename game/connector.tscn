@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsiqcmfdlxxun"]
+
+[ext_resource type="Script" path="res://connector.gd" id="1_sno6c"]
+
+[node name="connector" type="Node3D"]
+script = ExtResource("1_sno6c")
