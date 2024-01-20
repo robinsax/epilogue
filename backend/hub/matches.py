@@ -47,6 +47,10 @@ def manage_matches(ctx: Context):
                 { '_id': match['_id'] },
                 { '$set': { 'state': 'complete' } }
             )
+            ctx.db.queue.update_many(
+                { 'match_id': match['_id'] },
+                { '$set': { 'state': 'complete' } }
+            )
 
 def do_matchmaking(ctx: Context):
     queue = list(ctx.db.queue.find({ 'state': 'pending' }))
@@ -54,6 +58,7 @@ def do_matchmaking(ctx: Context):
     print('queue size %d'%len(queue))
 
     matched = get_matchmaker().match(queue)
+    # todo rm from queue if not refetched for interval
 
     for group in matched:
         entry_ids = list(entry['_id'] for entry in group)

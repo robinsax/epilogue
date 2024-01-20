@@ -21,8 +21,8 @@ def get_match(match_id=None):
 
     return to_json(match)
 
-@app.route('/queue', methods=('get',)) # todo: post
-def queue_match():
+@app.route('/queue', methods=('post',))
+def enter_queue():
     ctx = get_ctx()
 
     entry = ctx.db.queue.find_one({
@@ -43,4 +43,17 @@ def queue_match():
         'user_id': ctx.user.id,
         'state': 'pending'
     })
+    return to_json(entry)
+
+@app.route('/queue', methods=('get',))
+def get_queue():
+    ctx = get_ctx()
+
+    entry = ctx.db.queue.find_one({
+        'user_id': ctx.user.id,
+        'state': { '$ne': 'complete' }
+    })
+    if not entry:
+        return to_json({ 'error': 'not found' }, 404)
+
     return to_json(entry)

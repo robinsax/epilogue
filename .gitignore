@@ -1,1 +1,3 @@
 infra/build/*/src
+godot/
+game/.godot
