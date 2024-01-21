@@ -1,12 +1,24 @@
-[gd_scene load_steps=5 format=3 uid="uid://cjxbt5kym54fg"]
+[gd_scene load_steps=5 format=3 uid="uid://fp6h6lha1anb"]
 
-[ext_resource type="Script" path="res://ui/inventory.gd" id="1_f3eka"]
+[sub_resource type="GDScript" id="GDScript_jpi5t"]
+script/source = "extends Control
 
-[sub_resource type="Gradient" id="Gradient_aywx6"]
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
+
+[sub_resource type="Gradient" id="Gradient_r8o5k"]
 colors = PackedColorArray(0, 0, 0, 0.596078, 0.0901961, 0.0901961, 0.0901961, 0.721569)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_5dfld"]
-gradient = SubResource("Gradient_aywx6")
+gradient = SubResource("Gradient_r8o5k")
 
 [sub_resource type="Environment" id="Environment_70n0e"]
 background_mode = 1
@@ -22,7 +34,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_f3eka")
+script = SubResource("GDScript_jpi5t")
 
 [node name="background" type="TextureRect" parent="."]
 layout_mode = 1

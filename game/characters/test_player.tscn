@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://kk45b15t4ny7"]
+[gd_scene load_steps=11 format=3 uid="uid://kk45b15t4ny7"]
 
 [ext_resource type="Script" path="res://characters/test_player.gd" id="1_nn6m6"]
 [ext_resource type="Script" path="res://characters/test_player_input.gd" id="2_3tfjj"]
@@ -43,22 +43,6 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath("input_sync:jumping")
 properties/2/spawn = true
 properties/2/replication_mode = 1
-properties/3/path = NodePath("input_sync:interacting")
-properties/3/spawn = true
-properties/3/replication_mode = 1
-
-[sub_resource type="Gradient" id="Gradient_aywx6"]
-colors = PackedColorArray(0, 0, 0, 0.596078, 0.0901961, 0.0901961, 0.0901961, 0.721569)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_cqajv"]
-gradient = SubResource("Gradient_aywx6")
-
-[sub_resource type="Environment" id="Environment_dirhv"]
-background_mode = 1
-background_color = Color(0, 0, 0, 0)
-ambient_light_source = 3
-ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_energy = 2.55
 
 [node name="test_player" type="CharacterBody3D"]
 collision_layer = 8
@@ -97,83 +81,3 @@ replication_config = SubResource("SceneReplicationConfig_r37wx")
 [node name="input_sync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_su84c")
 script = ExtResource("2_3tfjj")
-
-[node name="ui" type="Node3D" parent="."]
-
-[node name="inventory" type="Control" parent="ui"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="background" type="TextureRect" parent="ui/inventory"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("GradientTexture2D_cqajv")
-
-[node name="player_view_container" type="SubViewportContainer" parent="ui/inventory"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -256.0
-offset_top = -256.0
-offset_right = 256.0
-offset_bottom = 256.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="player_view" type="SubViewport" parent="ui/inventory/player_view_container"]
-transparent_bg = true
-handle_input_locally = false
-size_2d_override_stretch = true
-render_target_update_mode = 4
-
-[node name="camera" type="Camera3D" parent="ui/inventory/player_view_container/player_view"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -1.40463)
-cull_mask = 2
-environment = SubResource("Environment_dirhv")
-fov = 60.0
-
-[node name="lamp" type="SpotLight3D" parent="ui/inventory/player_view_container/player_view"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -1.31604)
-layers = 2
-light_energy = 1.066
-light_cull_mask = 4293918722
-
-[node name="hud" type="Control" parent="ui"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="active_interact_target" type="Label" parent="ui/hud"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -73.0
-offset_right = 20.0
-offset_bottom = -50.0
-grow_horizontal = 2
-grow_vertical = 0
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="backindicator" type="MeshInstance3D" parent="ui/hud"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.437676)
-mesh = SubResource("BoxMesh_6ifke")
-skeleton = NodePath("../../..")

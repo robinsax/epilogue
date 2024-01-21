@@ -10,7 +10,7 @@ func _process(delta):
 	for slot_node in get_children():
 		var slot_name = slot_node.name
 		if slots[slot_name] == null:
-			return
+			continue
 		slots[slot_name].position = slot_node.global_position
 
 func _get_slot_name_for_item(item):
@@ -30,7 +30,7 @@ func insert_item_from_rpc(item):
 	slots[slot_name] = item
 	item.set_in_inventory_from_inventory(true)
 	item.active_inventory = self
-	print(to_data())
+	print("ins ", to_data())
 
 func remove_item_from_rpc(item):
 	for slot_name in slots.keys():
@@ -39,9 +39,9 @@ func remove_item_from_rpc(item):
 			continue
 
 		slots[slot_name] = null
-		slot_item.set_in_inventory_from_inventory(false)
-		slot_item.active_inventory = null
-		print(to_data())
+		item.set_in_inventory_from_inventory(false)
+		item.active_inventory = null
+		print("rm ", to_data())
 		return
 
 func to_data():
