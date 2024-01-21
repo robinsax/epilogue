@@ -6,6 +6,8 @@ const JUMP_VELOCITY = 4.5
 var inventory = null
 
 var active_interact_target = null # client only
+var in_inventory = false # todo move to player controller
+var angle = 0
 
 @export var player := 1 :
 	set(id):
@@ -28,15 +30,19 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	$camera.current = true
 	$collider/mesh.set_layer_mask_value(2, true)
-	
 
 func _process(delta):
 	if not _is_local_authority():
 		return
 		
-	if Input.is_action_pressed("inventory"):
+	in_inventory = Input.is_action_pressed("inventory")
+	if in_inventory:
+		if Input.mouse_mode != Input.MOUSE_MODE_VISIBLE:
+			Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 		$ui/inventory.show()
 	else:
+		if Input.mouse_mode != Input.MOUSE_MODE_VISIBLE:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		$ui/inventory.hide()
 
 	var target_hud_ui = $ui/hud/active_interact_target
@@ -50,8 +56,13 @@ func _process(delta):
 		target_hud_ui.text = ""
 		
 	# todo move to own scene
-	$ui/inventory/player_view_container/player_view/camera.position = global_position - Vector3(0.0, 0.0, 2.0)
-	$ui/inventory/player_view_container/player_view/lamp.position = global_position - Vector3(0.0, 0.0, 2.0)
+	var inventory_camera = $ui/inventory/player_view_container/player_view/camera
+	var inventory_lamp = $ui/inventory/player_view_container/player_view/lamp
+	angle += delta
+	inventory_camera.position = global_position - (transform.basis * 2.0 * Vector3(sin(angle), 0.0, cos(angle)))
+	inventory_lamp.position = inventory_camera.position
+	inventory_camera.look_at(global_position)
+	inventory_lamp.look_at(global_position)
 
 func _physics_process(delta):
 	if not is_on_floor():
@@ -83,11 +94,19 @@ func _handle_look(delta):
 	active_interact_target = null
 
 	var space = get_world_3d().direct_space_state
-	var viewport = get_viewport()
-	var viewport_center = viewport.size / 2.0
-
-	var ray_origin = $camera.project_ray_origin(viewport_center)
-	var ray_end = ray_origin + $camera.project_ray_normal(viewport_center) * 100.0
+	
+	var screen_position = null
+	var camera = null
+	if in_inventory:
+		var viewport = $ui/inventory/player_view_container/player_view.get_viewport()
+		screen_position = viewport.get_mouse_position()
+		camera = $ui/inventory/player_view_container/player_view/camera
+	else:
+		screen_position = get_viewport().size / 2.0
+		camera = $camera
+	
+	var ray_origin = camera.project_ray_origin(screen_position)
+	var ray_end = ray_origin + camera.project_ray_normal(screen_position) * 100.0
 	var query = PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
 
 	var result = space.intersect_ray(query)
