@@ -2,7 +2,7 @@ import os
 import random
 import subprocess
 
-from .common import pick_implementation
+from common import pick_implementation
 
 class InfraError(BaseException): pass
 

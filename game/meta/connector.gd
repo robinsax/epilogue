@@ -1,6 +1,8 @@
+# todo combine with client_driver
+
 extends Node
 
-var net = null
+var _game = null
 
 var state = "none"
 var queue_state = "unknown"
@@ -9,7 +11,7 @@ var match_id = null
 var poll_time = 2.0
 
 func _ready():
-	net = get_node("/root/game/net")
+	_game = get_node("/root/game")
 
 func _process(delta):
 	if state != "queued_idle" and state != "matched_idle":
@@ -30,7 +32,7 @@ func queue(item_list):
 	
 	var data = { "items": item_list }
 	
-	net.make_req("/queue", HTTPClient.METHOD_POST, _queue_polled, data)
+	_game.net.make_req("/queue", HTTPClient.METHOD_POST, _queue_polled, data)
 
 func get_state():
 	if state == "queued_idle" or state == "queued_polling":
@@ -45,7 +47,7 @@ func _poll_queue():
 		return
 	state = "queued_polling"
 	
-	net.make_req("/queue", HTTPClient.METHOD_GET, _queue_polled)
+	_game.net.make_req("/queue", HTTPClient.METHOD_GET, _queue_polled)
 
 func _poll_match():
 	if state != "matched_idle":
@@ -53,7 +55,7 @@ func _poll_match():
 		return
 	state = "matched_polling"
 
-	net.make_req("/match/" + match_id, HTTPClient.METHOD_GET, _match_polled)
+	_game.net.make_req("/match/" + match_id, HTTPClient.METHOD_GET, _match_polled)
 
 func _queue_polled(data):
 	queue_state = data["state"]
@@ -73,6 +75,6 @@ func _match_polled(data):
 		print("match ready")
 		
 		state = "joining"
-		get_node("/root/game").client_join_match(data)
+		_game.driver.connect_to_match(data["address"])
 	else:
 		state = "matched_idle"

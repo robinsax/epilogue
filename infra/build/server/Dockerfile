@@ -1,9 +1,18 @@
-from common:latest
+from debian:bookworm-slim
 
-copy src/requirements.txt requirements.txt
+run apt-get update
 
-run pip3 install -r requirements.txt --break-system-packages
+# todo net debug tools, rm
+run apt-get install curl dnsutils -y
+
+# todo stupid workaround
+run apt-get install nginx -y
+
+copy internal_proxy.conf /etc/nginx/nginx.conf
 
 copy src service
 
-cmd python3 -u service
+copy run.sh run.sh
+run chmod +x run.sh
+
+cmd ./run.sh

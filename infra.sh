@@ -4,6 +4,7 @@ set -e
 
 env=$1
 op=$2
+mode=$3
 
 if [[ $env = "local" ]]; then
     if [[ $op == "up" ]]; then
@@ -26,11 +27,11 @@ if [[ $env = "local" ]]; then
             if [ -d $build_src_dir ]; then
                 rm -r $build_src_dir
             fi
-            if [ -d "$src_dir" ]; then
+            if [ -d $src_dir ]; then
                 cp -r $src_dir $build_src_dir
             fi
             if [ -f "$build_dir/prebuild.sh" ]; then
-                . $build_dir/prebuild.sh
+                . $build_dir/prebuild.sh $mode
             fi
 
             pushd $build_dir

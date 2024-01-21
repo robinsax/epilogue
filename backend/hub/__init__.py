@@ -1,20 +1,24 @@
 import os
 import time
-from pymongo import MongoClient
+from threading import Thread
 
-from common import init_db
+from common import Context, init_db
 
-from .common import Context
+from .app import app
 from .matches import do_matchmaking, manage_matches
 
 def run():
-    ctx = Context()
-    ctx.mongo = MongoClient(os.environ['DATABASE_URI'])
-    ctx.db = ctx.mongo.main
+    if os.environ.get('SERVICE') == 'api':
+        app.run('0.0.0.0', 3000, debug=True)
+    else:
+        run_background()
 
-    init_db(ctx.db)
+def run_background():
+    ctx = Context.create()
 
-    print('boot')
+    init_db(ctx)
+
+    print('boot background worker')
     while True:
         time.sleep(2.0)
 

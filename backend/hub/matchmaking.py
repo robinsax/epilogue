@@ -1,4 +1,4 @@
-from .common import pick_implementation
+from common import pick_implementation
 
 class Matchmaker:
 
@@ -10,8 +10,13 @@ class SimpleMatchmaker:
     def match(self, queue: list) -> list[list]:
         matched = list()
 
-        while len(queue) >= 2:
-            matched.append(list((queue.pop(), queue.pop())))
+        p_count = 2
+
+        while len(queue) >= p_count:
+            players = list()
+            for i in range(p_count):
+                players.append(queue.pop())
+            matched.append(players)
 
         return matched
 

@@ -70,4 +70,4 @@ func remove_item_from_destroy(item):
 
 func attachment_data_for_item(item):
 	var slot_name = _get_slot_name_containing_item(item)
-	return [_host_node.attachment_data(), slot_name]
+	return [_host_node.name, slot_name]

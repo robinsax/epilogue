@@ -28,7 +28,7 @@ services:
       - DATABASE_URI=mongodb://app:local@database:27017/
 
   hub:
-    container_name: hub
+    container_name: hub-service
     image: hub:latest
     networks:
       - internal
@@ -38,6 +38,8 @@ services:
       - DATABASE_URI=mongodb://app:local@database:27017/
       - MATCHMAKER=simple
       - INFRA_DRIVER=docker
+    ports:
+      - "127.0.0.1:3000:3000"
 
   database_ui:
     container_name: mongo-express

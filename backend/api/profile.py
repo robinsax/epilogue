@@ -1,9 +1,8 @@
 from flask import request
-from bson import ObjectId
 
-from common import init_profile, hydrate_items
+from common import init_profile, hydrate_items, json_resp, handle_errs
 
-from .app import app, get_ctx, to_json, handle_errs
+from .app import app, get_ctx
 
 @app.route('/profile', methods=('get',))
 @handle_errs
@@ -11,12 +10,12 @@ def get_profile():
     ctx = get_ctx()
 
     if not ctx.profile:
-        init_profile(ctx.db, ctx.user.id)
-        
-    profile = ctx.profile
-    profile['items'] = hydrate_items(ctx.db, profile['items'])
+        init_profile(ctx, ctx.user.id)
 
-    return to_json(profile)
+    profile = ctx.profile
+    profile['items'] = hydrate_items(ctx, profile['items'])
+
+    return json_resp(profile)
 
 @app.route('/profile', methods=('patch',))
 @handle_errs
@@ -45,4 +44,4 @@ def patch_profile():
                 }
             )
 
-    return to_json({ 'success': True })
+    return json_resp({ 'success': True })

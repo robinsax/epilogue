@@ -1,4 +1,12 @@
 {
+    "profiles": {
+        "foo": {
+            "id": "foo"
+        },
+        "bar": {
+            "id": "bar"
+        }
+    },
     "items": [
         {
             "id": "1",

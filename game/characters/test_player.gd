@@ -60,11 +60,3 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
-
-func attachment_data():
-	var game = get_node("/root/game")
-
-	if game.client_profile_id != null:
-		return game.client_profile_id
-
-	return game.server_profile_id(input_sync.get_multiplayer_authority())

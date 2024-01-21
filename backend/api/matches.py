@@ -1,8 +1,9 @@
 from flask import request
 from datetime import datetime
-from bson import ObjectId
 
-from .app import app, get_ctx, to_json, handle_errs
+from common import json_resp, handle_errs
+
+from .app import app, get_ctx
 
 @app.route('/match/<match_id>', methods=('get',))
 @handle_errs
@@ -11,33 +12,36 @@ def get_match(match_id=None):
 
     match = ctx.db.matches.find_one({
         '_id': ctx.validate_oid(match_id),
-        'user_ids': ctx.user.id
+        'profile_ids': ctx.profile['_id']
     })
     ctx.validate_exists(match, 'invalid match')
 
-    return to_json(match)
+    return json_resp(match)
 
 @app.route('/queue', methods=('post',))
 @handle_errs
 def enter_queue():
     ctx = get_ctx()
 
+    profile = ctx.profile
+    ctx.validate_exists(profile, 'invalid profile')
+
     entry = ctx.db.queue.find_one({
-        'user_id': ctx.user.id,
+        'profile_id': profile['_id'],
         'state': { '$ne': 'complete' }
     })
     if entry:
-        return to_json({ 'error': 'already in queue' }, 400)
+        return json_resp({ 'error': 'already in queue' }, 400)
 
-    result = ctx.db.queue.insert_one({
-        'user_id': ctx.user.id,
+    ctx.db.queue.insert_one({
+        'profile_id': profile['_id'],
         'state': 'pending',
         'match_id': None,
         'created_at': datetime.now()
     })
     # todo stupid
     entry = ctx.db.queue.find_one({
-        'user_id': ctx.user.id,
+        'profile_id': profile['_id'],
         'state': 'pending'
     })
 
@@ -58,17 +62,20 @@ def enter_queue():
             }
         )
 
-    return to_json(entry)
+    return json_resp(entry)
 
 @app.route('/queue', methods=('get',))
 @handle_errs
 def get_queue():
     ctx = get_ctx()
 
+    profile = ctx.profile
+    ctx.validate_exists(profile, 'invalid profile')
+
     entry = ctx.db.queue.find_one({
-        'user_id': ctx.user.id,
+        'profile_id': profile['_id'],
         'state': { '$ne': 'complete' }
     })
     ctx.validate_exists(entry, 'not in queue')
 
-    return to_json(entry)
+    return json_resp(entry)
