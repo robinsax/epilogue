@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://gc1qd8lwjsse"]
+[gd_scene load_steps=6 format=3 uid="uid://gc1qd8lwjsse"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_igh82"]
+[ext_resource type="PackedScene" uid="uid://c3qvwlyophxey" path="res://world/test_obstacle.tscn" id="2_viwgv"]
+[ext_resource type="PackedScene" uid="uid://bfj8b2u0rylkj" path="res://items/base_item.tscn" id="3_6tvl4"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_y0h66"]
 size = Vector2(100, 100)
@@ -12,6 +14,80 @@ script = ExtResource("1_igh82")
 
 [node name="world" type="Node3D" parent="."]
 
+[node name="moon" type="DirectionalLight3D" parent="world"]
+transform = Transform3D(-0.604924, -0.29819, -0.738343, -0.635852, 0.739051, 0.222478, 0.479332, 0.604059, -0.636674, -7.97786, 5.09584, 2.97854)
+light_color = Color(0, 0.494118, 0.498039, 1)
+light_energy = 0.5
+shadow_enabled = true
+
+[node name="lamp" type="SpotLight3D" parent="world"]
+transform = Transform3D(1, 0, 0, 0, -0.439438, 0.898273, 0, -0.898273, -0.439438, -2.85681, 4.08232, 0)
+light_color = Color(1, 0.745098, 0.490196, 1)
+light_energy = 14.29
+light_indirect_energy = 4.235
+light_volumetric_fog_energy = 0.0
+light_size = 2.0
+
+[node name="test_obstacle" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2623, 0.32174, 2.94677)
+
+[node name="test_obstacle2" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2623, -0.12576, 4.7676)
+
+[node name="test_obstacle3" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.851269, -0.12576, -0.408182)
+
+[node name="lamp2" type="SpotLight3D" parent="world"]
+transform = Transform3D(-0.821199, -0.512592, -0.250762, 0, -0.439438, 0.898273, -0.570642, 0.737661, 0.360866, 3.95177, 4.08232, 3.49692)
+light_color = Color(1, 0.745098, 0.490196, 1)
+light_energy = 14.29
+light_indirect_energy = 4.235
+light_volumetric_fog_energy = 0.0
+light_size = 2.0
+
+[node name="test_obstacle4" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(-0.821199, 0, 0.570642, 0, 1, 0, -0.570642, 0, -0.821199, 5.96631, 0.32174, 1.30842)
+
+[node name="test_obstacle5" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(-0.821199, 0, 0.570642, 0, 1, 0, -0.570642, 0, -0.821199, 7.00535, -0.12576, -0.186834)
+
+[node name="test_obstacle6" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(-0.821199, 0, 0.570642, 0, 1, 0, -0.570642, 0, -0.821199, 2.0719, -0.12576, 2.68767)
+
+[node name="lamp3" type="SpotLight3D" parent="world"]
+transform = Transform3D(-0.914847, 0.362723, 0.177445, -2.51913e-08, -0.439438, 0.898273, 0.403801, 0.821782, 0.402019, 8.99382, 4.08232, 8.76642)
+light_color = Color(1, 0.745098, 0.490196, 1)
+light_energy = 14.29
+light_indirect_energy = 4.235
+light_volumetric_fog_energy = 0.0
+light_size = 2.0
+
+[node name="test_obstacle7" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(-0.914847, 0, -0.403801, 0, 1, 0, 0.403801, 0, -0.914847, 8.17487, 0.32174, 5.90684)
+
+[node name="test_obstacle8" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(-0.914847, 0, -0.403801, 0, 1, 0, 0.403801, 0, -0.914847, 7.43961, -0.12576, 4.24106)
+
+[node name="test_obstacle9" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(-0.914847, 0, -0.403801, 0, 1, 0, 0.403801, 0, -0.914847, 7.32388, -0.12576, 9.94969)
+
+[node name="lamp4" type="SpotLight3D" parent="world"]
+transform = Transform3D(0.981697, 0.171075, 0.0836906, 1.22368e-08, -0.439438, 0.898273, 0.190449, -0.881832, -0.431395, 1.35295, 4.08232, 8.31659)
+light_color = Color(1, 0.745098, 0.490196, 1)
+light_energy = 14.29
+light_indirect_energy = 4.235
+light_volumetric_fog_energy = 0.0
+light_size = 2.0
+
+[node name="test_obstacle10" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(0.981697, 0, -0.190449, 0, 1, 0, 0.190449, 0, 0.981697, 0.393671, 0.32174, 11.1322)
+
+[node name="test_obstacle11" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(0.981697, 0, -0.190449, 0, 1, 0, 0.190449, 0, 0.981697, 0.0468926, -0.12576, 12.9197)
+
+[node name="test_obstacle12" parent="world" instance=ExtResource("2_viwgv")]
+transform = Transform3D(0.981697, 0, -0.190449, 0, 1, 0, 0.190449, 0, 0.981697, 3.39952, -0.12576, 8.29783)
+
 [node name="floor" type="StaticBody3D" parent="world"]
 
 [node name="mesh" type="MeshInstance3D" parent="world/floor"]
@@ -21,20 +97,20 @@ skeleton = NodePath("../../..")
 [node name="collider" type="CollisionShape3D" parent="world/floor"]
 shape = SubResource("WorldBoundaryShape3D_msmoq")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="world"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.18926, 0.380228, 0)
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="world"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8266, 0.236804, 3.3856)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="world"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.373596, 0)
-
-[node name="lamp" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.584757, -0.100493, 0.80496, -0.267003, 0.913164, 0.307964, -0.766008, -0.395011, 0.507147, -4.90866, 1.97851, 0)
-shadow_enabled = true
-
 [node name="players" type="Node3D" parent="."]
+
+[node name="mobs" type="Node3D" parent="."]
+
+[node name="items" type="Node3D" parent="."]
+
+[node name="base_item" parent="items" instance=ExtResource("3_6tvl4")]
+transform = Transform3D(0.816944, 0, -0.576717, 0, 1, 0, 0.576717, 0, 0.816944, 3.21099, 1.3622, 5.88408)
+
+[node name="base_item2" parent="items" instance=ExtResource("3_6tvl4")]
+transform = Transform3D(0.816944, 0, -0.576717, 0, 1, 0, 0.576717, 0, 0.816944, 1.94641, 1.3622, 7.6754)
+
+[node name="base_item3" parent="items" instance=ExtResource("3_6tvl4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.18089, 0.43541, 7.8761)
 
 [node name="spawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://characters/test_player.tscn")

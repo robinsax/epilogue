@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://b73yiw6x1sg2b"]
+[gd_scene load_steps=7 format=3 uid="uid://b73yiw6x1sg2b"]
 
 [ext_resource type="PackedScene" uid="uid://kk45b15t4ny7" path="res://characters/test_player.tscn" id="1_snbfi"]
-[ext_resource type="PackedScene" uid="uid://dk6t3ux4abfpg" path="res://world/join_trigger.tscn" id="2_5pfi3"]
+[ext_resource type="PackedScene" uid="uid://6oy6jjh712ns" path="res://world/connect_trigger.tscn" id="2_yr65y"]
+[ext_resource type="PackedScene" uid="uid://c3qvwlyophxey" path="res://world/test_obstacle.tscn" id="3_lgsbj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_urw8p"]
+albedo_color = Color(0.705882, 0.713726, 0.709804, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_y0h66"]
+material = SubResource("StandardMaterial3D_urw8p")
 size = Vector2(10, 10)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_msmoq"]
@@ -13,19 +18,37 @@ size = Vector2(10, 10)
 [node name="test_player" parent="." instance=ExtResource("1_snbfi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="environment" type="Node3D" parent="."]
+[node name="world" type="Node3D" parent="."]
 
-[node name="floor" type="StaticBody3D" parent="environment"]
+[node name="connect_trigger" parent="world" instance=ExtResource("2_yr65y")]
+transform = Transform3D(0.50296, 0, -0.86431, 0, 1, 0, 0.86431, 0, 0.50296, -1.91295, 0.355438, -3.27065)
 
-[node name="mesh" type="MeshInstance3D" parent="environment/floor"]
+[node name="sun" type="DirectionalLight3D" parent="world"]
+transform = Transform3D(0.446605, 0.36142, -0.818486, -0.199979, 0.931964, 0.30241, 0.872096, 0.0286221, 0.488496, 0, 0, 0)
+light_color = Color(0.92549, 0.815686, 0.623529, 1)
+shadow_enabled = true
+
+[node name="floor" type="StaticBody3D" parent="world"]
+
+[node name="mesh" type="MeshInstance3D" parent="world/floor"]
 mesh = SubResource("PlaneMesh_y0h66")
 skeleton = NodePath("../../..")
 
-[node name="collider" type="CollisionShape3D" parent="environment/floor"]
+[node name="collider" type="CollisionShape3D" parent="world/floor"]
 shape = SubResource("WorldBoundaryShape3D_msmoq")
 
-[node name="lamp" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.584757, -0.100493, 0.80496, -0.267003, 0.913164, 0.307964, -0.766008, -0.395011, 0.507147, -4.90866, 1.97851, 0)
+[node name="test_obstacle2" parent="world" instance=ExtResource("3_lgsbj")]
+transform = Transform3D(-0.416354, -0.437653, 0.796937, -0.606282, 0.786838, 0.115358, -0.677547, -0.435139, -0.592944, 1.62636, 0.144841, -3.0689)
 
-[node name="join_trigger" parent="." instance=ExtResource("2_5pfi3")]
-transform = Transform3D(-0.732804, 0, 0.680439, 0, 1, 0, -0.680439, 0, -0.732804, -2.45191, 0.546875, 4.40351)
+[node name="test_obstacle" parent="world" instance=ExtResource("3_lgsbj")]
+transform = Transform3D(-0.176896, 0.98423, 0, -0.63273, -0.113721, -0.765977, -0.753898, -0.135498, 0.642868, -3.29128, 0.349188, 1.74705)
+
+[node name="test_obstacle3" parent="world" instance=ExtResource("3_lgsbj")]
+transform = Transform3D(0.741327, 0.0794023, 0.66643, -0.647564, -0.176275, 0.741342, 0.176339, -0.981133, -0.0792594, -3.86797, 0.349188, -1.20458)
+
+[node name="lamp" type="SpotLight3D" parent="world"]
+transform = Transform3D(0.666741, -0.733543, 0.1318, 0.19739, 0.344332, 0.917863, -0.718675, -0.585961, 0.374374, 0, 4.01651, -1.52779)
+light_color = Color(0.952941, 0.772549, 0.4, 1)
+light_energy = 7.347
+light_indirect_energy = 0.868
+light_volumetric_fog_energy = 0.0

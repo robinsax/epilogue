@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3qvwlyophxey"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a5787"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kdceg"]
+
+[node name="test_obstacle" type="StaticBody3D"]
+
+[node name="collider" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_a5787")
+
+[node name="mesh" type="MeshInstance3D" parent="collider"]
+mesh = SubResource("BoxMesh_kdceg")

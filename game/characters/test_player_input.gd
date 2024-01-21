@@ -3,6 +3,7 @@ extends MultiplayerSynchronizer
 @export var move_direction = Vector2()
 @export var rotation = Vector3()
 @export var jumping = false
+@export var interacting = false
 
 var mouse_sensitivity = 0.002
 
@@ -14,14 +15,23 @@ func _ready():
 func _process(delta):
 	move_direction = Input.get_vector("mv_left", "mv_right", "mv_forward", "mv_back")
 	rotation = Vector3()
+	jumping = false
+	interacting = false
 
 @rpc("call_local")
 func jump():
 	jumping = true
+	
+@rpc("call_local")
+func interact():
+	interacting = true
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
 		jump.rpc()
+	
+	if event.is_action_pressed("interact"):
+		interact.rpc()
 
 	if event.is_action_pressed("ui_cancel"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:

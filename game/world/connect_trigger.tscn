@@ -1,0 +1,47 @@
+[gd_scene load_steps=9 format=3 uid="uid://6oy6jjh712ns"]
+
+[ext_resource type="Script" path="res://world/connect_trigger.gd" id="1_qlvcw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_apojm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e0bp1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_q5oqd"]
+material = SubResource("StandardMaterial3D_e0bp1")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q103o"]
+albedo_color = Color(0.619608, 0.619608, 0.619608, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ecu3k"]
+material = SubResource("StandardMaterial3D_q103o")
+size = Vector3(0.5, 0.2, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vx26e"]
+albedo_color = Color(0.74902, 0.74902, 0.74902, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_m547q"]
+material = SubResource("StandardMaterial3D_vx26e")
+size = Vector3(0.1, 0.7, 1)
+
+[node name="connect_trigger" type="StaticBody3D"]
+script = ExtResource("1_qlvcw")
+
+[node name="collider" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_apojm")
+
+[node name="mesh" type="MeshInstance3D" parent="collider"]
+mesh = SubResource("BoxMesh_q5oqd")
+
+[node name="mesh_keyboard" type="MeshInstance3D" parent="collider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.179884, 0.464808, 0)
+mesh = SubResource("BoxMesh_ecu3k")
+skeleton = NodePath("../mesh_screen")
+
+[node name="mesh_screen" type="MeshInstance3D" parent="collider"]
+transform = Transform3D(0.97309, -0.230423, 0, 0.230423, 0.97309, 0, 0, 0, 1, -0.229454, 0.942927, 0)
+mesh = SubResource("BoxMesh_m547q")
+
+[node name="text" type="Label3D" parent="."]
+transform = Transform3D(-4.27869e-08, -0.204581, 0.97885, -8.94254e-09, 0.97885, 0.204581, -1, 0, -4.37114e-08, -0.176565, 1, 0)
+text = "init"
+font_size = 40

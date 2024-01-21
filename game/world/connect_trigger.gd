@@ -1,17 +1,14 @@
-extends Area3D
+extends StaticBody3D
 
 var connector = null
 
 func _ready():
 	connector = get_node("/root/game/connector")
-	
-	connect("body_entered", _do_trigger)
 
-func _do_trigger(body):
-	var player = body as CharacterBody3D
-	if not player:
-		return
-		
+func get_character_interact_info():
+	return 'drop in'
+	
+func character_interact(character):
 	connector.queue()
 
 func _process(delta):

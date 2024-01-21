@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://kk45b15t4ny7"]
+[gd_scene load_steps=14 format=3 uid="uid://kk45b15t4ny7"]
 
 [ext_resource type="Script" path="res://characters/test_player.gd" id="1_nn6m6"]
 [ext_resource type="Script" path="res://characters/test_player_input.gd" id="2_3tfjj"]
+[ext_resource type="PackedScene" uid="uid://c4m6cjw6sklqe" path="res://meta/inventory.tscn" id="2_pbpeq"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xg1k5"]
 radius = 0.35
@@ -17,6 +18,9 @@ height = 1.5
 
 [sub_resource type="BoxMesh" id="BoxMesh_6ifke"]
 size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="Environment" id="Environment_uwfls"]
+background_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_r37wx"]
 properties/0/path = NodePath(".:position")
@@ -36,24 +40,55 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath("input_sync:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+properties/2/path = NodePath("input_sync:jumping")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("input_sync:interacting")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_aywx6"]
+colors = PackedColorArray(0, 0, 0, 0.596078, 0.0901961, 0.0901961, 0.0901961, 0.721569)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cqajv"]
+gradient = SubResource("Gradient_aywx6")
+
+[sub_resource type="Environment" id="Environment_dirhv"]
+background_mode = 1
+background_color = Color(0, 0, 0, 0)
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 2.55
 
 [node name="test_player" type="CharacterBody3D"]
+collision_layer = 8
+collision_mask = 9
 script = ExtResource("1_nn6m6")
 
 [node name="collider" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_xg1k5")
 
-[node name="mesh" type="MeshInstance3D" parent="."]
+[node name="mesh" type="MeshInstance3D" parent="collider"]
 mesh = SubResource("CapsuleMesh_50jhi")
-skeleton = NodePath("../collider")
 
-[node name="backindicator" type="MeshInstance3D" parent="mesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.468884)
+[node name="backindicator" type="MeshInstance3D" parent="collider/mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.437676)
+layers = 3
 mesh = SubResource("BoxMesh_6ifke")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
 [node name="camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+cull_mask = 1048573
+environment = SubResource("Environment_uwfls")
+
+[node name="inventory" parent="." instance=ExtResource("2_pbpeq")]
+
+[node name="slot_a" type="Node3D" parent="inventory"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.256484, -0.267677, -0.639992)
+
+[node name="slot_a2" type="Node3D" parent="inventory"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.282131, -0.267677, -0.639992)
 
 [node name="server_sync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_r37wx")
@@ -61,3 +96,78 @@ replication_config = SubResource("SceneReplicationConfig_r37wx")
 [node name="input_sync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_su84c")
 script = ExtResource("2_3tfjj")
+
+[node name="ui" type="Node3D" parent="."]
+
+[node name="inventory" type="Control" parent="ui"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="background" type="TextureRect" parent="ui/inventory"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_cqajv")
+
+[node name="player_view_container" type="SubViewportContainer" parent="ui/inventory"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="player_view" type="SubViewport" parent="ui/inventory/player_view_container"]
+transparent_bg = true
+handle_input_locally = false
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="camera" type="Camera3D" parent="ui/inventory/player_view_container/player_view"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -1.40463)
+cull_mask = 2
+environment = SubResource("Environment_dirhv")
+fov = 60.0
+
+[node name="lamp" type="SpotLight3D" parent="ui/inventory/player_view_container/player_view"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -1.31604)
+layers = 2
+light_energy = 1.066
+light_cull_mask = 4293918722
+
+[node name="hud" type="Control" parent="ui"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="active_interact_target" type="Label" parent="ui/hud"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -73.0
+offset_right = 20.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+horizontal_alignment = 1
+vertical_alignment = 1
