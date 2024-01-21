@@ -1,6 +1,6 @@
 extends Node
 
-var util = load("res://util.gd").new()
+var net = null
 
 var state = "none"
 var queue_state = "unknown"
@@ -9,7 +9,7 @@ var match_id = null
 var poll_time = 2.0
 
 func _ready():
-	util.bind(self)
+	net = get_node("/root/game/net")
 
 func _process(delta):
 	if state != "queued_idle" and state != "matched_idle":
@@ -23,12 +23,14 @@ func _process(delta):
 		else:
 			_poll_queue()
 
-func queue():
+func queue(item_list):
 	if state != "none":
 		return
 	state = "queuing"
 	
-	util.make_req("/queue", HTTPClient.METHOD_POST, _queue_polled)
+	var data = { "items": item_list }
+	
+	net.make_req("/queue", HTTPClient.METHOD_POST, _queue_polled, data)
 
 func get_state():
 	if state == "queued_idle" or state == "queued_polling":
@@ -43,7 +45,7 @@ func _poll_queue():
 		return
 	state = "queued_polling"
 	
-	util.make_req("/queue", HTTPClient.METHOD_GET, _queue_polled)
+	net.make_req("/queue", HTTPClient.METHOD_GET, _queue_polled)
 
 func _poll_match():
 	if state != "matched_idle":
@@ -51,7 +53,7 @@ func _poll_match():
 		return
 	state = "matched_polling"
 
-	util.make_req("/match/" + match_id, HTTPClient.METHOD_GET, _match_polled)
+	net.make_req("/match/" + match_id, HTTPClient.METHOD_GET, _match_polled)
 
 func _queue_polled(data):
 	queue_state = data["state"]
@@ -71,6 +73,6 @@ func _match_polled(data):
 		print("match ready")
 		
 		state = "joining"
-		get_node("/root/game").client_join_match(match_id)
+		get_node("/root/game").client_join_match(data)
 	else:
 		state = "matched_idle"

@@ -1,0 +1,24 @@
+{
+    "items": [
+        {
+            "id": "1",
+            "type": {
+                "id": "0",
+                "ref": "dummy.item",
+                "archetype": "test",
+                "name": "dummy item"
+            },
+            "attachment": ["foo", "slot_a"]
+        },
+        {
+            "id": "1",
+            "type": {
+                "id": "1",
+                "ref": "dummy.item.two",
+                "archetype": "test",
+                "name": "dummy item 2"
+            },
+            "attachment": ["bar", "slot_a"]
+        }
+    ]
+}

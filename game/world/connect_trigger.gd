@@ -1,15 +1,19 @@
 extends StaticBody3D
 
-var connector = null
+# todo signals
+
+var _connector = null
+var _home_level = null
 
 func _ready():
-	connector = get_node("/root/game/connector")
+	_connector = get_node("/root/game/connector")
+	_home_level = get_node("/root/game/level/level_root")
 
-func get_character_interact_info():
+func interact_info():
 	return 'drop in'
 	
-func character_interact(character):
-	connector.queue()
+func interact(character):
+	_home_level.queue()
 
 func _process(delta):
-	$text.text = connector.get_state()
+	$text.text = _connector.get_state()

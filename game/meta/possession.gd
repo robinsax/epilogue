@@ -36,7 +36,7 @@ func interact():
 	if _active_interact_target == null:
 		return
 	
-	_active_interact_target.character_interact(_character)
+	_active_interact_target.interact(_character)
 
 func _inventory_mouse_pos():
 	return _inventory_viewport.get_viewport().get_mouse_position()
@@ -63,7 +63,7 @@ func _input(event):
 
 func _process(delta):
 	if _active_interact_target != null:
-		_hud_active_interact_target.text = _active_interact_target.get_character_interact_info()
+		_hud_active_interact_target.text = _active_interact_target.interact_info()
 	else:
 		_hud_active_interact_target.text = ""
 	
@@ -120,5 +120,5 @@ func _physics_process(delta):
 		return
 
 	var collider = result["collider"]
-	if collider.has_method("character_interact"):
+	if collider.has_method("interact"):
 		_active_interact_target = collider

@@ -1,7 +1,8 @@
 from debian:bookworm-slim
 
 run apt-get update -y && \
-    apt-get install -y python3 python3-pip
+    # todo no docker here in release, just here for caching
+    apt-get install -y python3 python3-pip docker.io
 
 workdir /service
 run cd /service

@@ -78,6 +78,13 @@ def do_matchmaking(ctx: Context):
                 'state': 'active'
             } }
         )
+        ctx.db.items.update_many(
+            { 'world_id': { '$in': entry_ids } },
+            { '$set': {
+                'world_type': 'match',
+                'world_id': result.inserted_id
+            } }
+        )
 
 def matchmake_simple(queue: list):
     matched = list()

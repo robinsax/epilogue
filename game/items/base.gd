@@ -1,8 +1,11 @@
 extends RigidBody3D
 
-var item_name = "<unset>"
+@export var _data = {}
 
 var active_inventory = null # server only
+
+func bind_data(data):
+	_data = data
 
 func _ready():
 	pass
@@ -10,13 +13,27 @@ func _ready():
 func _process(delta):
 	pass
 
-func get_character_interact_info():
-	return item_name
+func _exit_tree():
+	if active_inventory != null:
+		active_inventory.remove_item_from_destroy(self)
 
-func character_interact(character):
+func to_data():
+	var data = _data.duplicate(true)
+	if active_inventory != null:
+		data.erase("position")
+		data["attachment"] = active_inventory.attachment_data_for_item(self)
+	else:
+		data.erase("attachment")
+		data["position"] = [position.x, position.y, position.z]
+	return data
+
+func interact_info():
+	return _data["type"]["name"]
+
+func interact(character):
 	_trigger_interact.rpc(character.inventory.get_path())
 
-@rpc("any_peer")
+@rpc("call_local", "any_peer")
 func _trigger_interact(path: String):
 	if not multiplayer.is_server():
 		return

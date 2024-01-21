@@ -7,8 +7,6 @@ op=$2
 
 if [[ $env = "local" ]]; then
     if [[ $op == "up" ]]; then
-        ./dev.sh clean
-
         log "local up"
 
         builds=(
@@ -47,6 +45,8 @@ if [[ $env = "local" ]]; then
         set -e
 
         docker-compose -f infra/local/docker-compose.yml down
+        
+        ./dev.sh clean
     else
         err_exit "invalid op"
     fi

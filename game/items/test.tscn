@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://c3uikpb1ue1y7"]
+
+[ext_resource type="PackedScene" uid="uid://bfj8b2u0rylkj" path="res://items/base.tscn" id="1_f0ody"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wvwgs"]
+size = Vector3(0.4, 0.4, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vmbht"]
+albedo_color = Color(0.576471, 0.266667, 0.301961, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cag36"]
+material = SubResource("StandardMaterial3D_vmbht")
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.4
+
+[node name="item" instance=ExtResource("1_f0ody")]
+
+[node name="collider" type="CollisionShape3D" parent="." index="0"]
+shape = SubResource("BoxShape3D_wvwgs")
+
+[node name="mesh" type="MeshInstance3D" parent="collider" index="0"]
+mesh = SubResource("CylinderMesh_cag36")

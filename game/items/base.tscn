@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfj8b2u0rylkj"]
+
+[ext_resource type="Script" path="res://items/base.gd" id="1_oialx"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xo7ou"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:_data")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="item" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_oialx")
+
+[node name="server_sync" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_xo7ou")

@@ -5,6 +5,7 @@ const JUMP_VELOCITY = 4.5
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+# todo private some?
 var inventory = null
 var mesh = null
 var collider = null
@@ -19,6 +20,9 @@ var possession = null # local authority only
 
 func is_local_authority():
 	return $input_sync.get_multiplayer_authority() == multiplayer.get_unique_id()
+
+func profile_id():
+	return get_node("/root/game").server_profile_id($input_sync.get_multiplayer_authority())
 
 func _ready():
 	inventory = $inventory
@@ -56,3 +60,11 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+
+func attachment_data():
+	var game = get_node("/root/game")
+
+	if game.client_profile_id != null:
+		return game.client_profile_id
+
+	return game.server_profile_id(input_sync.get_multiplayer_authority())

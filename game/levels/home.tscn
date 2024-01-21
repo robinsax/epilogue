@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://b73yiw6x1sg2b"]
+[gd_scene load_steps=8 format=3 uid="uid://b73yiw6x1sg2b"]
 
 [ext_resource type="PackedScene" uid="uid://kk45b15t4ny7" path="res://characters/test_player.tscn" id="1_snbfi"]
+[ext_resource type="Script" path="res://levels/home.gd" id="1_y0xp2"]
 [ext_resource type="PackedScene" uid="uid://6oy6jjh712ns" path="res://world/connect_trigger.tscn" id="2_yr65y"]
 [ext_resource type="PackedScene" uid="uid://c3qvwlyophxey" path="res://world/test_obstacle.tscn" id="3_lgsbj"]
 
@@ -13,10 +14,13 @@ size = Vector2(10, 10)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_msmoq"]
 
-[node name="base" type="Node3D"]
+[node name="level_root" type="Node3D"]
+script = ExtResource("1_y0xp2")
 
 [node name="test_player" parent="." instance=ExtResource("1_snbfi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="items" type="Node3D" parent="."]
 
 [node name="world" type="Node3D" parent="."]
 

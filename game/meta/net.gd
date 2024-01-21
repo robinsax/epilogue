@@ -5,29 +5,34 @@ var API_URI = "http://127.0.0.1"
 var client_name = null
 var active_req = null
 var active_callback: Callable = _noop
-var host_node = null
 
 func _noop(data):
 	pass
 
-func bind(node):
+func _ready():
 	client_name = "from-engine"
 	if OS.has_environment("CLIENT_NAME"):
 		client_name = OS.get_environment("CLIENT_NAME")
-	
-	host_node = node
 
-func make_req(endpoint, method, callback):
+func make_req(endpoint, method, callback, body=null):
 	var url = API_URI + endpoint
 	print("req ", url, " ", method)
 	
 	active_callback = callback
 
 	active_req = HTTPRequest.new() # avoid host_node with httpserver?
-	host_node.add_child(active_req)
+	add_child(active_req)
+	
+	var headers = []
+	var body_str = ""
+	if body != null:
+		headers.append("Content-Type: application/json")
+		body_str = JSON.stringify(body)
+
+		print(headers, " ", body_str)
 
 	active_req.request_completed.connect(_handle_resp)
-	var err = active_req.request(url + "?user=" + client_name, [], method)
+	var err = active_req.request(url + "?user=" + client_name, headers, method, body_str)
 	if err != OK:
 		print("err opening request")
 
@@ -42,6 +47,6 @@ func _handle_resp(res, code, headers, body):
 
 	active_callback.call(data)
 
-	host_node.remove_child(active_req)
+	remove_child(active_req)
 	active_req = null
 	active_callback = _noop

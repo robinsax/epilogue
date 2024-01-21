@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://onxi761h6174"]
+
+[ext_resource type="Script" path="res://meta/net.gd" id="1_rtt2v"]
+
+[node name="net" type="Node3D"]
+script = ExtResource("1_rtt2v")

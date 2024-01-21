@@ -1,15 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://cvdahxgd3aj2t"]
+[gd_scene load_steps=5 format=3 uid="uid://cvdahxgd3aj2t"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_dkf1g"]
+[ext_resource type="PackedScene" uid="uid://onxi761h6174" path="res://meta/net.tscn" id="2_rrr4q"]
 [ext_resource type="PackedScene" uid="uid://bsiqcmfdlxxun" path="res://meta/connector.tscn" id="2_vec4o"]
+[ext_resource type="PackedScene" uid="uid://xyiq3trdfanx" path="res://meta/factory.tscn" id="4_pjs7h"]
 
 [node name="game" type="Node3D"]
 script = ExtResource("1_dkf1g")
 
+[node name="net" parent="." instance=ExtResource("2_rrr4q")]
+
 [node name="connector" parent="." instance=ExtResource("2_vec4o")]
 
+[node name="factory" parent="." instance=ExtResource("4_pjs7h")]
+
 [node name="spawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://levels/level.tscn")
+_spawnable_scenes = PackedStringArray("res://levels/match.tscn")
 spawn_path = NodePath("../level")
 spawn_limit = 1
 

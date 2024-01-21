@@ -9,7 +9,7 @@ if [[ $op == "engine" ]]; then
 elif [[ $op == "run" ]]; then
     which=$2
     if [[ $which == "server" ]]; then
-        PORT=5000 run_godot --headless
+        MATCH_DATA_PATH="$(pwd)/etc/test_match_data.json" PORT=5000 run_godot --headless
     elif [[ $which == "client-direct" ]]; then
         name=$3
         if [[ $name == "" ]]; then
@@ -41,7 +41,7 @@ elif [[ $op == "dummy-queue" ]]; then
         user="dummy"
     fi
 
-    curl -X POST http://localhost/queue?user=$user
+    curl -X POST -H "Content-Type: application/json" -d '{"items": []}' http://localhost/queue?user=$user
 else
     err_exit "invalid op"
 fi

@@ -1,27 +1,24 @@
+from flask import request
 from datetime import datetime
-from bson.objectid import ObjectId
+from bson import ObjectId
 
-from .app import app, get_ctx, to_json
+from .app import app, get_ctx, to_json, handle_errs
 
 @app.route('/match/<match_id>', methods=('get',))
+@handle_errs
 def get_match(match_id=None):
     ctx = get_ctx()
 
-    try:
-        match_id = ObjectId(match_id)
-    except:
-        return to_json({ 'error': 'invalid id' }, 400)
-
     match = ctx.db.matches.find_one({
-        '_id': match_id,
+        '_id': ctx.validate_oid(match_id),
         'user_ids': ctx.user.id
     })
-    if not match:
-        return to_json({ 'error': 'not found' }, 404)
+    ctx.validate_exists(match, 'invalid match')
 
     return to_json(match)
 
 @app.route('/queue', methods=('post',))
+@handle_errs
 def enter_queue():
     ctx = get_ctx()
 
@@ -30,22 +27,41 @@ def enter_queue():
         'state': { '$ne': 'complete' }
     })
     if entry:
-        return to_json(entry)
+        return to_json({ 'error': 'already in queue' }, 400)
 
-    ctx.db.queue.insert_one({
+    result = ctx.db.queue.insert_one({
         'user_id': ctx.user.id,
         'state': 'pending',
         'match_id': None,
         'created_at': datetime.now()
     })
-
+    # todo stupid
     entry = ctx.db.queue.find_one({
         'user_id': ctx.user.id,
         'state': 'pending'
     })
+
+    # todo validation
+    submitted_items = request.json['items']
+    for client_item in submitted_items:
+        real_item = ctx.validate_item_authz(client_item)
+
+        ctx.db.items.update_one(
+            { '_id': real_item['_id'] },
+            {
+                '$set': {
+                    'world_type': 'queue',
+                    'world_id': entry['_id'],
+                    'attachment': client_item['attachment']
+                },
+                '$unset': { 'position': '' }
+            }
+        )
+
     return to_json(entry)
 
 @app.route('/queue', methods=('get',))
+@handle_errs
 def get_queue():
     ctx = get_ctx()
 
@@ -53,7 +69,6 @@ def get_queue():
         'user_id': ctx.user.id,
         'state': { '$ne': 'complete' }
     })
-    if not entry:
-        return to_json({ 'error': 'not found' }, 404)
+    ctx.validate_exists(entry, 'not in queue')
 
     return to_json(entry)

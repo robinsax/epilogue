@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://gc1qd8lwjsse"]
+[gd_scene load_steps=5 format=3 uid="uid://gc1qd8lwjsse"]
 
-[ext_resource type="Script" path="res://levels/level.gd" id="1_igh82"]
-[ext_resource type="PackedScene" uid="uid://c3qvwlyophxey" path="res://world/test_obstacle.tscn" id="2_viwgv"]
-[ext_resource type="PackedScene" uid="uid://bfj8b2u0rylkj" path="res://items/base_item.tscn" id="3_6tvl4"]
+[ext_resource type="Script" path="res://levels/match.gd" id="1_70a3w"]
+[ext_resource type="PackedScene" uid="uid://c3qvwlyophxey" path="res://world/test_obstacle.tscn" id="2_0t7kj"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_y0h66"]
 size = Vector2(100, 100)
@@ -10,7 +9,7 @@ size = Vector2(100, 100)
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_msmoq"]
 
 [node name="level_root" type="Node3D"]
-script = ExtResource("1_igh82")
+script = ExtResource("1_70a3w")
 
 [node name="world" type="Node3D" parent="."]
 
@@ -28,13 +27,13 @@ light_indirect_energy = 4.235
 light_volumetric_fog_energy = 0.0
 light_size = 2.0
 
-[node name="test_obstacle" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2623, 0.32174, 2.94677)
 
-[node name="test_obstacle2" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle2" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2623, -0.12576, 4.7676)
 
-[node name="test_obstacle3" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle3" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.851269, -0.12576, -0.408182)
 
 [node name="lamp2" type="SpotLight3D" parent="world"]
@@ -45,13 +44,13 @@ light_indirect_energy = 4.235
 light_volumetric_fog_energy = 0.0
 light_size = 2.0
 
-[node name="test_obstacle4" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle4" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(-0.821199, 0, 0.570642, 0, 1, 0, -0.570642, 0, -0.821199, 5.96631, 0.32174, 1.30842)
 
-[node name="test_obstacle5" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle5" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(-0.821199, 0, 0.570642, 0, 1, 0, -0.570642, 0, -0.821199, 7.00535, -0.12576, -0.186834)
 
-[node name="test_obstacle6" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle6" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(-0.821199, 0, 0.570642, 0, 1, 0, -0.570642, 0, -0.821199, 2.0719, -0.12576, 2.68767)
 
 [node name="lamp3" type="SpotLight3D" parent="world"]
@@ -62,13 +61,13 @@ light_indirect_energy = 4.235
 light_volumetric_fog_energy = 0.0
 light_size = 2.0
 
-[node name="test_obstacle7" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle7" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(-0.914847, 0, -0.403801, 0, 1, 0, 0.403801, 0, -0.914847, 8.17487, 0.32174, 5.90684)
 
-[node name="test_obstacle8" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle8" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(-0.914847, 0, -0.403801, 0, 1, 0, 0.403801, 0, -0.914847, 7.43961, -0.12576, 4.24106)
 
-[node name="test_obstacle9" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle9" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(-0.914847, 0, -0.403801, 0, 1, 0, 0.403801, 0, -0.914847, 7.32388, -0.12576, 9.94969)
 
 [node name="lamp4" type="SpotLight3D" parent="world"]
@@ -79,13 +78,13 @@ light_indirect_energy = 4.235
 light_volumetric_fog_energy = 0.0
 light_size = 2.0
 
-[node name="test_obstacle10" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle10" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(0.981697, 0, -0.190449, 0, 1, 0, 0.190449, 0, 0.981697, 0.393671, 0.32174, 11.1322)
 
-[node name="test_obstacle11" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle11" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(0.981697, 0, -0.190449, 0, 1, 0, 0.190449, 0, 0.981697, 0.0468926, -0.12576, 12.9197)
 
-[node name="test_obstacle12" parent="world" instance=ExtResource("2_viwgv")]
+[node name="test_obstacle12" parent="world" instance=ExtResource("2_0t7kj")]
 transform = Transform3D(0.981697, 0, -0.190449, 0, 1, 0, 0.190449, 0, 0.981697, 3.39952, -0.12576, 8.29783)
 
 [node name="floor" type="StaticBody3D" parent="world"]
@@ -103,16 +102,12 @@ shape = SubResource("WorldBoundaryShape3D_msmoq")
 
 [node name="items" type="Node3D" parent="."]
 
-[node name="base_item" parent="items" instance=ExtResource("3_6tvl4")]
-transform = Transform3D(0.816944, 0, -0.576717, 0, 1, 0, 0.576717, 0, 0.816944, 3.21099, 1.3622, 5.88408)
+[node name="item_spawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://items/test.tscn")
+spawn_path = NodePath("../items")
+spawn_limit = 200
 
-[node name="base_item2" parent="items" instance=ExtResource("3_6tvl4")]
-transform = Transform3D(0.816944, 0, -0.576717, 0, 1, 0, 0.576717, 0, 0.816944, 1.94641, 1.3622, 7.6754)
-
-[node name="base_item3" parent="items" instance=ExtResource("3_6tvl4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.18089, 0.43541, 7.8761)
-
-[node name="spawner" type="MultiplayerSpawner" parent="."]
+[node name="player_spawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://characters/test_player.tscn")
 spawn_path = NodePath("../players")
 spawn_limit = 8
