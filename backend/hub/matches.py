@@ -1,7 +1,7 @@
 from flask import request
 from datetime import datetime
 
-from common import Context, handle_errs, json_resp, hydrate_items, rewrite_ids
+from common import Context, handle_errs, json_resp
 
 from .app import app, get_ctx
 from .matchmaking import get_matchmaker
@@ -30,7 +30,11 @@ def provide_match_data(match_id=None):
         'world_type': 'match',
         'world_id': match['_id']
     }))
-    items = hydrate_items(ctx, list(item['_id'] for item in items))
+    for item in items:
+        item['type'] = ctx.db.item_types.find_one({
+            '_id': item['type_id']
+        })
+        del item['type_id']
 
     return json_resp({ 'items': items, 'profiles': profile_lookup })
 
@@ -72,7 +76,7 @@ def update_player_leave(match_id=None, profile_id=None):
     
     # todo validation
 
-    profile = ctx.db.profile.find_one({
+    profile = ctx.db.profiles.find_one({
         '_id': ctx.validate_oid(profile_id)
     })
     ctx.validate_exists(profile, 'invalid profile')
@@ -98,13 +102,18 @@ def update_player_leave(match_id=None, profile_id=None):
                 '$set': {
                     'world_type': 'home',
                     'world_id': profile['_id'],
-                    'attachement': client_item['attachment']
+                    'attachment': client_item['attachment']
                 },
                 '$unset': { 'position': '' }
             }
         )
 
-    return json_resp({ 'success': True })
+    ctx.db.profiles.update_one(
+        { '_id': profile['_id'] },
+        { '$set': { 'active_match': None } }
+    )
+
+    return json_resp({ 'success': True, 'profile_id': profile_id })
 
 def manage_matches(ctx: Context):
     driver = get_infra_driver()
@@ -154,6 +163,11 @@ def manage_matches(ctx: Context):
             { 'match_id': match['_id'] },
             { '$set': { 'state': 'complete' } }
         )
+        # anyone who didn't exfil
+        ctx.db.queue.update_many(
+            { '_id': { '$in': match['profile_ids'] } },
+            { '$set': { 'active_match': None } }
+        )
 
 def do_matchmaking(ctx: Context):
     queue = list(ctx.db.queue.find({ 'state': 'pending' }))
@@ -171,16 +185,21 @@ def do_matchmaking(ctx: Context):
             'profile_ids': profile_ids,
             'state': 'pending',
             'created_at': datetime.now(),
-            'booted_at': None,
             'started_at': None,
             'ended_at': None,
             'address': None
         })
+        ctx.db.profiles.update_many(
+            { '_id': { '$in': profile_ids } },
+            { '$set': {
+                'active_match': result.inserted_id
+            } }
+        )
         ctx.db.queue.update_many(
             { '_id': { '$in': entry_ids } },
             { '$set': {
                 'match_id': result.inserted_id,
-                'state': 'active'
+                'state': 'matched'
             } }
         )
         ctx.db.items.update_many(

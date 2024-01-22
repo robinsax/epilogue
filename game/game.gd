@@ -35,8 +35,16 @@ func _client_init():
 	driver.initialize()
 
 @rpc("any_peer")
-func match_bind(conn_id, profile_id):
+func match_bind_player(conn_id, profile_id):
 	if not multiplayer.is_server():
 		return
 
 	driver.bind_player(conn_id, profile_id)
+
+@rpc("authority", "call_remote")
+func match_exfil_player(profile_id):
+	if profile_id != driver.profile_id():
+		return
+	
+	print("client exfil")
+	driver.disconnect_from_match()

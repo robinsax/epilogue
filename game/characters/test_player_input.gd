@@ -10,8 +10,12 @@ var _character = null
 
 func _ready():
 	_character = get_parent()
-	set_process(_character.is_local_authority())
-	set_process_input(_character.is_local_authority())
+	
+	update_enabled()
+	
+func update_enabled():
+	set_process(_character.is_authority())
+	set_process_input(_character.is_authority())
 
 func _process(delta):
 	# reset all

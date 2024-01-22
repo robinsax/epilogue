@@ -1,3 +1,6 @@
 - ref: battery.medium.item
   archetype: test
   name: medium battery
+- ref: thing.awesome.item
+  archetype: test
+  name: wow!!!!

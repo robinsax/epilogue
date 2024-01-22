@@ -5,7 +5,7 @@ var _game = null
 func _ready():
 	_game = get_node("/root/game")
 
-func spawn_items(item_list, character):
+func spawn_items(item_list, character=null): # todo rework
 	for item_data in item_list:
 		print("spawn ", item_data)
 		
@@ -22,13 +22,13 @@ func spawn_items(item_list, character):
 			item.position = Vector3(pos_data[0], pos_data[1], pos_data[2])
 		elif "attachment" in item_data:
 			var attach_data = item_data["attachment"]
-			item.interact(character) # todo no
+			
+			item.inventory_attach(character.inventory, attach_data[1])
 
-func spawn_player(position, profile_id, conn_id=null):
+func spawn_player(position, profile_id):
 	var player = load("res://characters/test_player.tscn").instantiate()
-	if conn_id:
-		player.player = conn_id
 	player.position = position
+	player.profile_id = profile_id
 	player.name = profile_id
 	_game.level.players.add_child(player, true)
 	

@@ -31,13 +31,13 @@ elif [[ $op == "run" ]]; then
         if [[ $name == "" ]]; then
             name="from-dev.sh"
         fi
-        CLIENT_NAME=$name DIRECT_CONNECT="127.0.0.1:5000" run_godot
+        PROFILE_ID=$name DIRECT_CONNECT="127.0.0.1:5000" run_godot
     elif [[ $which == "client" ]]; then
         name=$3
         if [[ $name == "" ]]; then
             name="from-dev.sh"
         fi
-        CLIENT_NAME=$name run_godot
+        USER_ID=$name run_godot
     else
         err_exit "invalid thing to run"
     fi

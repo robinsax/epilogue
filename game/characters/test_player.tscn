@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://kk45b15t4ny7"]
+[gd_scene load_steps=12 format=3 uid="uid://kk45b15t4ny7"]
 
 [ext_resource type="Script" path="res://characters/test_player.gd" id="1_nn6m6"]
 [ext_resource type="Script" path="res://characters/test_player_input.gd" id="2_3tfjj"]
-[ext_resource type="PackedScene" uid="uid://c4m6cjw6sklqe" path="res://meta/inventory.tscn" id="2_pbpeq"]
+[ext_resource type="PackedScene" uid="uid://c4m6cjw6sklqe" path="res://items/inventory.tscn" id="2_pbpeq"]
+[ext_resource type="PackedScene" uid="uid://bq3bkvmnuwle0" path="res://items/slot.tscn" id="3_783k4"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xg1k5"]
 radius = 0.35
@@ -29,9 +30,12 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath(".:player")
+properties/2/path = NodePath(".:conn_id")
 properties/2/spawn = true
 properties/2/replication_mode = 1
+properties/3/path = NodePath(".:profile_id")
+properties/3/spawn = true
+properties/3/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_su84c"]
 properties/0/path = NodePath("input_sync:move_direction")
@@ -53,7 +57,6 @@ script = ExtResource("1_nn6m6")
 shape = SubResource("CapsuleShape3D_xg1k5")
 
 [node name="mesh" type="MeshInstance3D" parent="collider"]
-layers = 3
 mesh = SubResource("CapsuleMesh_50jhi")
 
 [node name="backindicator" type="MeshInstance3D" parent="collider/mesh"]
@@ -69,13 +72,13 @@ environment = SubResource("Environment_uwfls")
 
 [node name="inventory" parent="." instance=ExtResource("2_pbpeq")]
 
-[node name="slot_a" type="Node3D" parent="inventory"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.256484, -0.267677, -0.639992)
+[node name="a" parent="inventory" instance=ExtResource("3_783k4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.315254, -0.170473, -0.519174)
 
-[node name="slot_a2" type="Node3D" parent="inventory"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.282131, -0.267677, -0.639992)
+[node name="b" parent="inventory" instance=ExtResource("3_783k4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.202264, -0.0998593, -0.596923)
 
-[node name="server_sync" type="MultiplayerSynchronizer" parent="."]
+[node name="sync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_r37wx")
 
 [node name="input_sync" type="MultiplayerSynchronizer" parent="."]

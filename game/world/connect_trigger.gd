@@ -12,7 +12,7 @@ func _ready():
 func interact_info():
 	return 'drop in'
 	
-func interact(character):
+func interacted_by(character):
 	_home_level.queue()
 
 func _process(delta):

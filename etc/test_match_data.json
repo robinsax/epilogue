@@ -16,7 +16,7 @@
                 "archetype": "test",
                 "name": "dummy item"
             },
-            "attachment": ["foo", "slot_a"]
+            "attachment": ["foo", "a"]
         },
         {
             "id": "1",
@@ -26,7 +26,7 @@
                 "archetype": "test",
                 "name": "dummy item 2"
             },
-            "attachment": ["bar", "slot_a"]
+            "attachment": ["bar", "b"]
         }
     ]
 }

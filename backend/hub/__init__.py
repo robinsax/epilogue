@@ -6,6 +6,7 @@ from common import Context, init_db
 
 from .app import app
 from .matches import do_matchmaking, manage_matches
+from . import items
 
 def run():
     if os.environ.get('SERVICE') == 'api':

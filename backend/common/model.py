@@ -6,18 +6,6 @@ def load_yaml(which):
     with open('common/' + which) as yaml_f:
         return yaml.safe_load(yaml_f)
 
-def hydrate_items(ctx: Context, item_ids):
-    # todo aggregate
-    hydrated_items = list(ctx.db.items.find({
-        '_id': { '$in': item_ids }
-    }))
-    for item in hydrated_items:
-        item['type'] = ctx.db.item_types.find_one({
-            '_id': item['type_id']
-        })
-        del item['type_id']
-    return hydrated_items
-
 def init_db(ctx: Context):
     ctx.db.item_types.insert_many(load_yaml('item_types.yml'))
 
@@ -26,7 +14,8 @@ def init_db(ctx: Context):
 def init_profile(ctx: Context, username):
     result = ctx.db.profiles.insert_one({
         'user_id': username,
-        'items': []
+        'items': [],
+        'active_match': None
     })
     profile_id = result.inserted_id
 
@@ -38,8 +27,7 @@ def init_profile(ctx: Context, username):
         item_doc = {
             'type_id': item_type['_id'],
             'world_type': 'home',
-            'world_id': profile_id,
-            **entry.get('instance_fields', dict())
+            'world_id': profile_id
         }
         if 'position' in entry:
             item_doc['position'] = entry['position']

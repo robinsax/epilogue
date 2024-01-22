@@ -1,6 +1,6 @@
 from flask import request
 
-from common import init_profile, hydrate_items, json_resp, handle_errs
+from common import init_profile, json_resp, handle_errs
 
 from .app import app, get_ctx
 
@@ -13,7 +13,19 @@ def get_profile():
         init_profile(ctx, ctx.user.id)
 
     profile = ctx.profile
-    profile['items'] = hydrate_items(ctx, profile['items'])
+
+    # todo stupid, also different endpoint
+    items = list(ctx.db.items.find({
+        'world_type': 'home',
+        'world_id': profile['_id']
+    }))
+    for item in items:
+        item['type'] = ctx.db.item_types.find_one({
+            '_id': item['type_id']
+        })
+        del item['type_id']
+
+    profile['items'] = items
 
     return json_resp(profile)
 

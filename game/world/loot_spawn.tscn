@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmtg70o32tbpt"]
+
+[ext_resource type="Script" path="res://world/loot_spawn.gd" id="1_2lxei"]
+
+[node name="loot_spawn" type="Node3D" groups=["loot_spawns"]]
+script = ExtResource("1_2lxei")

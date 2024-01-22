@@ -35,8 +35,8 @@ func _ready():
 func interact():
 	if _active_interact_target == null:
 		return
-	
-	_active_interact_target.interact(_character)
+		
+	_character.interact_with(_active_interact_target)
 
 func _inventory_mouse_pos():
 	return _inventory_viewport.get_viewport().get_mouse_position()
@@ -45,8 +45,8 @@ func _input(event):
 	if not _in_inventory:
 		return
 
-	if event.is_action_pressed("inventory_interact"):
-		interact()
+	if event.is_action_pressed("inventory_drop") and _active_interact_target != null:
+		_active_interact_target.inventory_attach(null)
 
 	if event is InputEventMouseButton and event.button_index == 1:
 		if event.is_pressed():
@@ -120,5 +120,5 @@ func _physics_process(delta):
 		return
 
 	var collider = result["collider"]
-	if collider.has_method("interact"):
+	if collider.has_method("interacted_by"):
 		_active_interact_target = collider

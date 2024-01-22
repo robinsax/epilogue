@@ -1,6 +1,6 @@
 import os
 
-from .model import load_yaml, hydrate_items, init_db, init_profile
+from .model import load_yaml, init_db, init_profile
 from .api import ErrorResponse, rewrite_ids, handle_errs, json_resp
 from .context import Context, User
 

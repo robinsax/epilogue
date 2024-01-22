@@ -10,7 +10,7 @@ class SimpleMatchmaker:
     def match(self, queue: list) -> list[list]:
         matched = list()
 
-        p_count = 2
+        p_count = 1
 
         while len(queue) >= p_count:
             players = list()

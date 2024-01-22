@@ -1,6 +1,4 @@
-if [[ $1 != "fast" ]]; then
-    godot --headless --path game --export-debug server built/server
-fi
+godot --headless --path game --export-debug server built/server
 
 dest_dir="infra/build/server/src/server"
 if [ -d $dest_dir ]; then

@@ -1,0 +1,5 @@
+misc:
+  - ref: battery.medium.item
+    chance: 0.5
+  - ref: thing.awesome.item
+    chance: 0.1

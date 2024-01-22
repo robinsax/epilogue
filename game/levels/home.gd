@@ -4,6 +4,9 @@ var _game = null
 var _player = null
 
 var _saving = false
+var _should_queue = false
+
+var is_home = true
 
 func _ready():
 	_initialize.call_deferred()
@@ -28,7 +31,7 @@ func _save_profile():
 
 	var item_data = []
 	for item in _game.level.items.get_children():
-		item_data.append(item.to_data())
+		item_data.append(item.data())
 		
 	var data = { "items": item_data }
 	_game.net.make_req("/profile", HTTPClient.METHOD_PATCH, _profile_saved, data)
@@ -36,15 +39,20 @@ func _save_profile():
 func _profile_saved(data):
 	print("profile saved")
 	_saving = false
+	
+	if _should_queue:
+		_should_queue = false
+		var equipped_items = _player.inventory.items()
+
+		var item_list = []
+		for item in equipped_items:
+			item_list.append(item.data())
+		
+		for item in equipped_items:
+			item.queue_free()
+
+		_game.connector.queue(item_list)
 
 func queue():
-	var equipped_items = _player.inventory.items()
-	
-	var item_list = []
-	for item in equipped_items:
-		item_list.append(item.to_data())
-	
-	_game.connector.queue(item_list)
-
-	for item in equipped_items:
-		item.queue_free()
+	_should_queue = true
+	_save_profile()

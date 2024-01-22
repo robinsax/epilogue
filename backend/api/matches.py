@@ -26,6 +26,9 @@ def enter_queue():
     profile = ctx.profile
     ctx.validate_exists(profile, 'invalid profile')
 
+    if profile['active_match']:
+        return json_resp({ 'error': 'already in a match' }, 400)
+
     entry = ctx.db.queue.find_one({
         'profile_id': profile['_id'],
         'state': { '$ne': 'complete' }

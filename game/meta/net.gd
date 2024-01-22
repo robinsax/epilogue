@@ -14,8 +14,8 @@ func _noop(data):
 
 func _ready():
 	client_name = "from-engine"
-	if OS.has_environment("CLIENT_NAME"):
-		client_name = OS.get_environment("CLIENT_NAME")
+	if OS.has_environment("USER_ID"):
+		client_name = OS.get_environment("USER_ID")
 
 func use_hub_api():
 	_using_hub_api = true
