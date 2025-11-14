@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Dev: Make Migration",
+            "type": "shell",
+            "command": "./scripts/dev/make-migration.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "Dev: Migrate",
+            "type": "shell",
+            "command": "./scripts/dev/migrate.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "Dev: Start Dependencies",
+            "type": "shell",
+            "command": "./scripts/dev/start-deps.sh",
+            "problemMatcher": []
+        }
+    ]
+}

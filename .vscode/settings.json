@@ -1,0 +1,7 @@
+{
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.env.windows": {
+        "PATH": "${workspaceFolder}/.bin;${env:PATH}",
+        "POSTGRES_URI": "postgresql://admin:admin@localhost:5432/main"
+    }
+}

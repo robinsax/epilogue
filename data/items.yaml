@@ -1,0 +1,18 @@
+definitions:
+  - ref: rock
+    stack: 10
+    weight: 1
+  - ref: stick
+    stack: 10
+    weight: 0.5
+  - ref: club
+    stack: 1
+    weight: 1.5
+    durability: 10
+pools:
+  nature:
+    rock: 0.05
+    stick: 0.1
+crafts:
+  - input: [rock, stick]
+    output: club

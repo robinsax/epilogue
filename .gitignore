@@ -2,3 +2,5 @@ infra/build/*/src
 godot/
 game/.godot
 game/built
+.bin
+__pycache__
