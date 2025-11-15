@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://ce13562qn7kkp"]
+
+[ext_resource type="PackedScene" uid="uid://bwkf78c3amv4k" path="res://meta/possession.tscn" id="1_ouqb2"]
+[ext_resource type="Script" uid="uid://dj5qywg0s6yn7" path="res://meta/player_possession.gd" id="2_sg46q"]
+
+[node name="Possession" instance=ExtResource("1_ouqb2")]
+script = ExtResource("2_sg46q")
+camera_lean_carry = 0.15
+look_ray_length = 30.0
+
+[node name="CameraArm" type="SpringArm3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
+spring_length = 2.0
+
+[node name="Camera" type="Camera3D" parent="CameraArm" index="0"]

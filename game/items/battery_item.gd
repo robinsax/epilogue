@@ -1,0 +1,1 @@
+class_name BatteryItem extends UseableItem

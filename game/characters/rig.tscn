@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5y2pca7cjpqa"]
+
+[ext_resource type="Script" uid="uid://btgvdcwvv2ft3" path="res://characters/rig.gd" id="1_sd6ka"]
+
+[node name="Rig" type="Node3D"]
+script = ExtResource("1_sd6ka")
+
+[node name="LookTargetTracker" type="Node3D" parent="."]

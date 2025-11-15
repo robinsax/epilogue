@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cy1ggdmtks58v"]
+
+[ext_resource type="Script" uid="uid://cf7uvihie3g6a" path="res://characters/ik/arm_ik.gd" id="1_v7ubp"]
+
+[node name="ArmIK" type="SkeletonIK3D"]
+override_tip_basis = false
+use_magnet = true
+target_node = NodePath("Target")
+script = ExtResource("1_v7ubp")
+
+[node name="Target" type="Node3D" parent="."]

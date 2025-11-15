@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://4bksyv6bbpek"]
+
+[ext_resource type="PackedScene" uid="uid://b5y2pca7cjpqa" path="res://characters/rig.tscn" id="1_0wy6g"]
+
+[node name="Rig" instance=ExtResource("1_0wy6g")]

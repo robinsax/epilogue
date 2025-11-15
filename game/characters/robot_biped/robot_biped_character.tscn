@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://bcodp3agl6py1"]
+
+[ext_resource type="PackedScene" uid="uid://c25iia7kla0w1" path="res://characters/ground_character.tscn" id="1_m0kf6"]
+[ext_resource type="Script" uid="uid://bjgp1a086or1k" path="res://characters/robot_biped/robot_biped_character.gd" id="1_pd0iq"]
+[ext_resource type="PackedScene" uid="uid://6snex1oyawiu" path="res://characters/robot_biped/robot_biped_rig.tscn" id="2_67ism"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m0kf6"]
+resource_local_to_scene = true
+radius = 0.2
+height = 1.4
+
+[node name="Character" instance=ExtResource("1_m0kf6")]
+script = ExtResource("1_pd0iq")
+
+[node name="Rig" parent="." index="2" instance=ExtResource("2_67ism")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.19147272, 0)
+torso_move_bounce_amount = 0.05
+torso_move_bounce_speed = 0.2
+
+[node name="Collider" type="CollisionShape3D" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.011047363, -0.06520176, -0.0043945313)
+shape = SubResource("CapsuleShape3D_m0kf6")
+debug_color = Color(0.9776291, 0, 0.4063134, 0.41960785)

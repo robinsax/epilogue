@@ -3,7 +3,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-source ./scripts/common.sh
+. ./scripts/common.sh
 
 pushd backend
 

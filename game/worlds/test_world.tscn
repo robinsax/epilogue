@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://j7g42480ccel"]
+
+[ext_resource type="PackedScene" uid="uid://b8tenhgyw1gnq" path="res://worlds/world.tscn" id="1_dxppu"]
+
+[sub_resource type="Environment" id="Environment_q1iji"]
+background_mode = 1
+background_energy_multiplier = 1.16
+ambient_light_source = 3
+ambient_light_color = Color(0.72027963, 0.493043, 0.14871117, 1)
+ambient_light_energy = 8.15
+
+[node name="World" instance=ExtResource("1_dxppu")]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Static" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4393835, -2.4663298, -1.4763618)
+use_collision = true
+size = Vector3(10.674286, 0.29351807, 7.5458984)
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="Static" index="1"]
+transform = Transform3D(0.19244982, -0.37398535, 0.9072475, -0.8550839, 0.38968423, 0.34202015, -0.48145056, -0.84159446, -0.24479416, -0.762581, 0.49388635, 2.9552336)
+light_color = Color(0.27058825, 1, 1, 1)
+shadow_enabled = true
+sky_mode = 1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Static" index="2"]
+transform = Transform3D(-0.61713046, -0.7402781, 0.26671773, 0.33112437, 0.063165374, 0.94147056, -0.7137974, 0.6693269, 0.20614284, -0.536983, -0.753811, 1.4291008)
+light_color = Color(1, 0.40784314, 1, 1)
+shadow_enabled = true
+sky_mode = 1
+
+[node name="Box2" type="CSGBox3D" parent="Static" index="3"]
+transform = Transform3D(1, 0, 0, 0, 0.67396724, -0.7387614, 0, 0.7387614, 0.67396724, 0, -2.3911464, -2.9249902)
+use_collision = true
+size = Vector3(1, 1.3067627, 1)
+
+[node name="Box3" type="CSGBox3D" parent="Static" index="4"]
+transform = Transform3D(0.41577286, 0.67188025, 0.61295193, 0, 0.67396724, -0.7387614, -0.9094685, 0.30715695, 0.2802173, 0.4085325, -2.3911464, -2.9249902)
+use_collision = true
+size = Vector3(1, 1.3067627, 1)
+
+[node name="Box" type="CSGBox3D" parent="Static" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8677276, 0)
+use_collision = true
+size = Vector3(1, 1.3067627, 1)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Static" index="6"]
+environment = SubResource("Environment_q1iji")

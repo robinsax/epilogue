@@ -21,11 +21,3 @@ input() {
 
     echo "$value"
 }
-
-run_godot() {
-    pushd game
-    set +e
-    godot $@
-    set -e
-    popd
-}

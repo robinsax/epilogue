@@ -1,0 +1,4 @@
+class_name ArmIK extends SkeletonIK3D
+
+func _ready():
+	start()

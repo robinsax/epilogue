@@ -18,6 +18,18 @@
             "type": "shell",
             "command": "./scripts/dev/start-deps.sh",
             "problemMatcher": []
+        },
+        {
+            "label": "Dev: Launch Engine",
+            "type": "shell",
+            "command": "./scripts/dev/launch-engine.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "Dev: Launch Client Game",
+            "type": "shell",
+            "command": "./scripts/dev/launch-client-game.sh",
+            "problemMatcher": []
         }
     ]
 }

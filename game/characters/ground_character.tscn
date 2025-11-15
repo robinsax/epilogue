@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://c25iia7kla0w1"]
+
+[ext_resource type="PackedScene" uid="uid://bc3v6kttrr3hx" path="res://characters/character.tscn" id="1_63ov7"]
+[ext_resource type="Script" uid="uid://kvecnekq1nw8" path="res://characters/ground_character.gd" id="2_3ry4l"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3ry4l"]
+properties/0/path = NodePath(".:jumping")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:crouching")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:lean")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="Character" instance=ExtResource("1_63ov7")]
+script = ExtResource("2_3ry4l")
+crouch_slowdown = 0.5
+strafe_slowdown = 0.5
+jump_velocity = 3.0
+jumping = false
+crouching = false
+lean = 0.0
+
+[node name="GroundCharacterSync" type="MultiplayerSynchronizer" parent="." index="1"]
+replication_config = SubResource("SceneReplicationConfig_3ry4l")

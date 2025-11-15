@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://ca8168vrjjpki"]
+
+[ext_resource type="Script" uid="uid://sh2iq6uog1uc" path="res://characters/ik/leg_ik.gd" id="1_ekw0f"]
+
+[node name="LegIK" type="SkeletonIK3D"]
+override_tip_basis = false
+use_magnet = true
+target_node = NodePath("Target")
+script = ExtResource("1_ekw0f")
+
+[node name="Target" type="Node3D" parent="."]

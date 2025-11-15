@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cuqq3g0o8h03k"]
+
+[ext_resource type="PackedScene" uid="uid://bc3v6kttrr3hx" path="res://characters/character.tscn" id="1_4cyxh"]
+[ext_resource type="PackedScene" uid="uid://ce13562qn7kkp" path="res://meta/player_possession.tscn" id="2_w5hhb"]
+
+[node name="DevWorld" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4393835, -0.44522095, -1.4763618)
+use_collision = true
+size = Vector3(10.674286, 0.29351807, 7.5458984)
+
+[node name="Character" parent="." instance=ExtResource("1_4cyxh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29367316, 0.8546879, -0.8647113)
+
+[node name="Possession" parent="Character" instance=ExtResource("2_w5hhb")]

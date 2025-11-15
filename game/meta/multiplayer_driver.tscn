@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqm85qoytdk6y"]
+
+[ext_resource type="Script" uid="uid://5bfup1cfukwn" path="res://meta/multiplayer_driver.gd" id="1_4b8mf"]
+
+[node name="MultiplayerDriver" type="Node"]
+script = ExtResource("1_4b8mf")
