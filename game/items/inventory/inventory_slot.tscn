@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dtaly3w02tiwl"]
 
-[ext_resource type="Script" uid="uid://ci5j5wc3ssea" path="res://characters/inventory/inventory_slot.gd" id="1_2e45i"]
+[ext_resource type="Script" uid="uid://ci5j5wc3ssea" path="res://items/inventory/inventory_slot.gd" id="1_2e45i"]
 
 [node name="InventorySlot" type="Node3D"]
 script = ExtResource("1_2e45i")

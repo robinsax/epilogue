@@ -13,14 +13,19 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath(".:lean")
 properties/2/spawn = true
 properties/2/replication_mode = 1
+properties/3/path = NodePath(".:sprinting")
+properties/3/spawn = true
+properties/3/replication_mode = 1
 
 [node name="Character" instance=ExtResource("1_63ov7")]
 script = ExtResource("2_3ry4l")
-crouch_slowdown = 0.5
-strafe_slowdown = 0.5
+crouch_slowdown = 0.75
+strafe_slowdown = 0.75
+sprint_speedup = 1.5
 jump_velocity = 3.0
 jumping = false
 crouching = false
+sprinting = false
 lean = 0.0
 
 [node name="GroundCharacterSync" type="MultiplayerSynchronizer" parent="." index="1"]

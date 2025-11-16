@@ -61,6 +61,7 @@ func _maybe_step(_delta):
 	var space = get_world_3d().direct_space_state
 	var from = ideal_next_step + (Vector3.UP * ground_check_offset)
 	var query = PhysicsRayQueryParameters3D.create(from, ideal_next_step)
+	query.collision_mask = 1
 	for collider in owner_colliders:
 		query.exclude.push_back(collider.get_rid())
 

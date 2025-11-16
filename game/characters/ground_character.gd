@@ -1,12 +1,14 @@
 class_name GroundCharacter extends Character
 
 var _gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-@export var crouch_slowdown: float = 0.5
-@export var strafe_slowdown: float = 0.5
+@export var crouch_slowdown: float = 0.75
+@export var strafe_slowdown: float = 0.75
+@export var sprint_speedup: float = 1.5
 @export var jump_velocity: float = 3
 
 @export var jumping: bool = false
 @export var crouching: bool = false
+@export var sprinting: bool = false
 @export var lean: float = 0
 
 var _collider_base_height: float = 0
@@ -48,6 +50,8 @@ func get_current_speed():
 
 	if move_direction.y >= 0:
 		current *= strafe_slowdown
+	elif sprinting:
+		current *= sprint_speedup
 
 	return current
 

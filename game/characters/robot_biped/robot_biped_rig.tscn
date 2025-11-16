@@ -1,7 +1,8 @@
-[gd_scene load_steps=26 format=4 uid="uid://6snex1oyawiu"]
+[gd_scene load_steps=27 format=4 uid="uid://6snex1oyawiu"]
 
 [ext_resource type="Script" uid="uid://cp8pgsp6ww0av" path="res://characters/robot_biped/robot_biped_rig.gd" id="1_ck081"]
 [ext_resource type="PackedScene" uid="uid://4bksyv6bbpek" path="res://characters/robot_rig.tscn" id="1_lhgl7"]
+[ext_resource type="Script" uid="uid://ci5j5wc3ssea" path="res://items/inventory/inventory_slot.gd" id="3_7qrr8"]
 [ext_resource type="PackedScene" uid="uid://ca8168vrjjpki" path="res://characters/ik/leg_ik.tscn" id="3_bhhth"]
 [ext_resource type="PackedScene" uid="uid://cy1ggdmtks58v" path="res://characters/ik/arm_ik.tscn" id="3_o00eu"]
 
@@ -487,7 +488,7 @@ mesh = SubResource("ArrayMesh_7qrr8")
 skeleton = NodePath("")
 
 [node name="B_LArm2" type="BoneAttachment3D" parent="Skeleton" index="1"]
-transform = Transform3D(0.94005185, 0.34047553, -0.019451227, 0.34047544, -0.9337405, 0.11047528, 0.01945173, -0.11047519, -0.99368834, 0.16507998, 0.8619429, -1.019758)
+transform = Transform3D(0.99999976, 0, 2.3841855e-07, 0, -0.99999976, 0, 2.3841855e-07, 0, -0.99999976, 1.5868942e-14, 0.8417764, -0.9150123)
 bone_name = "B_LArm2"
 bone_idx = 4
 
@@ -497,7 +498,7 @@ mesh = SubResource("ArrayMesh_yf1e2")
 skeleton = NodePath("")
 
 [node name="B_LArm1" type="BoneAttachment3D" parent="Skeleton" index="2"]
-transform = Transform3D(0.9849879, 0.1723594, -0.009525433, 0.17235944, -0.978944, 0.1093646, 0.009525154, -0.10936463, -0.9939559, 3.5527133e-15, 1.7995422, -0.91501224)
+transform = Transform3D(0.9999998, 0, -1.5099577e-07, 0, -0.9999998, 0, -1.5099577e-07, 0, -0.9999998, 3.5527133e-15, 1.7995422, -0.91501224)
 bone_name = "B_LArm1"
 bone_idx = 3
 
@@ -507,7 +508,7 @@ mesh = SubResource("ArrayMesh_kuuon")
 skeleton = NodePath("")
 
 [node name="B_RArm2" type="BoneAttachment3D" parent="Skeleton" index="3"]
-transform = Transform3D(0.99686897, 0.07901669, 0.0029035432, 0.0790167, -0.9941764, -0.073278025, -0.0029035532, 0.07327802, -0.9973074, -0.067053415, 0.8578267, 0.99184275)
+transform = Transform3D(0.99999976, 0, 2.842171e-14, 0, -0.99999976, 0, 2.842171e-14, 0, -0.99999976, 5.4473375e-15, 0.8530819, 0.92503536)
 bone_name = "B_RArm2"
 bone_idx = 7
 
@@ -516,8 +517,15 @@ transform = Transform3D(0.9999999, 0, 3.5527137e-15, 0, -0.9999999, 0, 3.5527137
 mesh = SubResource("ArrayMesh_exydf")
 skeleton = NodePath("")
 
+[node name="RHandSlot" type="Node3D" parent="Skeleton/B_RArm2" index="1"]
+transform = Transform3D(-4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 0, 0, 0, 0.99999994, 0, 1.2104427, 0)
+script = ExtResource("3_7qrr8")
+size = 1
+key = "rhand"
+metadata/_custom_type_script = "uid://ci5j5wc3ssea"
+
 [node name="B_RArm1" type="BoneAttachment3D" parent="Skeleton" index="4"]
-transform = Transform3D(0.9974839, -0.070846505, -0.0025068324, -0.07084652, -0.9949866, -0.070586465, 0.0025065404, 0.07058648, -0.9975025, 0, 1.7995422, 0.9250353)
+transform = Transform3D(0.9999998, 0, -1.5099577e-07, 0, -0.9999998, 0, -1.5099577e-07, 0, -0.9999998, 0, 1.7995422, 0.9250353)
 bone_name = "B_RArm1"
 bone_idx = 6
 
@@ -535,6 +543,16 @@ bone_idx = 1
 transform = Transform3D(0.9999999, 0, 3.5527137e-15, 0, 0.9999999, 0, -3.5527137e-15, 0, 0.9999999, 0, -2.2838936, 0)
 mesh = SubResource("ArrayMesh_ia4np")
 skeleton = NodePath("")
+
+[node name="InventorySlot" type="Node3D" parent="Skeleton/B_Torso" index="1"]
+transform = Transform3D(1, 0, -3.5527137e-15, 0, 1, 0, 3.5527137e-15, 0, 1, -0.46914032, 0.7256907, -2.0506777e-08)
+script = ExtResource("3_7qrr8")
+size = 1
+key = "back"
+metadata/_custom_type_script = "uid://ci5j5wc3ssea"
+
+[node name="FrontPosition" type="Node3D" parent="Skeleton/B_Torso" index="2"]
+transform = Transform3D(-1.4570466e-07, 0, -3.3333335, 0, 3.3333335, 0, 3.3333335, 0, -1.4570466e-07, 1.0799819, 0.58828115, 0.34183288)
 
 [node name="B_LLeg2" type="BoneAttachment3D" parent="Skeleton" index="6"]
 transform = Transform3D(0.9999998, 0, 2.384185e-07, 0, -0.99999976, 0, 2.384185e-07, 0, -0.9999998, -3.6709807e-15, -1.0746921, -0.47093725)
@@ -582,6 +600,12 @@ target_node = NodePath("../../LookTargetTracker")
 bone_name = "B_Head"
 bone = 2
 forward_axis = 0
+use_angle_limitation = true
+symmetry_limitation = true
+primary_limit_angle = 2.268928
+primary_damp_threshold = 1.0
+secondary_limit_angle = 6.2831855
+secondary_damp_threshold = 1.0
 
 [node name="LArmIK" parent="Skeleton" index="11" instance=ExtResource("3_o00eu")]
 transform = Transform3D(0.99999976, 0, -7.1054274e-15, 0, 0.99999976, 0, 7.1054274e-15, 0, 0.99999976, 0.5116018, -0.08837958, -1.1321951)

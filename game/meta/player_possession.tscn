@@ -7,9 +7,37 @@
 script = ExtResource("2_sg46q")
 camera_lean_carry = 0.15
 look_ray_length = 30.0
+camera_sprint_fov = 72.0
+inventory_rotate_rate = 360.0
+inventory_camera_arm_length = 1.2
 
 [node name="CameraArm" type="SpringArm3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
 spring_length = 2.0
 
 [node name="Camera" type="Camera3D" parent="CameraArm" index="0"]
+
+[node name="HUD" type="Control" parent="CameraArm/Camera" index="0"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Crosshair" type="CenterContainer" parent="CameraArm/Camera/HUD" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CameraArm/Camera/HUD/Crosshair" index="0"]
+layout_mode = 2
+text = "::"
+
+[node name="InteractPrompt" type="Label" parent="CameraArm/Camera/HUD" index="1"]
+layout_mode = 0
+offset_right = 287.0
+offset_bottom = 32.0

@@ -11,10 +11,15 @@ var _skeleton: Skeleton3D = null
 var _torso_bone: int = 0
 var _move_time: float = 0
 
+var main_hand_ik: ArmIK = null
+var front_position: Node3D = null
+
 func _ready():
 	super._ready()
 	_skeleton = $Skeleton
+	main_hand_ik = $Skeleton/RArmIK
 	_torso_bone = _skeleton.find_bone("B_Torso")
+	front_position = $Skeleton/B_Torso/FrontPosition
 
 	_last_position = global_position
 
@@ -39,7 +44,7 @@ func _process(delta):
 		)
 	)
 	var torso_offset = 0
-	if not local_last_move.is_zero_approx():
+	if not local_last_move.is_zero_approx() and character.is_on_floor():
 		var sin_time = _move_time / torso_move_bounce_speed
 		sin_time -= int(sin_time)
 		torso_offset += sin(sin_time * PI) * torso_move_bounce_amount

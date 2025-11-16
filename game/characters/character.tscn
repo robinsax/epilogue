@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bc3v6kttrr3hx"]
 
 [ext_resource type="Script" uid="uid://depsdtwpqjp4l" path="res://characters/character.gd" id="1_54qew"]
-[ext_resource type="PackedScene" uid="uid://q5tuscg8krki" path="res://characters/inventory/inventory.tscn" id="2_qqr4u"]
+[ext_resource type="PackedScene" uid="uid://q5tuscg8krki" path="res://items/inventory/inventory.tscn" id="2_qqr4u"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_54qew"]
 properties/0/path = NodePath(".:position")

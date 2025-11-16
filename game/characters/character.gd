@@ -1,6 +1,6 @@
 class_name Character extends CharacterBody3D
 
-@export var speed: float = 5.0
+@export var speed: float = 3.5
 
 var collider: CollisionShape3D = null
 var rig: Rig = null
@@ -44,3 +44,11 @@ func update_velocity(delta):
 
 func get_current_speed():
 	return speed
+
+func take_item(item: Item):
+	var slot = inventory.get_available_slot_for(item)
+	if not slot:
+		return
+
+	var attachment = inventory.get_attachment_string(slot)
+	item.update_attachment.rpc(attachment)

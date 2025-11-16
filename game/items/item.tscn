@@ -1,6 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://6rin053u8ef8"]
+[gd_scene load_steps=4 format=3 uid="uid://6rin053u8ef8"]
 
 [ext_resource type="Script" uid="uid://bj7ldrsvme64i" path="res://items/item.gd" id="1_pxpuq"]
+[ext_resource type="Script" uid="uid://6cs82y421pws" path="res://items/inventory/inventory.gd" id="2_buahv"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_buahv"]
+properties/0/path = NodePath(".:attachment")
+properties/0/spawn = true
+properties/0/replication_mode = 1
 
 [node name="Item" type="RigidBody3D"]
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_pxpuq")
+
+[node name="Inventory" type="Node" parent="."]
+script = ExtResource("2_buahv")
+metadata/_custom_type_script = "uid://6cs82y421pws"
+
+[node name="Synchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_buahv")

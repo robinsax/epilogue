@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://j7g42480ccel"]
+[gd_scene load_steps=4 format=3 uid="uid://j7g42480ccel"]
 
 [ext_resource type="PackedScene" uid="uid://b8tenhgyw1gnq" path="res://worlds/world.tscn" id="1_dxppu"]
+[ext_resource type="PackedScene" uid="uid://dimooetl0h5ps" path="res://items/battery_item.tscn" id="4_ekotj"]
 
 [sub_resource type="Environment" id="Environment_q1iji"]
 background_mode = 1
@@ -45,3 +46,16 @@ size = Vector3(1, 1.3067627, 1)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Static" index="6"]
 environment = SubResource("Environment_q1iji")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Static" index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0741878, 0)
+light_color = Color(1, 1, 0.20392157, 1)
+light_energy = 1.165
+light_size = 1.0
+omni_range = 4015.636
+
+[node name="Item" parent="Items" index="0" instance=ExtResource("4_ekotj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3316811, 0, -1.0281599)
+
+[node name="Item2" parent="Items" index="1" instance=ExtResource("4_ekotj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9675406, 0, -1.0281599)
