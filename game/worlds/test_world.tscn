@@ -1,11 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://j7g42480ccel"]
+[gd_scene load_steps=8 format=3 uid="uid://j7g42480ccel"]
 
 [ext_resource type="PackedScene" uid="uid://b8tenhgyw1gnq" path="res://worlds/world.tscn" id="1_dxppu"]
+[ext_resource type="PackedScene" uid="uid://dmavclc21vx6p" path="res://items/duct_tape_item.tscn" id="3_qwmnv"]
+[ext_resource type="PackedScene" uid="uid://7722h4kqbf2f" path="res://items/item_enforcer.tscn" id="4_3pu0q"]
+[ext_resource type="PackedScene" uid="uid://idqwct8aitv6" path="res://items/item_mainline.tscn" id="4_48yah"]
 [ext_resource type="PackedScene" uid="uid://dimooetl0h5ps" path="res://items/battery_item.tscn" id="4_ekotj"]
 
+[sub_resource type="Sky" id="Sky_qwmnv"]
+
 [sub_resource type="Environment" id="Environment_q1iji"]
-background_mode = 1
+background_mode = 2
 background_energy_multiplier = 1.16
+sky = SubResource("Sky_qwmnv")
 ambient_light_source = 3
 ambient_light_color = Color(0.72027963, 0.493043, 0.14871117, 1)
 ambient_light_energy = 8.15
@@ -15,6 +21,8 @@ ambient_light_energy = 8.15
 [node name="CSGBox3D" type="CSGBox3D" parent="Static" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4393835, -2.4663298, -1.4763618)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 size = Vector3(10.674286, 0.29351807, 7.5458984)
 
 [node name="DirectionalLight3D2" type="DirectionalLight3D" parent="Static" index="1"]
@@ -23,31 +31,43 @@ light_color = Color(0.27058825, 1, 1, 1)
 shadow_enabled = true
 sky_mode = 1
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Static" index="2"]
+[node name="DirectionalLight3D3" type="DirectionalLight3D" parent="Static" index="2"]
+transform = Transform3D(-0.5142733, -0.55347955, -0.6551209, -0.8550839, 0.3896842, 0.34202012, 0.06598914, 0.73607516, -0.67367554, 0.7336018, 0.36622226, 1.6024507)
+light_color = Color(0.35331655, 0.7753936, 0.7205866, 1)
+shadow_enabled = true
+sky_mode = 1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Static" index="3"]
 transform = Transform3D(-0.61713046, -0.7402781, 0.26671773, 0.33112437, 0.063165374, 0.94147056, -0.7137974, 0.6693269, 0.20614284, -0.536983, -0.753811, 1.4291008)
 light_color = Color(1, 0.40784314, 1, 1)
 shadow_enabled = true
 sky_mode = 1
 
-[node name="Box2" type="CSGBox3D" parent="Static" index="3"]
+[node name="Box2" type="CSGBox3D" parent="Static" index="4"]
 transform = Transform3D(1, 0, 0, 0, 0.67396724, -0.7387614, 0, 0.7387614, 0.67396724, 0, -2.3911464, -2.9249902)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 size = Vector3(1, 1.3067627, 1)
 
-[node name="Box3" type="CSGBox3D" parent="Static" index="4"]
+[node name="Box3" type="CSGBox3D" parent="Static" index="5"]
 transform = Transform3D(0.41577286, 0.67188025, 0.61295193, 0, 0.67396724, -0.7387614, -0.9094685, 0.30715695, 0.2802173, 0.4085325, -2.3911464, -2.9249902)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 size = Vector3(1, 1.3067627, 1)
 
-[node name="Box" type="CSGBox3D" parent="Static" index="5"]
+[node name="Box" type="CSGBox3D" parent="Static" index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8677276, 0)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 size = Vector3(1, 1.3067627, 1)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Static" index="6"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Static" index="7"]
 environment = SubResource("Environment_q1iji")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Static" index="7"]
+[node name="OmniLight3D" type="OmniLight3D" parent="Static" index="8"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0741878, 0)
 light_color = Color(1, 1, 0.20392157, 1)
 light_energy = 1.165
@@ -59,3 +79,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3316811, 0, -1.0281599)
 
 [node name="Item2" parent="Items" index="1" instance=ExtResource("4_ekotj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9675406, 0, -1.0281599)
+
+[node name="Item3" parent="Items" index="2" instance=ExtResource("3_qwmnv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.046011, -1.5507828, -1.9487209)
+
+[node name="Item4" parent="Items" index="3" instance=ExtResource("4_3pu0q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4273664, 0, 0.2886852)
+biped_body_rotation = 0.2
+
+[node name="Item5" parent="Items" index="4" instance=ExtResource("4_48yah")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.203761, -1.6973598, 0.06516981)

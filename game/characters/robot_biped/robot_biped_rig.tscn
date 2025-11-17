@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cp8pgsp6ww0av" path="res://characters/robot_biped/robot_biped_rig.gd" id="1_ck081"]
 [ext_resource type="PackedScene" uid="uid://4bksyv6bbpek" path="res://characters/robot_rig.tscn" id="1_lhgl7"]
-[ext_resource type="Script" uid="uid://ci5j5wc3ssea" path="res://items/inventory/inventory_slot.gd" id="3_7qrr8"]
 [ext_resource type="PackedScene" uid="uid://ca8168vrjjpki" path="res://characters/ik/leg_ik.tscn" id="3_bhhth"]
 [ext_resource type="PackedScene" uid="uid://cy1ggdmtks58v" path="res://characters/ik/arm_ik.tscn" id="3_o00eu"]
+[ext_resource type="PackedScene" uid="uid://dtaly3w02tiwl" path="res://items/inventory/inventory_slot.tscn" id="4_yf1e2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_alkda"]
 resource_name = "M_Base"
@@ -487,6 +487,9 @@ transform = Transform3D(0.9999999, 0, 3.5527137e-15, 0, 0.9999999, 0, -3.5527137
 mesh = SubResource("ArrayMesh_7qrr8")
 skeleton = NodePath("")
 
+[node name="Eye" type="Node3D" parent="Skeleton/B_Head" index="1"]
+transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0.78327096, 0)
+
 [node name="B_LArm2" type="BoneAttachment3D" parent="Skeleton" index="1"]
 transform = Transform3D(0.99999976, 0, 2.3841855e-07, 0, -0.99999976, 0, 2.3841855e-07, 0, -0.99999976, 1.5868942e-14, 0.8417764, -0.9150123)
 bone_name = "B_LArm2"
@@ -517,12 +520,10 @@ transform = Transform3D(0.9999999, 0, 3.5527137e-15, 0, -0.9999999, 0, 3.5527137
 mesh = SubResource("ArrayMesh_exydf")
 skeleton = NodePath("")
 
-[node name="RHandSlot" type="Node3D" parent="Skeleton/B_RArm2" index="1"]
-transform = Transform3D(-4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 0, 0, 0, 0.99999994, 0, 1.2104427, 0)
-script = ExtResource("3_7qrr8")
-size = 1
+[node name="RHandSlot" parent="Skeleton/B_RArm2" index="1" instance=ExtResource("4_yf1e2")]
+transform = Transform3D(-4.3711385e-08, 0.9999999, 0, -0.9999999, -4.3711385e-08, 0, 0, 0, 0.9999999, 0, 1.2042361, 0)
+size = 3
 key = "rhand"
-metadata/_custom_type_script = "uid://ci5j5wc3ssea"
 
 [node name="B_RArm1" type="BoneAttachment3D" parent="Skeleton" index="4"]
 transform = Transform3D(0.9999998, 0, -1.5099577e-07, 0, -0.9999998, 0, -1.5099577e-07, 0, -0.9999998, 0, 1.7995422, 0.9250353)
@@ -544,15 +545,22 @@ transform = Transform3D(0.9999999, 0, 3.5527137e-15, 0, 0.9999999, 0, -3.5527137
 mesh = SubResource("ArrayMesh_ia4np")
 skeleton = NodePath("")
 
-[node name="InventorySlot" type="Node3D" parent="Skeleton/B_Torso" index="1"]
-transform = Transform3D(1, 0, -3.5527137e-15, 0, 1, 0, 3.5527137e-15, 0, 1, -0.46914032, 0.7256907, -2.0506777e-08)
-script = ExtResource("3_7qrr8")
-size = 1
+[node name="BackSlot" parent="Skeleton/B_Torso" index="1" instance=ExtResource("4_yf1e2")]
+transform = Transform3D(1, 0, -3.5527137e-15, 0, 1, 0, 3.5527137e-15, 0, 1, -0.5445647, 0.6500359, -2.380368e-08)
+size = 3
 key = "back"
-metadata/_custom_type_script = "uid://ci5j5wc3ssea"
 
 [node name="FrontPosition" type="Node3D" parent="Skeleton/B_Torso" index="2"]
 transform = Transform3D(-1.4570466e-07, 0, -3.3333335, 0, 3.3333335, 0, 3.3333335, 0, -1.4570466e-07, 1.0799819, 0.58828115, 0.34183288)
+
+[node name="HandgunLow" type="Node3D" parent="Skeleton/B_Torso" index="3"]
+transform = Transform3D(-0.6427876, 0.7660445, -6.181724e-08, 0.5416752, 0.45451948, 0.70710677, 0.54167527, 0.45451942, -0.70710677, 0.7650399, 0, 0.94965893)
+
+[node name="LongGunLow" type="Node3D" parent="Skeleton/B_Torso" index="4"]
+transform = Transform3D(-0.22028147, 0.86306906, -0.45451942, 0.49999994, 0.49999994, 0.70710677, 0.83754164, -0.0714972, -0.54167527, 0.76504, 0.2974758, 0.60343146)
+
+[node name="AimShoulder" type="Node3D" parent="Skeleton/B_Torso" index="5"]
+transform = Transform3D(1, 0, -3.5527137e-15, 0, 1, 0, 3.5527137e-15, 0, 1, -2.814489e-08, 1.356071, 0.64388)
 
 [node name="B_LLeg2" type="BoneAttachment3D" parent="Skeleton" index="6"]
 transform = Transform3D(0.9999998, 0, 2.384185e-07, 0, -0.99999976, 0, 2.384185e-07, 0, -0.9999998, -3.6709807e-15, -1.0746921, -0.47093725)
@@ -594,39 +602,26 @@ transform = Transform3D(-0.9999999, 0, 3.2584137e-07, 0, -0.9999999, 0, 3.258413
 mesh = SubResource("ArrayMesh_knllp")
 skeleton = NodePath("")
 
-[node name="LookIK" type="LookAtModifier3D" parent="Skeleton" index="10"]
-transform = Transform3D(3.1391653e-07, 0, 1, 0, 1, 0, -1, 0, 3.1391653e-07, 0, 0, 0)
-target_node = NodePath("../../LookTargetTracker")
-bone_name = "B_Head"
-bone = 2
-forward_axis = 0
-use_angle_limitation = true
-symmetry_limitation = true
-primary_limit_angle = 2.268928
-primary_damp_threshold = 1.0
-secondary_limit_angle = 6.2831855
-secondary_damp_threshold = 1.0
-
-[node name="LArmIK" parent="Skeleton" index="11" instance=ExtResource("3_o00eu")]
+[node name="LArmIK" parent="Skeleton" index="10" instance=ExtResource("3_o00eu")]
 transform = Transform3D(0.99999976, 0, -7.1054274e-15, 0, 0.99999976, 0, 7.1054274e-15, 0, 0.99999976, 0.5116018, -0.08837958, -1.1321951)
 root_bone = &"B_LArm1"
 tip_bone = &"B_LHand"
-magnet = Vector3(-3, 0, -1)
+magnet = Vector3(-3, 0, -3)
 
-[node name="RArmIK" parent="Skeleton" index="12" instance=ExtResource("3_o00eu")]
+[node name="RArmIK" parent="Skeleton" index="11" instance=ExtResource("3_o00eu")]
 transform = Transform3D(1.7763568e-15, 0, 0.28073138, 0, 0.28073138, 0, -0.28073138, 0, 1.7763568e-15, 0.016325863, -0.19123843, 1.0691663)
 root_bone = &"B_RArm1"
 tip_bone = &"B_RHand"
-magnet = Vector3(-3, 0, 1)
+magnet = Vector3(-3, 0, 3)
 
-[node name="LLegIK" parent="Skeleton" index="13" node_paths=PackedStringArray("other_legs") instance=ExtResource("3_bhhth")]
+[node name="LLegIK" parent="Skeleton" index="12" node_paths=PackedStringArray("other_legs") instance=ExtResource("3_bhhth")]
 transform = Transform3D(3.1391647e-07, 0, 0.99999976, 0, 0.99999976, 0, -0.99999976, 0, 3.1391647e-07, -0.16263825, -2.1552737, -0.44715157)
 root_bone = &"B_LLeg1"
 tip_bone = &"B_LFoot"
 magnet = Vector3(0.25, 0, -0.5)
 other_legs = [NodePath("../RLegIK")]
 
-[node name="RLegIK" parent="Skeleton" index="14" node_paths=PackedStringArray("other_legs") instance=ExtResource("3_bhhth")]
+[node name="RLegIK" parent="Skeleton" index="13" node_paths=PackedStringArray("other_legs") instance=ExtResource("3_bhhth")]
 transform = Transform3D(3.139165e-07, 0, 0.99999976, 0, 0.99999976, 0, -0.99999976, 0, 3.139165e-07, 0.17237191, -2.1283395, 0.52289087)
 root_bone = &"B_RLeg1"
 tip_bone = &"B_RFoot"

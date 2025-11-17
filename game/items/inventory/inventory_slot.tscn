@@ -1,6 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://dtaly3w02tiwl"]
+[gd_scene load_steps=5 format=3 uid="uid://dtaly3w02tiwl"]
 
 [ext_resource type="Script" uid="uid://ci5j5wc3ssea" path="res://items/inventory/inventory_slot.gd" id="1_2e45i"]
+[ext_resource type="Material" uid="uid://dmnp7rmgvjnmo" path="res://items/inventory/inventory_slot_ui_material.tres" id="2_8w44j"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_kqb6u"]
+resource_local_to_scene = true
+material = ExtResource("2_8w44j")
+radius = 0.1
+height = 0.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_8w44j"]
+radius = 0.1
 
 [node name="InventorySlot" type="Node3D"]
 script = ExtResource("1_2e45i")
+
+[node name="UIView" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_kqb6u")
+
+[node name="Collider" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collider"]
+shape = SubResource("SphereShape3D_8w44j")

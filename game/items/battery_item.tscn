@@ -45,7 +45,6 @@ height = 0.2
 radius = 0.1
 
 [node name="Item" instance=ExtResource("1_mebpp")]
-collision_layer = 3
 script = ExtResource("2_1ctsk")
 label = "Battery"
 

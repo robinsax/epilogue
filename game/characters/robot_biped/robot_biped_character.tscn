@@ -10,6 +10,9 @@ radius = 0.2
 height = 1.4
 
 [node name="Character" instance=ExtResource("1_m0kf6")]
+floor_max_angle = 1.1100295
+platform_floor_layers = 4294967295
+platform_wall_layers = 0
 script = ExtResource("1_pd0iq")
 
 [node name="Rig" parent="." index="2" instance=ExtResource("2_67ism")]

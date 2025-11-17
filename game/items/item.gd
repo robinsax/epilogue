@@ -10,8 +10,13 @@ static var SIZE_LARGE = 3
 @export var attachment: String = ""
 var _last_attachment: String = ""
 
-var _slot: InventorySlot = null
-var _transform_parenting: RemoteTransform3D = null
+var inventory: Inventory = null
+
+var current_slot: InventorySlot = null
+var current_slot_parenting: RemoteTransform3D = null
+
+func _ready():
+	inventory = $Inventory
 
 func _process(delta):
 	_update_attachment()
@@ -23,14 +28,17 @@ func _update_attachment():
 
 	var is_detach = attachment.length() == 0
 	if is_detach:
-		set_collision_layer_value(1, true)
 		linear_velocity = Vector3.ZERO
 
-	if _slot:
-		_slot.remove_child(_transform_parenting)
-		_slot.item = null
-		_transform_parenting = null
-		_slot = null
+	if current_slot != null:
+		current_slot.remove_child(current_slot_parenting)
+		current_slot_parenting = null
+
+		# Same-tick updates may have switched the item.
+		if current_slot.item == self:
+			current_slot.item = null
+
+		current_slot = null
 
 	if is_detach:
 		return
@@ -40,26 +48,22 @@ func _update_attachment():
 	var parent_id = parts[1]
 	var slot_key = parts[2]
 
-	var inventory: Inventory = null
+	var parent_inventory: Inventory = null
 	if parent_type == "c":
-		inventory = World.current.get_character(parent_id).inventory
+		parent_inventory = World.current.get_character(parent_id).inventory
 	elif parent_type == "i":
-		inventory = World.current.items.find_child(parent_id).inventory
+		parent_inventory = World.current.items.find_child(parent_id).inventory
 
-	_slot = inventory.get_slot(slot_key)
-	_slot.item = self
-	set_collision_layer_value(1, false)
-	_transform_parenting = RemoteTransform3D.new()
-	_transform_parenting.remote_path = get_path()
-	_transform_parenting.update_scale = false
-	_slot.add_child(_transform_parenting)
+	current_slot = parent_inventory.get_slot(slot_key)
+	current_slot.item = self
+	current_slot_parenting = RemoteTransform3D.new()
+	current_slot_parenting.remote_path = get_path()
+	current_slot_parenting.update_scale = false
+	current_slot.add_child(current_slot_parenting)
+	current_slot_parenting.position = -1.0 * get_hold_position()
 
-@rpc("any_peer", "call_local")
-func drop():
-	if not is_multiplayer_authority():
-		return
-
-	attachment = ""
+func get_hold_position():
+	return Vector3.ZERO
 
 @rpc("any_peer", "call_local")
 func update_attachment(new_attachment: String):
