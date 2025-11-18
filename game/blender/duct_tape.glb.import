@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bygjvk6043hr0"
-path="res://.godot/imported/duct_tape.glb-805cd6daf14166f37207fc4387413ed5.scn"
+path="res://.godot/imported/duct_tape.glb-ec3b0f36cf88f67c5317ba5c28835801.scn"
 
 [deps]
 
-source_file="res://items/source/duct_tape.glb"
-dest_files=["res://.godot/imported/duct_tape.glb-805cd6daf14166f37207fc4387413ed5.scn"]
+source_file="res://blender/duct_tape.glb"
+dest_files=["res://.godot/imported/duct_tape.glb-ec3b0f36cf88f67c5317ba5c28835801.scn"]
 
 [params]
 

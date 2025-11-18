@@ -6,28 +6,44 @@ var _slots: Array[InventorySlot] = []
 func _ready():
 	_owner = get_parent()
 
-	discover_slots(owner)
+	_discover_slots(owner)
 
-func discover_slots(current: Node):
+func _discover_slots(current: Node):
 	if current is InventorySlot:
 		_slots.push_back(current)
 		current.inventory = self
 
 	for child in current.get_children():
-		discover_slots(child)
+		_discover_slots(child)
 
 func _process(delta):
 	pass
 
-func get_slot(key: String) -> InventorySlot:
+func _all_slots() -> Array[InventorySlot]:
+	var all = _slots.duplicate()
 	for slot in _slots:
+		if slot.item != null:
+			all.append_array(slot.item.inventory._all_slots())
+
+	return all
+
+func get_slot(key: String) -> InventorySlot:
+	for slot in _all_slots():
 		if slot.key == key:
 			return slot
 
 	return null
 
 func get_available_slot_for(item: Item) -> InventorySlot:
-	for slot in _slots:
+	for slot in _all_slots():
+		if slot.required_tag != "" and slot.is_item_compatible(item) and slot.is_available():
+			return slot
+
+	for slot in _all_slots():
+		if slot.size == item.size and slot.is_item_compatible(item) and slot.is_available():
+			return slot
+
+	for slot in _all_slots():
 		if slot.is_item_compatible(item) and slot.is_available():
 			return slot
 
@@ -40,8 +56,11 @@ func get_attachment_string(slot: InventorySlot) -> String:
 
 	return owner_type + "/" + _owner.name + "/" + slot.key
 
-func get_slot_with_item_tag(tag: String) -> InventorySlot:
-	for slot in _slots:
+func get_slot_with_item_tag(tag: String, exclude: Array[InventorySlot] = []) -> InventorySlot:
+	for slot in _all_slots():
+		if exclude and slot in exclude:
+			continue
+
 		if slot.item != null and tag in slot.item.tags:
 			return slot
 

@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dmf57wwodo5df"
-path="res://.godot/imported/enforcer.glb-4c42c3483468c54e20d1b4e4822d1f42.scn"
+path="res://.godot/imported/enforcer.glb-dc0017801e026ca7e4a83d363b4d6f3f.scn"
 
 [deps]
 
-source_file="res://items/source/enforcer.glb"
-dest_files=["res://.godot/imported/enforcer.glb-4c42c3483468c54e20d1b4e4822d1f42.scn"]
+source_file="res://blender/enforcer.glb"
+dest_files=["res://.godot/imported/enforcer.glb-dc0017801e026ca7e4a83d363b4d6f3f.scn"]
 
 [params]
 

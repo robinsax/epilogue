@@ -1,0 +1,40 @@
+[gd_resource type="ArrayMesh" load_steps=4 format=4 uid="uid://c2ovw1ldjctfq"]
+
+[ext_resource type="Shader" uid="uid://dj8lqt6223ics" path="res://environment/foliage/grass.gdshader" id="1_13gy2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5pncl"]
+render_priority = 0
+shader = ExtResource("1_13gy2")
+shader_parameter/color = Color(0.29411766, 0.45490196, 0.23137255, 1)
+shader_parameter/color2 = Color(0.41568628, 0.43137255, 0.26666668, 1)
+shader_parameter/noise_scale = 20.0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_o16dq"]
+_surfaces = [{
+"aabb": AABB(-0.089714125, -0.114910394, -0.06723448, 0.1776055, 0.9738498, 0.31659448),
+"format": 34896613377,
+"index_count": 30,
+"index_data": PackedByteArray("AAABAAIAAQAAAAMAAQADAAQABQAGAAcABgAFAAgABgAIAAkACgALAAwACwAKAA0ACwANAA4ADwAQABEA"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 18,
+"vertex_data": PackedByteArray("qHz+AOZBAACXM2l1kV0AAPI5/gApWwAAZIPbflk/AABWAPfv+XAAAKy6/gCsZQAArLrIayCQAACsuv4AVEkAAKy6fmAyrQAArLrLiP//AABE8S0OkzsAAPZOocTNEgAAB88tDvkyAAAcloPErSQAAP////9GPwAARY8AAEsvAABhQgAA6RUAAAAAotAAAAAA")
+}]
+blend_shape_mode = 0
+
+[resource]
+resource_name = "grass_Plane"
+_surfaces = [{
+"aabb": AABB(-0.089714125, -0.114910394, -0.06723448, 0.1776055, 0.9738498, 0.31659448),
+"attribute_data": PackedByteArray("//+3sU/H46n//5GqtcJwsqKLZaT//3yH/8s1jv//AIN+0c+S373qn///0XYnpwZn//98czan820/ikB4//+0T///oVfS0Hhe"),
+"format": 34896613399,
+"index_count": 30,
+"index_data": PackedByteArray("AAABAAIAAQAAAAMAAQADAAQABQAGAAcABgAFAAgABgAIAAkACgALAAwACwAKAA0ACwANAA4ADwAQABEA"),
+"material": SubResource("ShaderMaterial_5pncl"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 18,
+"vertex_data": PackedByteArray("qHz+AOZBBO+XM2l1kV0E7/I5/gApWwTvZIPbflk/BO9WAPfv+XAE76y6/gCsZVTVrLrIayCQVNWsuv4AVElU1ay6fmAyrVTVrLrLiP//VNVE8S0Okzvp8/ZOocTNEunzB88tDvky6fMcloPErSTp8/////9GP+nzRY8AAEsv0MJhQgAA6RXQwgAAotAAANDCfUiBt31Igbd9SIG3fUiBt31IgbeqqlVVqqpVVaqqVVWqqlVVqqpVVdG5LUbRuS1G0bktRtG5LUbRuS1GbmmQlm5pkJZuaZCW")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_o16dq")

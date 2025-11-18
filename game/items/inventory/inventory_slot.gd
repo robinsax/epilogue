@@ -17,7 +17,10 @@ func _ready():
 
 func _process(delta):
 	if PlayerPossession.current != null:
-		_ui_view.visible = PlayerPossession.current.in_inventory
+		_ui_view.visible = (
+			PlayerPossession.current.in_inventory and
+			(required_tag == "" or item == null)
+		)
 
 	var parent_global_scale = global_transform.basis.get_scale()
 	var scaling = Vector3(

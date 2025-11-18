@@ -30,7 +30,8 @@ func _ready():
 
 	var name_id = int(name)
 	var authority = name_id
-	if name_id == 0:
+	# TODO: No.
+	if name_id == 0 or (name_id > 1 and name_id < 1000):
 		authority = 1
 	set_multiplayer_authority(authority)
 	if name_id == authority:

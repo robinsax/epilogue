@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfb6dimb47k7w"]
+
+[sub_resource type="Sky" id="Sky_qwmnv"]
+
+[sub_resource type="Environment" id="Environment_oqrt8"]
+background_mode = 1
+background_color = Color(0.2934936, 0.5382142, 0.5733821, 1)
+background_energy_multiplier = 1.16
+sky = SubResource("Sky_qwmnv")
+ambient_light_source = 3
+ambient_light_color = Color(0.9872734, 0.8376988, 0.6520929, 1)
+ambient_light_sky_contribution = 0.65
+ambient_light_energy = 1.86
+
+[node name="DesertAmbient" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_oqrt8")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.9695498, 0.05245429, -0.23921125, 0.05532877, 0.9046174, 0.42261833, 0.23856279, -0.42298472, 0.8741693, 0, 4.400909, 0)
+light_energy = 2.155
+light_indirect_energy = 0.745
+shadow_enabled = true

@@ -1,63 +1,77 @@
-[gd_scene load_steps=11 format=3 uid="uid://j7g42480ccel"]
+[gd_scene load_steps=16 format=3 uid="uid://j7g42480ccel"]
 
 [ext_resource type="PackedScene" uid="uid://b8tenhgyw1gnq" path="res://worlds/world.tscn" id="1_dxppu"]
 [ext_resource type="PackedScene" uid="uid://bcodp3agl6py1" path="res://characters/robot_biped/robot_biped_character.tscn" id="2_owvx3"]
+[ext_resource type="PackedScene" uid="uid://72lok018lt4q" path="res://items/wearable/backpack_item.tscn" id="3_0vnll"]
+[ext_resource type="PackedScene" uid="uid://dywxb5ls3ypxt" path="res://items/wearable/holster_item.tscn" id="3_l51q2"]
+[ext_resource type="PackedScene" uid="uid://qptta7ln0gug" path="res://environment/foliage/grass_volume.tscn" id="3_ml2mc"]
 [ext_resource type="PackedScene" uid="uid://dmavclc21vx6p" path="res://items/duct_tape_item.tscn" id="3_qwmnv"]
 [ext_resource type="PackedScene" uid="uid://7722h4kqbf2f" path="res://items/guns/enforcer_handgun_item.tscn" id="4_3pu0q"]
 [ext_resource type="PackedScene" uid="uid://idqwct8aitv6" path="res://items/guns/mainline_dmr_item.tscn" id="4_48yah"]
 [ext_resource type="PackedScene" uid="uid://dimooetl0h5ps" path="res://items/battery_item.tscn" id="4_ekotj"]
 [ext_resource type="PackedScene" uid="uid://7p10njioyqtc" path="res://items/guns/dmr_magazine_item.tscn" id="6_ekotj"]
 [ext_resource type="PackedScene" uid="uid://bc3vk7fhuheyb" path="res://items/guns/pistol_magazine_item.tscn" id="7_3pu0q"]
+[ext_resource type="PackedScene" uid="uid://de02147up6ff2" path="res://items/wearable/liteplate_item.tscn" id="11_e6u38"]
+[ext_resource type="PackedScene" uid="uid://c3wics14g0o70" path="res://items/wearable/utility_belt_item.tscn" id="12_up6qr"]
 
-[sub_resource type="Sky" id="Sky_qwmnv"]
+[sub_resource type="Sky" id="Sky_up6qr"]
 
 [sub_resource type="Environment" id="Environment_q1iji"]
-background_mode = 2
+background_mode = 1
+background_color = Color(0.2934936, 0.5382142, 0.5733821, 1)
 background_energy_multiplier = 1.16
-sky = SubResource("Sky_qwmnv")
+sky = SubResource("Sky_up6qr")
 ambient_light_source = 3
-ambient_light_color = Color(0.72027963, 0.493043, 0.14871117, 1)
-ambient_light_energy = 8.15
+ambient_light_color = Color(0.9872734, 0.8376988, 0.6520929, 1)
+ambient_light_sky_contribution = 0.65
+ambient_light_energy = 1.86
 
 [node name="World" instance=ExtResource("1_dxppu")]
 
 [node name="Character" parent="Characters" index="0" instance=ExtResource("2_owvx3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7768763, 0, -1.0639224)
 
+[node name="Character2" parent="Characters" index="1" instance=ExtResource("2_owvx3")]
+transform = Transform3D(-0.41626498, 0, 0.90924335, 0, 1, 0, -0.90924335, 0, -0.41626498, 1.9564387, 0, -2.500621)
+crouching = true
+
 [node name="CSGBox3D" type="CSGBox3D" parent="Static" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4393835, -2.4663298, -1.4763618)
 use_collision = true
 collision_layer = 3
 collision_mask = 3
-size = Vector3(10.674286, 0.29351807, 7.5458984)
+size = Vector3(20, 0.294, 30)
 
-[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="Static" index="1"]
-transform = Transform3D(0.19244982, -0.37398535, 0.9072475, -0.8550839, 0.38968423, 0.34202015, -0.48145056, -0.84159446, -0.24479416, -0.762581, 0.49388635, 2.9552336)
-light_color = Color(0.27058825, 1, 1, 1)
-shadow_enabled = true
-sky_mode = 1
+[node name="CSGBox3D2" type="CSGBox3D" parent="Static" index="1"]
+transform = Transform3D(0.6568753, -0.13699137, 0.7414501, 0, 0.98335654, 0.18168634, -0.75399923, -0.11934527, 0.6459426, 5.1924543, -2.4663298, 6.6404057)
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(20, 0.294, 30)
 
-[node name="DirectionalLight3D3" type="DirectionalLight3D" parent="Static" index="2"]
-transform = Transform3D(-0.5142733, -0.55347955, -0.6551209, -0.8550839, 0.3896842, 0.34202012, 0.06598914, 0.73607516, -0.67367554, 0.7336018, 0.36622226, 1.6024507)
-light_color = Color(0.35331655, 0.7753936, 0.7205866, 1)
-shadow_enabled = true
-sky_mode = 1
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Static" index="3"]
-transform = Transform3D(-0.61713046, -0.7402781, 0.26671773, 0.33112437, 0.063165374, 0.94147056, -0.7137974, 0.6693269, 0.20614284, -0.536983, -0.753811, 1.4291008)
-light_color = Color(1, 0.40784314, 1, 1)
-shadow_enabled = true
-sky_mode = 1
-
-[node name="Box2" type="CSGBox3D" parent="Static" index="4"]
+[node name="Box2" type="CSGBox3D" parent="Static" index="2"]
 transform = Transform3D(1, 0, 0, 0, 0.67396724, -0.7387614, 0, 0.7387614, 0.67396724, 0, -2.3911464, -2.9249902)
 use_collision = true
 collision_layer = 3
 collision_mask = 3
 size = Vector3(1, 1.3067627, 1)
 
-[node name="Box3" type="CSGBox3D" parent="Static" index="5"]
+[node name="Box3" type="CSGBox3D" parent="Static" index="3"]
 transform = Transform3D(0.41577286, 0.67188025, 0.61295193, 0, 0.67396724, -0.7387614, -0.9094685, 0.30715695, 0.2802173, 0.4085325, -2.3911464, -2.9249902)
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(1, 1.3067627, 1)
+
+[node name="Box4" type="CSGBox3D" parent="Static" index="4"]
+transform = Transform3D(-0.793449, 0.41020125, -0.44963738, -0.6086368, -0.5347586, 0.5861695, 0, 0.7387614, 0.67396724, 0.3663411, -2.1526453, -7.407523)
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(1, 1.3067627, 1)
+
+[node name="Box5" type="CSGBox3D" parent="Static" index="5"]
+transform = Transform3D(-0.32989454, -0.12290144, -0.9359835, -0.25305465, -0.9436897, 0.21310437, -0.9094685, 0.30715695, 0.2802173, 0.0421914, -2.401293, -7.407523)
 use_collision = true
 collision_layer = 3
 collision_mask = 3
@@ -73,12 +87,15 @@ size = Vector3(1, 1.3067627, 1)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Static" index="7"]
 environment = SubResource("Environment_q1iji")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Static" index="8"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0741878, 0)
-light_color = Color(1, 1, 0.20392157, 1)
-light_energy = 1.165
-light_size = 1.0
-omni_range = 4015.636
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Static" index="8"]
+transform = Transform3D(0.9695498, 0.05245429, -0.23921125, 0.05532877, 0.9046174, 0.42261833, 0.23856279, -0.42298472, 0.8741693, 0, 4.400909, 0)
+light_energy = 2.155
+light_indirect_energy = 0.745
+shadow_enabled = true
+
+[node name="GrassVolume" parent="Static" index="9" instance=ExtResource("3_ml2mc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4285812, -1.1464756, 1.6342392)
+radius = 5.0
 
 [node name="Item6" parent="Items" index="0" instance=ExtResource("6_ekotj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9687524, -1.809488, -1.7640035)
@@ -100,3 +117,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4273664, 0, 0.2886852)
 
 [node name="Item5" parent="Items" index="6" instance=ExtResource("4_48yah")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.203761, -1.6973598, 0.06516981)
+
+[node name="Item8" parent="Items" index="7" instance=ExtResource("3_0vnll")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.47574, -2.0614853, -3.0227356)
+
+[node name="Item9" parent="Items" index="8" instance=ExtResource("3_l51q2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7498562, -2.193129, -0.31947023)
+
+[node name="Item10" parent="Items" index="9" instance=ExtResource("11_e6u38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7038248, -2.0912895, 1.3390708)
+
+[node name="Item11" parent="Items" index="10" instance=ExtResource("7_3pu0q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.609643, 0, 0)
+
+[node name="Item13" parent="Items" index="11" instance=ExtResource("12_up6qr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.637007, -2.2061107, -0.7838421)
+
+[node name="Item12" parent="Items" index="12" instance=ExtResource("6_ekotj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3392053, 0, 0)

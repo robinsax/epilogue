@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://tq4sgvwqk8th"
-path="res://.godot/imported/robot_biped.glb-16c990398900c5d3b58f47aa71d16764.scn"
+path="res://.godot/imported/robot_biped.glb-9d068b53d370931e306a1ec162090662.scn"
 
 [deps]
 
-source_file="res://characters/robot_biped/source/robot_biped.glb"
-dest_files=["res://.godot/imported/robot_biped.glb-16c990398900c5d3b58f47aa71d16764.scn"]
+source_file="res://blender/robot_biped.glb"
+dest_files=["res://.godot/imported/robot_biped.glb-9d068b53d370931e306a1ec162090662.scn"]
 
 [params]
 

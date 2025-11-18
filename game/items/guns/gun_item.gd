@@ -205,8 +205,10 @@ func _fire(recoil_seed: float):
 		action_projectile_type = ""
 
 func reload_as_active(character: Character):
-	var available_mag_slot = character.inventory.get_slot_with_item_tag(_magazine_well.required_tag)
-	if available_mag_slot == null or available_mag_slot == _magazine_well:
+	var available_mag_slot = character.inventory.get_slot_with_item_tag(
+		_magazine_well.required_tag, [_magazine_well]
+	)
+	if available_mag_slot == null:
 		return
 
 	character.move_item_slots(available_mag_slot, _magazine_well)
