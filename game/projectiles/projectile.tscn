@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://cj8vj3pnq8wqh"]
+
+[ext_resource type="Script" uid="uid://ca0ra1aijopyy" path="res://projectiles/projectile.gd" id="1_wrf7x"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wrf7x"]
+size = Vector3(1, 0.1, 0.1)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_wrf7x"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Projectile" type="Area3D"]
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("1_wrf7x")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.49329865, 0, 0)
+shape = SubResource("BoxShape3D_wrf7x")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_wrf7x")

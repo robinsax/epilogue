@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=4 uid="uid://7p10njioyqtc"]
+
+[ext_resource type="PackedScene" uid="uid://bcjaqmrmy6vk6" path="res://items/guns/magazine_item.tscn" id="1_8ttro"]
+[ext_resource type="PackedScene" uid="uid://lwt7ufgb8des" path="res://projectiles/rifle_bullet_projectile.tscn" id="2_1yf05"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8ttro"]
+size = Vector3(0.1, 0.2, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pyilv"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_01jbo"]
+_surfaces = [{
+"aabb": AABB(-1, -1, -1, 2, 2, 2),
+"format": 34896613377,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAACAAEAAwAEAAEABQAAAAIAAwAAAAUABAAGAAIABQACAAYAAwAHAAQAAwAFAAcABwAGAAQABwAFAAYA"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("AAAAAP//AAAAAP//AAAAAAAA/////wAAAAAAAAAAAAD/////AAAAAP//AAD//wAA////////AAD//wAAAAAAAA==")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_1yf05"]
+resource_name = "mainline_Cube_002"
+_surfaces = [{
+"aabb": AABB(-1, -1, -1, 2, 2, 2),
+"attribute_data": PackedByteArray("/1////+f/7//n////1//v/9f/7//n/9//5//v/9f/3//X/9//5//P/+f/3//X/8//1//P/+fAAD/n/8//18AAP8f/3//X/8//1//f/8f/z//n/9//9//P//f/3//n/8/"),
+"format": 34896613399,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUA"),
+"material": SubResource("StandardMaterial3D_pyilv"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 24,
+"vertex_data": PackedByteArray("AAAAAP//VNUAAP//AABU1QAA/////1TVAAAAAAAAVNUAAAAAAAD///////8AAP//AAD//wAA/////wAAAAD/////AAAAAFTV////////VNX/////AABU1f//AAD//1TV//8AAP///78AAP//////v/////////+/AAAAAP///78AAAAAAAD/v///AAD///+///8AAAAA/78AAAAA////v/////8AAP//AAD///////8AAP//AAD/////////////VNVU1VTVVNVU1VTVVNVU1f+//7//v/+//7//v/+//7+qKqoqqiqqKqoqqiqqKqoq/////////////////////wAA/38AAP9/AAD/fwAA/3//f/+//3//v/9//7//f/+/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_01jbo")
+
+[node name="Item" instance=ExtResource("1_8ttro")]
+projectile_type = ExtResource("2_1yf05")
+label = "DMR Magazine"
+in_slot_rotation = Vector3(0, 1.574, 0)
+tags = Array[String](["magdmr"])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
+shape = SubResource("BoxShape3D_8ttro")
+
+[node name="Magazine" type="MeshInstance3D" parent="." index="3"]
+transform = Transform3D(0.05, 0, 0, 0, 0.082, 0, 0, 0, 0.014, -0.001434952, -0.010485649, 0)
+mesh = SubResource("ArrayMesh_1yf05")
+skeleton = NodePath("")

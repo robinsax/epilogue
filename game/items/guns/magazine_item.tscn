@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bcjaqmrmy6vk6"]
+
+[ext_resource type="PackedScene" uid="uid://6rin053u8ef8" path="res://items/item.tscn" id="1_1462o"]
+[ext_resource type="Script" uid="uid://bma72e7fqifke" path="res://items/guns/magazine_item.gd" id="2_p2l4y"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ohav3"]
+properties/0/path = NodePath(".:_remaining")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Item" instance=ExtResource("1_1462o")]
+script = ExtResource("2_p2l4y")
+capacity = 20
+projectile_type = null
+_remaining = 0
+
+[node name="MagazineSynchronizer" type="MultiplayerSynchronizer" parent="." index="2"]
+replication_config = SubResource("SceneReplicationConfig_ohav3")

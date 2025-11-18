@@ -25,14 +25,15 @@ func _ready():
 	_target_position = _target.global_position
 	_last_position = global_position
 
-	var check = get_parent()
-	while not check is GroundCharacter:
-		check = check.get_parent()
-	_character = check
+	_character = Character.find_parent_character(self)
 
 	start()
 
 func _process(delta):
+	if _character.dead:
+		stop()
+		return
+
 	_target.global_position = _target_position
 
 	if not stepping_to.is_zero_approx() and _grounded:

@@ -18,3 +18,5 @@ spawn_path = NodePath("../Characters")
 [node name="ItemsSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://dimooetl0h5ps")
 spawn_path = NodePath("../Items")
+
+[node name="Projectiles" type="Node3D" parent="."]

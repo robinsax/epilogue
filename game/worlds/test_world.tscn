@@ -1,10 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://j7g42480ccel"]
+[gd_scene load_steps=11 format=3 uid="uid://j7g42480ccel"]
 
 [ext_resource type="PackedScene" uid="uid://b8tenhgyw1gnq" path="res://worlds/world.tscn" id="1_dxppu"]
+[ext_resource type="PackedScene" uid="uid://bcodp3agl6py1" path="res://characters/robot_biped/robot_biped_character.tscn" id="2_owvx3"]
 [ext_resource type="PackedScene" uid="uid://dmavclc21vx6p" path="res://items/duct_tape_item.tscn" id="3_qwmnv"]
-[ext_resource type="PackedScene" uid="uid://7722h4kqbf2f" path="res://items/item_enforcer.tscn" id="4_3pu0q"]
-[ext_resource type="PackedScene" uid="uid://idqwct8aitv6" path="res://items/item_mainline.tscn" id="4_48yah"]
+[ext_resource type="PackedScene" uid="uid://7722h4kqbf2f" path="res://items/guns/enforcer_handgun_item.tscn" id="4_3pu0q"]
+[ext_resource type="PackedScene" uid="uid://idqwct8aitv6" path="res://items/guns/mainline_dmr_item.tscn" id="4_48yah"]
 [ext_resource type="PackedScene" uid="uid://dimooetl0h5ps" path="res://items/battery_item.tscn" id="4_ekotj"]
+[ext_resource type="PackedScene" uid="uid://7p10njioyqtc" path="res://items/guns/dmr_magazine_item.tscn" id="6_ekotj"]
+[ext_resource type="PackedScene" uid="uid://bc3vk7fhuheyb" path="res://items/guns/pistol_magazine_item.tscn" id="7_3pu0q"]
 
 [sub_resource type="Sky" id="Sky_qwmnv"]
 
@@ -17,6 +20,9 @@ ambient_light_color = Color(0.72027963, 0.493043, 0.14871117, 1)
 ambient_light_energy = 8.15
 
 [node name="World" instance=ExtResource("1_dxppu")]
+
+[node name="Character" parent="Characters" index="0" instance=ExtResource("2_owvx3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7768763, 0, -1.0639224)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Static" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4393835, -2.4663298, -1.4763618)
@@ -74,18 +80,23 @@ light_energy = 1.165
 light_size = 1.0
 omni_range = 4015.636
 
-[node name="Item" parent="Items" index="0" instance=ExtResource("4_ekotj")]
+[node name="Item6" parent="Items" index="0" instance=ExtResource("6_ekotj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9687524, -1.809488, -1.7640035)
+
+[node name="Item7" parent="Items" index="1" instance=ExtResource("7_3pu0q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6938477, -2.07409, 0.16000056)
+
+[node name="Item" parent="Items" index="2" instance=ExtResource("4_ekotj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3316811, 0, -1.0281599)
 
-[node name="Item2" parent="Items" index="1" instance=ExtResource("4_ekotj")]
+[node name="Item2" parent="Items" index="3" instance=ExtResource("4_ekotj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9675406, 0, -1.0281599)
 
-[node name="Item3" parent="Items" index="2" instance=ExtResource("3_qwmnv")]
+[node name="Item3" parent="Items" index="4" instance=ExtResource("3_qwmnv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.046011, -1.5507828, -1.9487209)
 
-[node name="Item4" parent="Items" index="3" instance=ExtResource("4_3pu0q")]
+[node name="Item4" parent="Items" index="5" instance=ExtResource("4_3pu0q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4273664, 0, 0.2886852)
-biped_body_rotation = 0.2
 
-[node name="Item5" parent="Items" index="4" instance=ExtResource("4_48yah")]
+[node name="Item5" parent="Items" index="6" instance=ExtResource("4_48yah")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.203761, -1.6973598, 0.06516981)

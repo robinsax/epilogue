@@ -5,9 +5,11 @@ class_name RobotBipedRig extends RobotRig
 @export var crouch_lean: float = 0.9
 @export var torso_move_bounce_amount: float = 0.09
 @export var torso_move_bounce_speed: float = 0.3
+@export var head_aim_tilt: float = 0.2
 
 var _last_position: Vector3 = Vector3.ZERO
 var _skeleton: Skeleton3D = null
+var _ragdoll: PhysicalBoneSimulator3D = null
 var _torso_bone: int = 0
 var _head_bone: int = 0
 var _move_time: float = 0
@@ -23,6 +25,7 @@ var head_aim_influence: Basis = Basis.IDENTITY
 func _ready():
 	super._ready()
 	_skeleton = $Skeleton
+	_ragdoll = $Skeleton/Ragdoll
 	main_hand_ik = $Skeleton/RArmIK
 	off_hand_ik = $Skeleton/LArmIK
 	_torso_bone = _skeleton.find_bone("B_Torso")
@@ -34,6 +37,13 @@ func _ready():
 
 func _process(delta):
 	super._process(delta)
+
+	if character.dead:
+		if not _ragdoll.active:
+			_ragdoll.active = true
+			_ragdoll.physical_bones_start_simulation()
+
+		return
 
 	var local_last_move = (global_position - _last_position).rotated(Vector3.UP, -global_rotation.y)
 	_last_position = global_position

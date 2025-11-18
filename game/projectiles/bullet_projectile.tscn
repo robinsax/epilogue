@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://vqm320x2xic2"]
+
+[ext_resource type="PackedScene" uid="uid://cj8vj3pnq8wqh" path="res://projectiles/projectile.tscn" id="1_hcvhw"]
+
+[sub_resource type="Curve" id="Curve_ys3d3"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0.015151501, 0.43820214), 0.0, -2.842697, 0, 0, Vector2(0.4469697, 0.3033707), 8.494388, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_cpvwl"]
+curve = SubResource("Curve_ys3d3")
+
+[sub_resource type="Curve" id="Curve_hcvhw"]
+_data = [Vector2(0.99999, 0.59550565), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ys3d3"]
+curve = SubResource("Curve_hcvhw")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ys3d3"]
+lifetime_randomness = 0.23
+angle_min = 1.0728835e-05
+angle_max = 1.0728835e-05
+direction = Vector3(0, 0, 0)
+angular_velocity_min = 251.42998
+angular_velocity_max = 251.42998
+velocity_limit_curve = SubResource("CurveTexture_ys3d3")
+gravity = Vector3(0, 1, 0)
+radial_accel_min = 25.049997
+radial_accel_max = 25.049997
+scale_over_velocity_min = 0.01
+scale_over_velocity_max = 1.0
+scale_over_velocity_curve = SubResource("CurveTexture_cpvwl")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hcvhw"]
+albedo_color = Color(0.9039425, 0.75581264, 0, 0.8117647)
+emission_enabled = true
+emission = Color(0.8901961, 0.8901961, 0.36862746, 1)
+disable_receive_shadows = true
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_ys3d3"]
+material = SubResource("StandardMaterial3D_hcvhw")
+size = 0.2
+section_length = 0.5
+
+[node name="Projectile" instance=ExtResource("1_hcvhw")]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." index="1"]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, -0.8763919, 0, 0)
+amount = 6
+local_coords = true
+trail_enabled = true
+trail_lifetime = 1.0
+process_material = SubResource("ParticleProcessMaterial_ys3d3")
+draw_pass_1 = SubResource("RibbonTrailMesh_ys3d3")

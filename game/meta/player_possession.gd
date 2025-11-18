@@ -94,6 +94,7 @@ func _process(delta):
 		_camera_arm.rotate_x(_look_rotation.x)
 
 		_character.aiming = Input.is_action_pressed("aim")
+		_character.firing = Input.is_action_pressed("fire")
 		if _character is GroundCharacter:
 			_character.crouching = Input.is_action_pressed("crouch")
 			_character.sprinting = Input.is_action_pressed("sprint")
@@ -197,9 +198,11 @@ func _input(event):
 	if _interact_target and event.is_action_pressed("interact"):
 		_character.take_item(_interact_target)
 
-	# TODO: Yucky.
-	if event.is_action_pressed("stow") and _character is RobotBipedCharacter:
-		_character.stow_main_hand_item()
+	if event.is_action_pressed("reload"):
+		_character.reload_active_item()
+
+	if event.is_action_pressed("stow"):
+		_character.stow_active_item()
 
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		_look_rotation = Vector3(-event.relative.y, -event.relative.x, 0) * MOUSE_SENSITIVITY

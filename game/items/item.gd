@@ -6,6 +6,8 @@ static var SIZE_LARGE = 3
 
 @export var size: int = 1
 @export var label: String = "Item"
+@export var in_slot_rotation: Vector3 = Vector3.ZERO
+@export var tags: Array[String] = []
 
 @export var attachment: String = ""
 var _last_attachment: String = ""
@@ -13,13 +15,30 @@ var _last_attachment: String = ""
 var inventory: Inventory = null
 
 var current_slot: InventorySlot = null
-var current_slot_parenting: RemoteTransform3D = null
+var is_animated: bool = false
 
 func _ready():
 	inventory = $Inventory
 
 func _process(delta):
 	_update_attachment()
+	_update_position()
+
+func _update_position():
+	var animated = is_animated
+	is_animated = false
+	if animated:
+		return
+
+	if current_slot:
+		global_position = current_slot.global_position
+		if current_slot.ignore_item_rotation:
+			global_rotation = current_slot.global_rotation
+		else:
+			global_basis = (
+				Basis.from_euler(current_slot.global_rotation) *
+				Basis.from_euler(in_slot_rotation)
+			)
 
 func _update_attachment():
 	if attachment == _last_attachment:
@@ -30,14 +49,10 @@ func _update_attachment():
 	if is_detach:
 		linear_velocity = Vector3.ZERO
 
-	if current_slot != null:
-		current_slot.remove_child(current_slot_parenting)
-		current_slot_parenting = null
-
+	if current_slot != null and current_slot.item == self:
 		# Same-tick updates may have switched the item.
 		if current_slot.item == self:
 			current_slot.item = null
-
 		current_slot = null
 
 	if is_detach:
@@ -56,11 +71,12 @@ func _update_attachment():
 
 	current_slot = parent_inventory.get_slot(slot_key)
 	current_slot.item = self
-	current_slot_parenting = RemoteTransform3D.new()
-	current_slot_parenting.remote_path = get_path()
-	current_slot_parenting.update_scale = false
-	current_slot.add_child(current_slot_parenting)
-	current_slot_parenting.position = -1.0 * get_hold_position()
+
+func animate_biped_as_active(character: RobotBipedCharacter, rig: RobotBipedRig, delta: float):
+	pass
+
+func reload_as_active(character: Character):
+	pass
 
 func get_hold_position():
 	return Vector3.ZERO

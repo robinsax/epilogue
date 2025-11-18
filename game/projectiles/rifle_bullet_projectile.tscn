@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://lwt7ufgb8des"]
+
+[ext_resource type="PackedScene" uid="uid://vqm320x2xic2" path="res://projectiles/bullet_projectile.tscn" id="1_2t2ql"]
+
+[node name="Projectile" instance=ExtResource("1_2t2ql")]
+kinetic_damage = 17.0
+speed = 50.0

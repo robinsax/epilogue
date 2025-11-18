@@ -11,21 +11,46 @@ var inventory: Inventory = null
 @export var aim_target: Vector3 = Vector3.ZERO
 @export var look_target: Vector3 = Vector3.ZERO
 @export var aiming: bool = false
+@export var firing: bool = false
+@export var dead: bool = false
+
+var hitboxes: Array[CharacterHitbox] = []
+
+static func find_parent_character(from: Node3D) -> Character:
+	var current = from.get_parent()
+	while current is not Character:
+		current = current.get_parent()
+
+	return current
 
 func _ready():
 	collider = $Collider
 	rig = $Rig
 	inventory = $Inventory
 
-	print(name, " ready")
-	set_multiplayer_authority(int(name))
-	if is_multiplayer_authority():
-		print("...as authority")
+	var name_id = int(name)
+	var authority = name_id
+	if name_id == 0:
+		authority = 1
+	set_multiplayer_authority(authority)
+	if name_id == authority:
 		var possession = load("res://meta/player_possession.tscn").instantiate()
 		add_child(possession, true)
 
 func _process(_delta):
-	pass
+	_check_death()
+
+func _check_death():
+	# TODO: Awk this isn't server.
+	if not is_multiplayer_authority():
+		return
+
+	for hitbox in hitboxes:
+		if hitbox.current_hitpoints <= 0 and hitbox.is_cripple_lethal:
+			dead = true
+			set_process(false)
+			set_physics_process(false)
+			break
 
 func _physics_process(delta):
 	update_velocity(delta)
@@ -59,8 +84,30 @@ func get_look_cast_ignore_rids() -> Array[RID]:
 func manage_item_slot(target_slot: InventorySlot):
 	pass
 
+func move_item_slots(from_slot: InventorySlot, to_slot: InventorySlot):
+	pass
+
+func reload_active_item():
+	pass
+
+func stow_active_item():
+	pass
+
 func drop_item_slot(target_slot: InventorySlot):
 	if target_slot.item == null:
 		return
 
 	target_slot.item.update_attachment.rpc("")
+
+func distribute_overflow_kinetic_damage(amount: float):
+	var can_take: Array[CharacterHitbox] = []
+	for hitbox in hitboxes:
+		if hitbox.current_hitpoints > 0:
+			can_take.push_back(hitbox)
+
+	if can_take.size() == 0:
+		return
+
+	var per_box = amount / can_take.size()
+	for hitbox in can_take:
+		hitbox.take_kinetic_damage(per_box)

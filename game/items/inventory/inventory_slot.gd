@@ -3,6 +3,8 @@ class_name InventorySlot extends Node3D
 @export var size: int = Item.SIZE_SMALL
 @export var key: String = "slot"
 @export var ui_size: float = 1.0
+@export var required_tag: String = ""
+@export var ignore_item_rotation: bool = false
 
 var item: Item = null
 var inventory: Inventory = null
@@ -28,6 +30,9 @@ func _process(delta):
 	_collider.scale = scaling
 
 func is_item_compatible(check_item: Item) -> bool:
+	if required_tag.length() > 0 and not (required_tag in check_item.tags):
+		return false
+
 	return check_item.size <= size
 
 func is_available() -> bool:

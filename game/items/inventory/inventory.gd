@@ -39,3 +39,10 @@ func get_attachment_string(slot: InventorySlot) -> String:
 		owner_type = "c"
 
 	return owner_type + "/" + _owner.name + "/" + slot.key
+
+func get_slot_with_item_tag(tag: String) -> InventorySlot:
+	for slot in _slots:
+		if slot.item != null and tag in slot.item.tags:
+			return slot
+
+	return null

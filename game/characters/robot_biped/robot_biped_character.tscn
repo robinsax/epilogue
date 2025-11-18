@@ -16,7 +16,7 @@ platform_wall_layers = 0
 script = ExtResource("1_pd0iq")
 
 [node name="Rig" parent="." index="2" instance=ExtResource("2_67ism")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.19147272, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.14262383, 0)
 torso_move_bounce_amount = 0.05
 torso_move_bounce_speed = 0.2
 

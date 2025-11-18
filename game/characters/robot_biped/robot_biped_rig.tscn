@@ -1,10 +1,14 @@
-[gd_scene load_steps=27 format=4 uid="uid://6snex1oyawiu"]
+[gd_scene load_steps=41 format=4 uid="uid://6snex1oyawiu"]
 
 [ext_resource type="Script" uid="uid://cp8pgsp6ww0av" path="res://characters/robot_biped/robot_biped_rig.gd" id="1_ck081"]
 [ext_resource type="PackedScene" uid="uid://4bksyv6bbpek" path="res://characters/robot_rig.tscn" id="1_lhgl7"]
 [ext_resource type="PackedScene" uid="uid://ca8168vrjjpki" path="res://characters/ik/leg_ik.tscn" id="3_bhhth"]
 [ext_resource type="PackedScene" uid="uid://cy1ggdmtks58v" path="res://characters/ik/arm_ik.tscn" id="3_o00eu"]
+[ext_resource type="PackedScene" uid="uid://y06hkoxu6pap" path="res://characters/character_hitbox.tscn" id="3_yf1e2"]
 [ext_resource type="PackedScene" uid="uid://dtaly3w02tiwl" path="res://items/inventory/inventory_slot.tscn" id="4_yf1e2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kuuon"]
+size = Vector3(1.2, 1, 0.7)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_alkda"]
 resource_name = "M_Base"
@@ -66,6 +70,9 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_sh6eb")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yf1e2"]
+size = Vector3(0.5, 1.2139282, 0.5)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_h6oqx"]
 _surfaces = [{
@@ -196,6 +203,9 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_f4t75")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exydf"]
+size = Vector3(0.8, 2, 1.4)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_4np2x"]
 _surfaces = [{
@@ -361,6 +371,45 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_of2gm")
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kuuon"]
+radius = 0.15654378
+height = 0.6
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_exydf"]
+radius = 0.0957766
+height = 0.3
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dmqrm"]
+radius = 0.09126033
+height = 0.4
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ia4np"]
+radius = 0.09464605
+height = 0.3
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xmgo1"]
+radius = 0.09334396
+height = 0.4
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xk4jq"]
+radius = 0.10746922
+height = 0.3
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pl4t0"]
+radius = 0.0991675
+height = 0.3
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_knllp"]
+radius = 0.10904579
+height = 0.3
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_24ecc"]
+radius = 0.09993883
+height = 0.3
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_yf1e2"]
+radius = 0.01
+
 [node name="Rig" instance=ExtResource("1_lhgl7")]
 script = ExtResource("1_ck081")
 movement_lean_carry = 3.0
@@ -368,6 +417,7 @@ input_lean_carry = 0.8
 crouch_lean = 0.9
 torso_move_bounce_amount = 0.09
 torso_move_bounce_speed = 0.3
+head_aim_tilt = 0.2
 
 [node name="Skeleton" type="Skeleton3D" parent="." index="1"]
 transform = Transform3D(-1.3113417e-08, 0, 0.3, 0, 0.3, 0, -0.3, 0, -1.3113417e-08, 0, 0, 0)
@@ -482,12 +532,22 @@ transform = Transform3D(0.9999998, 0, 0, 0, 0.9999998, 0, 0, 0, 0.9999998, 0, 1.
 bone_name = "B_Head"
 bone_idx = 2
 
-[node name="Head" type="MeshInstance3D" parent="Skeleton/B_Head" index="0"]
+[node name="HeadHitbox" parent="Skeleton/B_Head" index="0" instance=ExtResource("3_yf1e2")]
+transform = Transform3D(0.99999994, 0, -3.5527137e-15, 0, 0.99999994, 0, 3.5527137e-15, 0, 0.99999994, 0, 0.72673833, 0)
+hitpoints = 20
+is_cripple_lethal = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/B_Head/HeadHitbox" index="0"]
+transform = Transform3D(1, 0, -3.5527137e-15, 0, 1, 0, 3.5527137e-15, 0, 1, 0, -0.101391554, 0)
+shape = SubResource("BoxShape3D_kuuon")
+debug_color = Color(0.9841803, 0.060911596, 0.28552994, 0.41960785)
+
+[node name="Head" type="MeshInstance3D" parent="Skeleton/B_Head" index="1"]
 transform = Transform3D(0.9999999, 0, 3.5527137e-15, 0, 0.9999999, 0, -3.5527137e-15, 0, 0.9999999, 0, -3.8493319, 0)
 mesh = SubResource("ArrayMesh_7qrr8")
 skeleton = NodePath("")
 
-[node name="Eye" type="Node3D" parent="Skeleton/B_Head" index="1"]
+[node name="Eye" type="Node3D" parent="Skeleton/B_Head" index="2"]
 transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0.78327096, 0)
 
 [node name="B_LArm2" type="BoneAttachment3D" parent="Skeleton" index="1"]
@@ -495,10 +555,25 @@ transform = Transform3D(0.99999976, 0, 2.3841855e-07, 0, -0.99999976, 0, 2.38418
 bone_name = "B_LArm2"
 bone_idx = 4
 
-[node name="LArm2" type="MeshInstance3D" parent="Skeleton/B_LArm2" index="0"]
+[node name="CharacterHitbox" parent="Skeleton/B_LArm2" index="0" instance=ExtResource("3_yf1e2")]
+hitpoints = 15
+is_cripple_lethal = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/B_LArm2/CharacterHitbox" index="1"]
+transform = Transform3D(0.9999999, 0, 1.7763568e-12, 0, 0.9999999, 0, -1.7763568e-12, 0, 0.9999999, 0, 0.45126337, 0)
+shape = SubResource("BoxShape3D_yf1e2")
+debug_color = Color(0.9372549, 0, 0, 0.41960785)
+
+[node name="LArm2" type="MeshInstance3D" parent="Skeleton/B_LArm2" index="1"]
 transform = Transform3D(0.9999999, 0, 2.3841855e-07, 0, -1.0000001, 0, 2.3841855e-07, 0, -0.9999999, 2.1815589e-07, 2.891566, -0.9150122)
 mesh = SubResource("ArrayMesh_yf1e2")
 skeleton = NodePath("")
+
+[node name="LHandSlot" parent="Skeleton/B_LArm2" index="2" instance=ExtResource("4_yf1e2")]
+transform = Transform3D(0.9999999, 0, -3.8941428e-07, 0, 0.9999999, 0, 3.8941428e-07, 0, 0.9999999, 1.4210855e-14, 1.1535792, -1.1920929e-07)
+size = 1
+key = "lhand"
+required_tag = "never"
 
 [node name="B_LArm1" type="BoneAttachment3D" parent="Skeleton" index="2"]
 transform = Transform3D(0.9999998, 0, -1.5099577e-07, 0, -0.9999998, 0, -1.5099577e-07, 0, -0.9999998, 3.5527133e-15, 1.7995422, -0.91501224)
@@ -509,6 +584,16 @@ bone_idx = 3
 transform = Transform3D(0.9999999, 0, -8.742277e-08, 0, -0.9999999, 0, -8.742277e-08, 0, -0.9999999, -7.99929e-08, 3.8493314, -0.9150122)
 mesh = SubResource("ArrayMesh_kuuon")
 skeleton = NodePath("")
+
+[node name="CharacterHitbox2" parent="Skeleton/B_LArm1" index="1" instance=ExtResource("3_yf1e2")]
+transform = Transform3D(0.9999999, 0, 3.894143e-07, 0, 0.9999999, 0, -3.894143e-07, 0, 0.9999999, 2.842171e-14, 0.008264422, 1.1920929e-07)
+hitpoints = 15
+is_cripple_lethal = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/B_LArm1/CharacterHitbox2" index="1"]
+transform = Transform3D(0.9999999, 0, 1.7763568e-12, 0, 0.9999999, 0, -1.7763568e-12, 0, 0.9999999, 0, 0.45126337, 0)
+shape = SubResource("BoxShape3D_yf1e2")
+debug_color = Color(0.9372549, 0, 0, 0.41960785)
 
 [node name="B_RArm2" type="BoneAttachment3D" parent="Skeleton" index="3"]
 transform = Transform3D(0.99999976, 0, 2.842171e-14, 0, -0.99999976, 0, 2.842171e-14, 0, -0.99999976, 5.4473375e-15, 0.8530819, 0.92503536)
@@ -525,6 +610,16 @@ transform = Transform3D(-4.3711385e-08, 0.9999999, 0, -0.9999999, -4.3711385e-08
 size = 3
 key = "rhand"
 
+[node name="CharacterHitbox2" parent="Skeleton/B_RArm2" index="2" instance=ExtResource("3_yf1e2")]
+transform = Transform3D(0.9999999, 0, 3.8941428e-07, 0, 0.9999999, 0, -3.8941428e-07, 0, 0.9999999, 2.4868996e-14, 0.091617525, 5.9604645e-08)
+hitpoints = 15
+is_cripple_lethal = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/B_RArm2/CharacterHitbox2" index="1"]
+transform = Transform3D(0.9999999, 0, 1.7763568e-12, 0, 0.9999999, 0, -1.7763568e-12, 0, 0.9999999, 0, 0.45126337, 0)
+shape = SubResource("BoxShape3D_yf1e2")
+debug_color = Color(0.9372549, 0, 0, 0.41960785)
+
 [node name="B_RArm1" type="BoneAttachment3D" parent="Skeleton" index="4"]
 transform = Transform3D(0.9999998, 0, -1.5099577e-07, 0, -0.9999998, 0, -1.5099577e-07, 0, -0.9999998, 0, 1.7995422, 0.9250353)
 bone_name = "B_RArm1"
@@ -535,31 +630,50 @@ transform = Transform3D(0.9999999, 0, -8.742277e-08, 0, -0.9999999, 0, -8.742277
 mesh = SubResource("ArrayMesh_dmqrm")
 skeleton = NodePath("")
 
+[node name="CharacterHitbox2" parent="Skeleton/B_RArm1" index="1" instance=ExtResource("3_yf1e2")]
+transform = Transform3D(0.9999999, 0, 3.894143e-07, 0, 0.9999999, 0, -3.894143e-07, 0, 0.9999999, 2.842171e-14, 0.008264422, 1.1920929e-07)
+hitpoints = 15
+is_cripple_lethal = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/B_RArm1/CharacterHitbox2" index="1"]
+transform = Transform3D(0.9999999, 0, 1.7763568e-12, 0, 0.9999999, 0, -1.7763568e-12, 0, 0.9999999, 0, 0.45126337, 0)
+shape = SubResource("BoxShape3D_yf1e2")
+debug_color = Color(0.9372549, 0, 0, 0.41960785)
+
 [node name="B_Torso" type="BoneAttachment3D" parent="Skeleton" index="5"]
 transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0.2341046, 0)
 bone_name = "B_Torso"
 bone_idx = 1
 
-[node name="Torso" type="MeshInstance3D" parent="Skeleton/B_Torso" index="0"]
+[node name="CharacterHitbox" parent="Skeleton/B_Torso" index="0" instance=ExtResource("3_yf1e2")]
+hitpoints = 25
+is_cripple_lethal = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/B_Torso/CharacterHitbox" index="1"]
+transform = Transform3D(1, 0, -3.5527137e-15, 0, 1, 0, 3.5527137e-15, 0, 1, 0, 0.66876006, 0)
+shape = SubResource("BoxShape3D_exydf")
+debug_color = Color(0.9372549, 0, 0, 0.41960785)
+
+[node name="Torso" type="MeshInstance3D" parent="Skeleton/B_Torso" index="1"]
 transform = Transform3D(0.9999999, 0, 3.5527137e-15, 0, 0.9999999, 0, -3.5527137e-15, 0, 0.9999999, 0, -2.2838936, 0)
 mesh = SubResource("ArrayMesh_ia4np")
 skeleton = NodePath("")
 
-[node name="BackSlot" parent="Skeleton/B_Torso" index="1" instance=ExtResource("4_yf1e2")]
-transform = Transform3D(1, 0, -3.5527137e-15, 0, 1, 0, 3.5527137e-15, 0, 1, -0.5445647, 0.6500359, -2.380368e-08)
+[node name="BackSlot" parent="Skeleton/B_Torso" index="2" instance=ExtResource("4_yf1e2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5445647, 0.6500359, -2.380368e-08)
 size = 3
 key = "back"
 
-[node name="FrontPosition" type="Node3D" parent="Skeleton/B_Torso" index="2"]
-transform = Transform3D(-1.4570466e-07, 0, -3.3333335, 0, 3.3333335, 0, 3.3333335, 0, -1.4570466e-07, 1.0799819, 0.58828115, 0.34183288)
+[node name="FrontPosition" type="Node3D" parent="Skeleton/B_Torso" index="3"]
+transform = Transform3D(-1.4570466e-07, 0, -3.3333335, 0, 3.3333335, 0, 3.3333335, 0, -1.4570466e-07, 1.0799819, 1.2253444, 0.34183288)
 
-[node name="HandgunLow" type="Node3D" parent="Skeleton/B_Torso" index="3"]
+[node name="HandgunLow" type="Node3D" parent="Skeleton/B_Torso" index="4"]
 transform = Transform3D(-0.6427876, 0.7660445, -6.181724e-08, 0.5416752, 0.45451948, 0.70710677, 0.54167527, 0.45451942, -0.70710677, 0.7650399, 0, 0.94965893)
 
-[node name="LongGunLow" type="Node3D" parent="Skeleton/B_Torso" index="4"]
+[node name="LongGunLow" type="Node3D" parent="Skeleton/B_Torso" index="5"]
 transform = Transform3D(-0.22028147, 0.86306906, -0.45451942, 0.49999994, 0.49999994, 0.70710677, 0.83754164, -0.0714972, -0.54167527, 0.76504, 0.2974758, 0.60343146)
 
-[node name="AimShoulder" type="Node3D" parent="Skeleton/B_Torso" index="5"]
+[node name="AimShoulder" type="Node3D" parent="Skeleton/B_Torso" index="6"]
 transform = Transform3D(1, 0, -3.5527137e-15, 0, 1, 0, 3.5527137e-15, 0, 1, -2.814489e-08, 1.356071, 0.64388)
 
 [node name="B_LLeg2" type="BoneAttachment3D" parent="Skeleton" index="6"]
@@ -572,6 +686,16 @@ transform = Transform3D(1, 0, 2.3841855e-07, 0, -1.0000001, 0, 2.3841855e-07, 0,
 mesh = SubResource("ArrayMesh_xmgo1")
 skeleton = NodePath("")
 
+[node name="CharacterHitbox2" parent="Skeleton/B_LLeg2" index="1" instance=ExtResource("3_yf1e2")]
+transform = Transform3D(0.9999999, 0, 3.894143e-07, 0, 0.9999999, 0, -3.894143e-07, 0, 0.9999999, 2.842171e-14, 0.014669418, 1.1920929e-07)
+hitpoints = 15
+is_cripple_lethal = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/B_LLeg2/CharacterHitbox2" index="1"]
+transform = Transform3D(0.9999999, 0, 1.7763568e-12, 0, 0.9999999, 0, -1.7763568e-12, 0, 0.9999999, 0, 0.45126337, 0)
+shape = SubResource("BoxShape3D_yf1e2")
+debug_color = Color(0.9372549, 0, 0, 0.41960785)
+
 [node name="B_LLeg1" type="BoneAttachment3D" parent="Skeleton" index="7"]
 transform = Transform3D(0.9999999, 0, -1.5099577e-07, 0, -0.9999999, 0, -1.5099577e-07, 0, -0.9999999, 0, 7.450581e-09, -0.4709372)
 bone_name = "B_LLeg1"
@@ -581,6 +705,16 @@ bone_idx = 9
 transform = Transform3D(0.9999999, 0, -8.742277e-08, 0, -0.9999999, 0, -8.742277e-08, 0, -0.9999999, -4.1170626e-08, 2.0497892, -0.4709371)
 mesh = SubResource("ArrayMesh_xk4jq")
 skeleton = NodePath("")
+
+[node name="CharacterHitbox2" parent="Skeleton/B_LLeg1" index="1" instance=ExtResource("3_yf1e2")]
+transform = Transform3D(0.9999999, 0, 3.894143e-07, 0, 0.9999999, 0, -3.894143e-07, 0, 0.9999999, 2.842171e-14, 0.014669418, 1.1920929e-07)
+hitpoints = 15
+is_cripple_lethal = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/B_LLeg1/CharacterHitbox2" index="1"]
+transform = Transform3D(0.9999999, 0, 1.7763568e-12, 0, 0.9999999, 0, -1.7763568e-12, 0, 0.9999999, 0, 0.45126337, 0)
+shape = SubResource("BoxShape3D_yf1e2")
+debug_color = Color(0.9372549, 0, 0, 0.41960785)
 
 [node name="B_RLeg2" type="BoneAttachment3D" parent="Skeleton" index="8"]
 transform = Transform3D(-0.9999998, 0, 3.8941434e-07, 0, -0.9999998, 0, 3.8941434e-07, 0, 0.9999998, 2.048724e-14, -1.0904578, 0.4921154)
@@ -592,6 +726,16 @@ transform = Transform3D(-0.9999999, 0, 3.8941434e-07, 0, -0.9999999, 0, 3.894143
 mesh = SubResource("ArrayMesh_pl4t0")
 skeleton = NodePath("")
 
+[node name="CharacterHitbox2" parent="Skeleton/B_RLeg2" index="1" instance=ExtResource("3_yf1e2")]
+transform = Transform3D(0.9999999, 0, 3.894143e-07, 0, 0.9999999, 0, -3.894143e-07, 0, 0.9999999, 2.842171e-14, 0.014669418, 1.1920929e-07)
+hitpoints = 15
+is_cripple_lethal = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/B_RLeg2/CharacterHitbox2" index="1"]
+transform = Transform3D(0.9999999, 0, 1.7763568e-12, 0, 0.9999999, 0, -1.7763568e-12, 0, 0.9999999, 0, 0.45126337, 0)
+shape = SubResource("BoxShape3D_yf1e2")
+debug_color = Color(0.9372549, 0, 0, 0.41960785)
+
 [node name="B_RLeg1" type="BoneAttachment3D" parent="Skeleton" index="9"]
 transform = Transform3D(-0.9999999, 0, 3.8941437e-07, 0, -0.9999999, 0, 3.8941437e-07, 0, 0.9999999, 1.7763567e-15, 7.450581e-09, 0.49211538)
 bone_name = "B_RLeg1"
@@ -602,17 +746,29 @@ transform = Transform3D(-0.9999999, 0, 3.2584137e-07, 0, -0.9999999, 0, 3.258413
 mesh = SubResource("ArrayMesh_knllp")
 skeleton = NodePath("")
 
-[node name="LArmIK" parent="Skeleton" index="10" instance=ExtResource("3_o00eu")]
+[node name="CharacterHitbox2" parent="Skeleton/B_RLeg1" index="1" instance=ExtResource("3_yf1e2")]
+transform = Transform3D(0.9999999, 0, 3.894143e-07, 0, 0.9999999, 0, -3.894143e-07, 0, 0.9999999, 2.842171e-14, 0.014669418, 1.1920929e-07)
+hitpoints = 15
+is_cripple_lethal = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/B_RLeg1/CharacterHitbox2" index="1"]
+transform = Transform3D(0.9999999, 0, 1.7763568e-12, 0, 0.9999999, 0, -1.7763568e-12, 0, 0.9999999, 0, 0.45126337, 0)
+shape = SubResource("BoxShape3D_yf1e2")
+debug_color = Color(0.9372549, 0, 0, 0.41960785)
+
+[node name="LArmIK" parent="Skeleton" index="10" node_paths=PackedStringArray("slot") instance=ExtResource("3_o00eu")]
 transform = Transform3D(0.99999976, 0, -7.1054274e-15, 0, 0.99999976, 0, 7.1054274e-15, 0, 0.99999976, 0.5116018, -0.08837958, -1.1321951)
 root_bone = &"B_LArm1"
 tip_bone = &"B_LHand"
 magnet = Vector3(-3, 0, -3)
+slot = NodePath("../B_LArm2/LHandSlot")
 
-[node name="RArmIK" parent="Skeleton" index="11" instance=ExtResource("3_o00eu")]
+[node name="RArmIK" parent="Skeleton" index="11" node_paths=PackedStringArray("slot") instance=ExtResource("3_o00eu")]
 transform = Transform3D(1.7763568e-15, 0, 0.28073138, 0, 0.28073138, 0, -0.28073138, 0, 1.7763568e-15, 0.016325863, -0.19123843, 1.0691663)
 root_bone = &"B_RArm1"
 tip_bone = &"B_RHand"
 magnet = Vector3(-3, 0, 3)
+slot = NodePath("../B_RArm2/RHandSlot")
 
 [node name="LLegIK" parent="Skeleton" index="12" node_paths=PackedStringArray("other_legs") instance=ExtResource("3_bhhth")]
 transform = Transform3D(3.1391647e-07, 0, 0.99999976, 0, 0.99999976, 0, -0.99999976, 0, 3.1391647e-07, -0.16263825, -2.1552737, -0.44715157)
@@ -627,3 +783,174 @@ root_bone = &"B_RLeg1"
 tip_bone = &"B_RFoot"
 magnet = Vector3(0.25, 0, 0.5)
 other_legs = [NodePath("../LLegIK")]
+
+[node name="Ragdoll" type="PhysicalBoneSimulator3D" parent="Skeleton" index="14"]
+active = false
+
+[node name="Physical Bone B_Torso" type="PhysicalBone3D" parent="Skeleton/Ragdoll" index="0"]
+transform = Transform3D(3.333333, 0, 0, 0, 0, -3.333333, 0, 3.333333, 0, 0, 1.0168234, 0)
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.23481567)
+body_offset = Transform3D(3.3333333, 0, 0, 0, 0, -3.3333333, 0, 3.3333333, 0, 0, 0.7827189, 0)
+gravity_scale = 2.864
+linear_damp = 18.511
+angular_damp = 27.185
+bone_name = "B_Torso"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/Ragdoll/Physical Bone B_Torso" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_kuuon")
+
+[node name="Physical Bone B_LArm1" type="PhysicalBone3D" parent="Skeleton/Ragdoll" index="1"]
+transform = Transform3D(3.333333, -5.0331937e-07, -4.2864428e-14, 7.418751e-14, 2.074433e-07, 3.333333, -5.0331937e-07, -3.333333, 2.074433e-07, 6.039613e-14, 1.320659, -0.9150122)
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.385558e-14, 8.9407015e-09, 0.14366497)
+body_offset = Transform3D(3.3333335, -1.1368684e-13, -7.418751e-14, -7.4187516e-14, -2.0744334e-07, -3.3333335, 1.1368684e-13, 3.3333335, -2.0744334e-07, 5.684342e-14, 0.47888327, 0)
+gravity_scale = 2.864
+linear_damp = 18.511
+angular_damp = 27.185
+bone_name = "B_LArm1"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/Ragdoll/Physical Bone B_LArm1" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_exydf")
+
+[node name="Physical Bone B_LArm2" type="PhysicalBone3D" parent="Skeleton/Ragdoll" index="2"]
+transform = Transform3D(3.333333, 8.009215e-07, 2.5548494e-14, -7.78589e-14, 2.1770923e-07, 3.333333, 8.009215e-07, -3.333333, 2.1770923e-07, 1.7763568e-14, 0.38547483, -0.9150123)
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1974429e-15, 8.940697e-09, 0.13689049)
+body_offset = Transform3D(3.3333335, 6.192863e-09, 7.745444e-14, 7.7858916e-14, -2.1770926e-07, -3.3333335, -6.192863e-09, 3.3333335, -2.1770926e-07, 0, 0.45630166, 0)
+gravity_scale = 2.864
+linear_damp = 18.511
+angular_damp = 27.185
+bone_name = "B_LArm2"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/Ragdoll/Physical Bone B_LArm2" index="0"]
+transform = Transform3D(1, -2.3716923e-19, -3.5953462e-12, 3.5953462e-12, 7.1054252e-15, 1, -2.3801626e-19, -1, 7.105429e-15, 0, 0, -0.11217171)
+shape = SubResource("CapsuleShape3D_dmqrm")
+
+[node name="Physical Bone B_RArm1" type="PhysicalBone3D" parent="Skeleton/Ragdoll" index="3"]
+transform = Transform3D(3.333333, -5.0331937e-07, -1.9184954e-14, -1.2512282e-14, -2.0992125e-07, 3.333333, -5.0331937e-07, -3.333333, -2.0992125e-07, -3.5527137e-15, 1.326312, 0.9250353)
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3290697e-16, -8.940701e-09, 0.1419691)
+body_offset = Transform3D(3.3333335, -1.1368684e-13, 1.2512271e-14, 1.25122835e-14, 2.0992128e-07, -3.3333335, 1.1368684e-13, 3.3333335, 2.0992128e-07, 0, 0.47323036, 0)
+gravity_scale = 2.864
+linear_damp = 18.511
+angular_damp = 27.185
+bone_name = "B_RArm1"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/Ragdoll/Physical Bone B_RArm1" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_ia4np")
+
+[node name="Physical Bone B_RArm2" type="PhysicalBone3D" parent="Skeleton/Ragdoll" index="4"]
+transform = Transform3D(3.333333, 1.2789769e-13, -8.9598205e-15, 8.959829e-15, -2.1284954e-07, 3.333333, 1.2789769e-13, -3.333333, -2.1284954e-07, -1.5481305e-10, 0.3863622, 0.9250353)
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6445355e-11, -8.940698e-09, 0.14001593)
+body_offset = Transform3D(3.3333335, 1.4210855e-14, -8.959829e-15, -8.95983e-15, 2.1284957e-07, -3.3333335, -1.4210855e-14, 3.3333335, 2.1284957e-07, -1.548166e-10, 0.4667198, 0)
+gravity_scale = 2.864
+linear_damp = 18.511
+angular_damp = 27.185
+bone_name = "B_RArm2"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/Ragdoll/Physical Bone B_RArm2" index="0"]
+transform = Transform3D(1, 4.2351647e-22, 0, 0, -7.1054274e-15, 1, 4.2351647e-22, -1, -7.105427e-15, 1.4299673e-13, 0, -0.089929685)
+shape = SubResource("CapsuleShape3D_xmgo1")
+
+[node name="Physical Bone B_LLeg1" type="PhysicalBone3D" parent="Skeleton/Ragdoll" index="5"]
+transform = Transform3D(3.333333, -5.0331903e-07, 1.1386137e-14, 1.6528979e-14, 1.8487354e-07, 3.333333, -5.0331903e-07, -3.333333, 1.8487354e-07, -5.3290705e-15, -0.53734607, -0.4709371)
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0626164e-15, 2.6822093e-08, 0.16120385)
+body_offset = Transform3D(3.3333333, 1.7053026e-13, -1.6528989e-14, -1.652898e-14, -1.8487356e-07, -3.3333333, -1.7053026e-13, 3.3333333, -1.8487356e-07, -1.4210855e-14, 0.5373461, -5.9604645e-08)
+gravity_scale = 2.864
+linear_damp = 18.511
+angular_damp = 27.185
+bone_name = "B_LLeg1"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/Ragdoll/Physical Bone B_LLeg1" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_xk4jq")
+
+[node name="Physical Bone B_LLeg2" type="PhysicalBone3D" parent="Skeleton/Ragdoll" index="6"]
+transform = Transform3D(3.333333, 8.00921e-07, -6.008116e-14, 1.1941792e-14, 2.0035003e-07, 3.333333, 8.00921e-07, -3.333333, 2.0035003e-07, 7.1054274e-15, -1.5640359, -0.47093725)
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6057003e-15, 8.823605e-09, 0.14680316)
+body_offset = Transform3D(3.3333335, 6.192579e-09, -1.2313996e-14, -1.1941794e-14, -2.0035006e-07, -3.3333335, -6.192579e-09, 3.3333335, -2.0035006e-07, 7.1054274e-15, 0.48934388, 0)
+gravity_scale = 2.864
+linear_damp = 18.511
+angular_damp = 27.185
+bone_name = "B_LLeg2"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/Ragdoll/Physical Bone B_LLeg2" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_pl4t0")
+
+[node name="Physical Bone B_RLeg1" type="PhysicalBone3D" parent="Skeleton/Ragdoll" index="7"]
+transform = Transform3D(-3.333333, 1.2980483e-06, -5.719581e-14, -2.1720008e-14, 9.1100354e-08, 3.333333, 1.2980483e-06, 3.333333, -9.1100354e-08, -1.4210855e-14, -0.54522884, 0.49211538)
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3290705e-15, 4.47035e-09, 0.16356868)
+body_offset = Transform3D(3.3333333, -4.5474735e-13, 2.1720019e-14, 2.172001e-14, -9.110036e-08, -3.3333333, 4.5474735e-13, 3.3333333, -9.110036e-08, 1.4210855e-14, 0.5452289, 0)
+gravity_scale = 2.864
+linear_damp = 18.511
+angular_damp = 27.185
+bone_name = "B_RLeg1"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/Ragdoll/Physical Bone B_RLeg1" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_knllp")
+
+[node name="Physical Bone B_RLeg2" type="PhysicalBone3D" parent="Skeleton/Ragdoll" index="8"]
+transform = Transform3D(-3.333333, 1.2980483e-06, -6.24078e-14, -2.3699253e-14, 9.940191e-08, 3.333333, 1.2980483e-06, 3.333333, -9.940191e-08, 3.5527137e-14, -1.5901518, 0.49211538)
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.197442e-15, 4.4703494e-09, 0.14990823)
+body_offset = Transform3D(3.3333335, -4.5474735e-13, 2.3699274e-14, 2.3699257e-14, -9.940192e-08, -3.3333335, 4.5474735e-13, 3.3333335, -9.940192e-08, -1.4210855e-14, 0.4996941, 0)
+gravity_scale = 2.864
+linear_damp = 18.511
+angular_damp = 27.185
+bone_name = "B_RLeg2"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/Ragdoll/Physical Bone B_RLeg2" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_24ecc")
+
+[node name="PhysicalBone3D" type="PhysicalBone3D" parent="Skeleton/Ragdoll" index="9"]
+transform = Transform3D(3.333333, 0, -2.842171e-14, 0, 3.333333, 0, 2.842171e-14, 0, 3.333333, 0, 0.10133069, 0)
+joint_type = 1
+body_offset = Transform3D(3.3333333, 0, -2.842171e-14, 0, 3.3333333, 0, 2.842171e-14, 0, 3.3333333, 0, 0, 0)
+gravity_scale = 2.864
+linear_damp = 18.511
+angular_damp = 27.185
+bone_name = "B_Root"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton/Ragdoll/PhysicalBone3D" index="0"]
+shape = SubResource("SphereShape3D_yf1e2")
