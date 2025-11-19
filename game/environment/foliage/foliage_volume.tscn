@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://8ty1tojlndl7"]
+
+[ext_resource type="Script" uid="uid://bubrpknniy803" path="res://environment/foliage/foliage_volume.gd" id="1_nvnth"]
+[ext_resource type="ArrayMesh" uid="uid://c2ovw1ldjctfq" path="res://environment/foliage/grass_mesh.tres" id="2_v3ggd"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_v3ggd"]
+frequency = 0.2154
+
+[node name="FoliageVolume" type="Area3D"]
+script = ExtResource("1_nvnth")
+instance_mesh = ExtResource("2_v3ggd")
+clump_noise = SubResource("FastNoiseLite_v3ggd")
+placement_samples = 200
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+
+[node name="MultiMesh" type="MultiMeshInstance3D" parent="."]

@@ -1,6 +1,6 @@
 [gd_resource type="ArrayMesh" load_steps=4 format=4 uid="uid://c2ovw1ldjctfq"]
 
-[ext_resource type="Shader" uid="uid://dj8lqt6223ics" path="res://environment/foliage/grass.gdshader" id="1_13gy2"]
+[ext_resource type="Shader" uid="uid://dj8lqt6223ics" path="res://environment/desert_grass.gdshader" id="1_13gy2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5pncl"]
 render_priority = 0

@@ -1,3 +1,4 @@
+@tool
 class_name CollisionLayerValues extends Object
 
 static var PHYSICAL = 1 << 0

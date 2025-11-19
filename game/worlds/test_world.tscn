@@ -1,30 +1,19 @@
-[gd_scene load_steps=16 format=3 uid="uid://j7g42480ccel"]
+[gd_scene load_steps=15 format=3 uid="uid://j7g42480ccel"]
 
 [ext_resource type="PackedScene" uid="uid://b8tenhgyw1gnq" path="res://worlds/world.tscn" id="1_dxppu"]
 [ext_resource type="PackedScene" uid="uid://bcodp3agl6py1" path="res://characters/robot_biped/robot_biped_character.tscn" id="2_owvx3"]
 [ext_resource type="PackedScene" uid="uid://72lok018lt4q" path="res://items/wearable/backpack_item.tscn" id="3_0vnll"]
+[ext_resource type="PackedScene" uid="uid://dfb6dimb47k7w" path="res://environment/desert_ambient.tscn" id="3_1r0ly"]
 [ext_resource type="PackedScene" uid="uid://dywxb5ls3ypxt" path="res://items/wearable/holster_item.tscn" id="3_l51q2"]
-[ext_resource type="PackedScene" uid="uid://qptta7ln0gug" path="res://environment/foliage/grass_volume.tscn" id="3_ml2mc"]
 [ext_resource type="PackedScene" uid="uid://dmavclc21vx6p" path="res://items/duct_tape_item.tscn" id="3_qwmnv"]
 [ext_resource type="PackedScene" uid="uid://7722h4kqbf2f" path="res://items/guns/enforcer_handgun_item.tscn" id="4_3pu0q"]
 [ext_resource type="PackedScene" uid="uid://idqwct8aitv6" path="res://items/guns/mainline_dmr_item.tscn" id="4_48yah"]
 [ext_resource type="PackedScene" uid="uid://dimooetl0h5ps" path="res://items/battery_item.tscn" id="4_ekotj"]
+[ext_resource type="PackedScene" uid="uid://dbdnmag8ldkcy" path="res://environment/generation/environment_generator.tscn" id="4_vfkvn"]
 [ext_resource type="PackedScene" uid="uid://7p10njioyqtc" path="res://items/guns/dmr_magazine_item.tscn" id="6_ekotj"]
 [ext_resource type="PackedScene" uid="uid://bc3vk7fhuheyb" path="res://items/guns/pistol_magazine_item.tscn" id="7_3pu0q"]
 [ext_resource type="PackedScene" uid="uid://de02147up6ff2" path="res://items/wearable/liteplate_item.tscn" id="11_e6u38"]
 [ext_resource type="PackedScene" uid="uid://c3wics14g0o70" path="res://items/wearable/utility_belt_item.tscn" id="12_up6qr"]
-
-[sub_resource type="Sky" id="Sky_up6qr"]
-
-[sub_resource type="Environment" id="Environment_q1iji"]
-background_mode = 1
-background_color = Color(0.2934936, 0.5382142, 0.5733821, 1)
-background_energy_multiplier = 1.16
-sky = SubResource("Sky_up6qr")
-ambient_light_source = 3
-ambient_light_color = Color(0.9872734, 0.8376988, 0.6520929, 1)
-ambient_light_sky_contribution = 0.65
-ambient_light_energy = 1.86
 
 [node name="World" instance=ExtResource("1_dxppu")]
 
@@ -84,18 +73,10 @@ collision_layer = 3
 collision_mask = 3
 size = Vector3(1, 1.3067627, 1)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Static" index="7"]
-environment = SubResource("Environment_q1iji")
+[node name="DesertAmbient" parent="Static" index="7" instance=ExtResource("3_1r0ly")]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Static" index="8"]
-transform = Transform3D(0.9695498, 0.05245429, -0.23921125, 0.05532877, 0.9046174, 0.42261833, 0.23856279, -0.42298472, 0.8741693, 0, 4.400909, 0)
-light_energy = 2.155
-light_indirect_energy = 0.745
-shadow_enabled = true
-
-[node name="GrassVolume" parent="Static" index="9" instance=ExtResource("3_ml2mc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4285812, -1.1464756, 1.6342392)
-radius = 5.0
+[node name="EnvironmentGenerator" parent="Static" index="8" instance=ExtResource("4_vfkvn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -111.37694, -44.816364, -84.74993)
 
 [node name="Item6" parent="Items" index="0" instance=ExtResource("6_ekotj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9687524, -1.809488, -1.7640035)

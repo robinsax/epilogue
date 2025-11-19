@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cngye5mkntscc"]
+
+[ext_resource type="Shader" uid="uid://1qrjre3chl6l" path="res://environment/desert_ground.gdshader" id="1_r4152"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_r4152")
+shader_parameter/base_color = Color(0.9950803, 0.8404279, 0.6558739, 1)
+shader_parameter/rock_base_color = Color(0.3328807, 0.33288068, 0.33288068, 1)
+shader_parameter/greenery_base_color = Color(0.6406751, 0.6845061, 0.20185214, 1)
+shader_parameter/cliffs_base_color = Color(0.7622093, 0.53161764, 0.25094825, 1)
