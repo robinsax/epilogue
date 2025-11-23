@@ -32,25 +32,22 @@ func _process(delta):
 
 func _update_rig_offset():
 	# Shift rig to allow leg IK on slopes.
-	var floor_angle = get_floor_angle()
+	var floor_angle = shell.get_floor_angle()
 	if abs(floor_angle - (PI / 2)) > 0.01:
 		# Not in air.
 		rig.position.y = _base_rig_y - abs(floor_angle * 0.1)
 	else:
 		rig.position.y = _base_rig_y
 
-func _physics_process(delta):
-	super._physics_process(delta)
-
-	if not is_on_floor():
+func update_velocity(delta):
+	var on_floor = shell.is_on_floor()
+	if not on_floor:
+		move_direction = _jump_move_direction_lock.rotated(Vector3.UP, -global_rotation.y)
 		velocity.y -= _gravity * delta
-	if jumping and is_on_floor():
+
+	if jumping and on_floor:
 		velocity.y = jump_velocity
 		_jump_move_direction_lock = move_direction.rotated(Vector3.UP, global_rotation.y)
-
-func update_velocity(delta):
-	if not is_on_floor():
-		move_direction = _jump_move_direction_lock.rotated(Vector3.UP, -global_rotation.y)
 
 	super.update_velocity(delta)
 

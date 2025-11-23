@@ -50,3 +50,9 @@ offset_left = 7.0
 offset_top = 59.0
 offset_right = 294.0
 offset_bottom = 100.0
+
+[node name="FPS" type="Label" parent="CameraArm/Camera/HUD" index="3"]
+layout_mode = 0
+offset_left = 1018.0
+offset_right = 1141.0
+offset_bottom = 23.0

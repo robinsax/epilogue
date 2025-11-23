@@ -1,0 +1,9 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1qnu1lur6cx2"]
+
+[ext_resource type="PackedScene" uid="uid://c3s6ea5sgrtrt" path="res://meta/ai/ai_spawn.tscn" id="1_pv4tk"]
+[ext_resource type="PackedScene" uid="uid://bcodp3agl6py1" path="res://characters/robot_biped/robot_biped_character.tscn" id="2_p8q0f"]
+[ext_resource type="PackedScene" uid="uid://dvedl0ggfokjh" path="res://meta/ai/test_ai_possession.tscn" id="3_uohk3"]
+
+[node name="AISpawn" instance=ExtResource("1_pv4tk")]
+character = ExtResource("2_p8q0f")
+possession = ExtResource("3_uohk3")

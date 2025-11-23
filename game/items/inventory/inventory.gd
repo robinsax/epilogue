@@ -19,45 +19,70 @@ func _discover_slots(current: Node):
 func _process(delta):
 	pass
 
-func _all_slots() -> Array[InventorySlot]:
+func all_slots() -> Array[InventorySlot]:
 	var all = _slots.duplicate()
 	for slot in _slots:
 		if slot.item != null:
-			all.append_array(slot.item.inventory._all_slots())
+			all.append_array(slot.item.inventory.all_slots())
 
 	return all
 
 func get_slot(key: String) -> InventorySlot:
-	for slot in _all_slots():
+	for slot in all_slots():
 		if slot.key == key:
 			return slot
 
 	return null
 
+class RankedSlot:
+	var rank: int
+	var slot: InventorySlot
+
+func get_ranked_compatible_slots_for(item: Item) -> Array[InventorySlot]:
+	var ranked: Array[RankedSlot] = []
+	var insert = func (slot: InventorySlot):
+		var instance = RankedSlot.new()
+		instance.rank = slot.compatibility_rank_for(item)
+		instance.slot = slot
+
+		for i in ranked.size():
+			if ranked[i].rank < instance.rank:
+				ranked.insert(i, instance)
+				return
+
+		ranked.push_back(instance)
+
+	for slot in all_slots():
+		if not slot.is_item_compatible(item):
+			continue
+
+		insert.call(slot)
+
+	var slots: Array[InventorySlot] = []
+	for instance in ranked:
+		slots.push_back(instance.slot)
+
+	return slots
+
 func get_available_slot_for(item: Item) -> InventorySlot:
-	for slot in _all_slots():
-		if slot.required_tag != "" and slot.is_item_compatible(item) and slot.is_available():
-			return slot
-
-	for slot in _all_slots():
-		if slot.size == item.size and slot.is_item_compatible(item) and slot.is_available():
-			return slot
-
-	for slot in _all_slots():
-		if slot.is_item_compatible(item) and slot.is_available():
+	var ranked_slots = get_ranked_compatible_slots_for(item)
+	for slot in ranked_slots:
+		if slot.is_available():
 			return slot
 
 	return null
 
 func get_attachment_string(slot: InventorySlot) -> String:
 	var owner_type = "i"
+	var owner_name = _owner.name
 	if _owner is Character:
 		owner_type = "c"
+		owner_name = _owner.get_parent().name
 
-	return owner_type + "/" + _owner.name + "/" + slot.key
+	return owner_type + "/" + owner_name + "/" + slot.key
 
 func get_slot_with_item_tag(tag: String, exclude: Array[InventorySlot] = []) -> InventorySlot:
-	for slot in _all_slots():
+	for slot in all_slots():
 		if exclude and slot in exclude:
 			continue
 
@@ -65,3 +90,18 @@ func get_slot_with_item_tag(tag: String, exclude: Array[InventorySlot] = []) -> 
 			return slot
 
 	return null
+
+func get_slot_with_item_tag_best_hand_value(tag: String) -> InventorySlot:
+	var best: InventorySlot = null
+	for slot in all_slots():
+		if slot.item == null or not tag in slot.item.tags:
+			continue
+
+		var is_better = (
+			best == null or
+			(slot.item.rarity > best.item.rarity and slot.item.hand_value > best.item.hand_value)
+		)
+		if is_better:
+			best = slot
+
+	return best

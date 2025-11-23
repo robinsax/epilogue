@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3wg6k05cheyr"]
+
+[ext_resource type="PackedScene" uid="uid://df8k2keupque2" path="res://characters/shells/lofi_character_shell.tscn" id="1_01sja"]
+[ext_resource type="PackedScene" uid="uid://bcodp3agl6py1" path="res://characters/robot_biped/robot_biped_character.tscn" id="2_uaokf"]
+
+[node name="LoFiCharacterShell" instance=ExtResource("1_01sja")]
+
+[node name="Character" parent="." index="0" instance=ExtResource("2_uaokf")]
+interact_reach = 1.5
+move_direction = Vector3(0, 0, 0)
+aim_target = Vector3(0, 0, 0)
+look_target = Vector3(0, 0, 0)
+aiming = false
+firing = false
+dead = false

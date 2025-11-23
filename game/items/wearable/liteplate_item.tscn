@@ -52,6 +52,8 @@ size = Vector3(0.4, 0.4, 0.4)
 size = 3
 label = "LitePlate Plate Carrier"
 tags = Array[String](["vest"])
+rarity = 3
+hand_value = -1
 
 [node name="Plate" type="MeshInstance3D" parent="." index="2"]
 transform = Transform3D(-5.2453668e-08, 0, -1.2, 0, 1.2, 0, 1.2, 0, -5.2453668e-08, -0.014460012, -0.04751286, 0)

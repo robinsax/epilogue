@@ -82,7 +82,8 @@ func _spawn_character(conn_id: int):
 	if not multiplayer.is_server():
 		return
 
-	var character = load("res://characters/robot_biped/robot_biped_character.tscn").instantiate()
+	var character = load("res://characters/shells/test_player_shell.tscn").instantiate()
 	character.name = str(conn_id)
 	_world.characters.add_child(character, true)
+	character.global_position = _world.get_node("Static/Spawns").global_position
 	print("Spawned character ", character, " for ", conn_id)

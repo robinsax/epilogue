@@ -6,7 +6,6 @@
 script = ExtResource("1_m138w")
 
 [node name="CharactersSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://bcodp3agl6py1")
 spawn_path = NodePath("../Characters")
 
 [node name="Characters" type="Node3D" parent="."]

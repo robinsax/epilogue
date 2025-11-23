@@ -129,7 +129,7 @@ func _process(delta):
 
 	var look_cast_result = _screen_raycast(
 		look_cast_screen_position,
-		CollisionLayerValues.PHYSICAL | CollisionLayerValues.ITEMS,
+		CollisionLayerValues.PHYSICAL | CollisionLayerValues.CHARACTERS | CollisionLayerValues.ITEMS,
 		false, ignore_rids
 	)
 	var hit_distance = INF
@@ -159,6 +159,8 @@ func _process(delta):
 		_hud_slot.text = _slot_target.key
 	else:
 		_hud_slot.text = ""
+
+	get_node("CameraArm/Camera/HUD/FPS").text = str(Engine.get_frames_per_second())
 
 func _screen_raycast(
 	screen_position: Vector2, collision_mask: int, areas: bool,

@@ -29,12 +29,20 @@ properties/7/path = NodePath(".:dead")
 properties/7/spawn = true
 properties/7/replication_mode = 1
 
-[node name="Character" type="CharacterBody3D"]
-platform_floor_layers = 4294967041
-platform_wall_layers = 1
+[node name="Character" type="Node3D"]
 script = ExtResource("1_54qew")
+speed = null
+interact_reach = null
+move_direction = null
+aim_target = null
+look_target = null
+aiming = null
+firing = null
+dead = null
 
 [node name="CharacterSync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_54qew")
 
 [node name="Inventory" parent="." instance=ExtResource("2_qqr4u")]
+
+[node name="NavAgent" type="NavigationAgent3D" parent="."]

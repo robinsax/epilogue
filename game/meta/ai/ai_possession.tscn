@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dyhh73qgorswk"]
+
+[ext_resource type="Script" uid="uid://ck1mnbl3ua8sj" path="res://meta/ai/ai_possession.gd" id="1_q0cry"]
+
+[node name="AIPossession" type="Node3D"]
+script = ExtResource("1_q0cry")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3276899, 0)
+visible = false
+pixel_size = 0.006
+billboard = 1
+
+[node name="Target" type="Label3D" parent="."]
+visible = false
+billboard = 1
+text = "Target"

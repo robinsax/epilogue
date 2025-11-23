@@ -4,10 +4,16 @@ static var SIZE_SMALL = 1
 static var SIZE_MEDIUM = 2
 static var SIZE_LARGE = 3
 
+static var RARITY_COMMON = 1
+static var RARITY_UNCOMMON = 2
+static var RARITY_RARE = 3
+
 @export var size: int = 1
 @export var label: String = "Item"
 @export var in_slot_rotation: Vector3 = Vector3.ZERO
 @export var tags: Array[String] = []
+@export var rarity: int = 1
+@export var hand_value: int = 1
 
 @export var attachment: String = ""
 var _last_attachment: String = ""
@@ -40,6 +46,20 @@ func _update_position():
 				Basis.from_euler(in_slot_rotation)
 			)
 
+func _resolve_attachment():
+	var parts = attachment.split("/")
+	var parent_type = parts[0]
+	var parent_id = parts[1]
+	var slot_key = parts[2]
+
+	var parent_inventory: Inventory = null
+	if parent_type == "c":
+		parent_inventory = World.current.get_character(parent_id).inventory
+	elif parent_type == "i":
+		parent_inventory = World.current.get_item(parent_id).inventory
+
+	return parent_inventory.get_slot(slot_key)
+
 func _update_attachment():
 	if attachment == _last_attachment:
 		return
@@ -47,7 +67,12 @@ func _update_attachment():
 
 	var is_detach = attachment.length() == 0
 	if is_detach:
+		set_physics_process(true)
+		set_physics_process_internal(true)
+		freeze = false
+		set_collision_mask_value(CollisionLayerValues.PHYSICAL, true)
 		linear_velocity = Vector3.ZERO
+		angular_velocity = Vector3.ZERO
 
 	if current_slot != null and current_slot.item == self:
 		# Same-tick updates may have switched the item.
@@ -58,19 +83,14 @@ func _update_attachment():
 	if is_detach:
 		return
 
-	var parts = attachment.split("/")
-	var parent_type = parts[0]
-	var parent_id = parts[1]
-	var slot_key = parts[2]
+	set_physics_process(false)
+	set_physics_process_internal(false)
+	set_collision_mask_value(CollisionLayerValues.PHYSICAL, false)
+	freeze = true
 
-	var parent_inventory: Inventory = null
-	if parent_type == "c":
-		parent_inventory = World.current.get_character(parent_id).inventory
-	elif parent_type == "i":
-		parent_inventory = World.current.items.find_child(parent_id).inventory
-
-	current_slot = parent_inventory.get_slot(slot_key)
+	current_slot = _resolve_attachment()
 	current_slot.item = self
+	current_slot.pending_item = null
 
 func animate_biped_as_active(character: RobotBipedCharacter, rig: RobotBipedRig, delta: float):
 	pass
@@ -87,3 +107,5 @@ func update_attachment(new_attachment: String):
 		return
 
 	attachment = new_attachment
+	if attachment.length() > 0:
+		_resolve_attachment().pending_item = self

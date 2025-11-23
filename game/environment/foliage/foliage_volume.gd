@@ -1,74 +1,84 @@
 @tool
-class_name FoliageVolume extends Area3D
+class_name FoliageVolume extends EnvironmentVolume
 
-@export_tool_button("Generate", "Callable") var generate_action = generate
+var MAX_IMPACTORS = 8
 
-@export var instance_mesh: Mesh = null
-@export var clump_noise: Noise = null
-@export var placement_samples: int = 100
-@export var cutoff: float = 0.0
+@export var cull_distance: float = 60.0
 
-var _biomes: Texture2D = null
-var _terrain_size: int = 0
-var _terrain_offset: Vector3 = Vector3.ZERO
+var source: FoliageSource = null
+var parent_terrain: TerrainVolume = null
 
-func configure(biomes: Texture2D, terrain_offset: Vector3, terrain_size: int):
-	_biomes = biomes
-	_terrain_offset = terrain_offset
-	_terrain_size = terrain_size
+var _culled: bool = true
+var _mesh: MultiMeshInstance3D = null
+var _impactors: Array[Node3D] = []
+var _impactors_changed: bool = false
 
-func generate():
-	var shape: BoxShape3D = $Shape.shape
-	var mesh_instance: MultiMeshInstance3D = $MultiMesh
-	var mesh = MultiMesh.new()
-	mesh.transform_format = MultiMesh.TRANSFORM_3D
-	mesh.mesh = instance_mesh
-	mesh_instance.multimesh = mesh
+func _get_mesh() -> MultiMeshInstance3D:
+	if _mesh == null:
+		_mesh = get_node("MultiMesh")
 
-	var size = shape.size.x
-	var base_offset = Vector3(-size * 0.5, 0.0, -size * 0.5)
-	var sample_size = size / float(placement_samples)
-	var transforms: Array[Transform3D] = []
-	for x in placement_samples:
-		for z in placement_samples:
-			var point = global_position + base_offset + Vector3(x * sample_size, 0.0, z * sample_size)
-			var noise_sample = clump_noise.get_noise_2d(point.x, point.z)
-			if noise_sample < cutoff:
-				continue
+	return _mesh
 
-			var ground_position = _get_ground_position(shape, point)
+func _ready():
+	body_entered.connect(_add_impactor)
+	body_exited.connect(_remove_impactor)
 
-			var inst_scale = randf()
-			var offset = Vector3(
-				randf(), 0.0, randf()
-			)
+func _process(delta):
+	if source == null or _culled:
+		return
 
-			var inst_transform = Transform3D(
-				Basis(Vector3.UP, randf() * PI).scaled(Vector3.ONE * inst_scale),
-				ground_position - global_position + offset
-			)
+	var mesh = _get_mesh()
+	for i in MAX_IMPACTORS:
+		var value = Vector3.ZERO
+		if _impactors.size() > i:
+			value = _impactors[i].global_position
+		elif not _impactors_changed:
+			break
 
-			transforms.push_back(inst_transform)
+		mesh.set_instance_shader_parameter("world_impactor_" + str(i), value)
 
-	mesh.instance_count = transforms.size()
+	_impactors_changed = false
+
+func _add_impactor(node: Node3D):
+	_impactors_changed = true
+	_impactors.push_back(node)
+
+func _remove_impactor(node: Node3D):
+	_impactors_changed = false
+	_impactors.remove_at(_impactors.find(node))
+
+func update_volume_state(observer_distance: float):
+	super.update_volume_state(observer_distance)
+
+	_culled = observer_distance > cull_distance
+	_get_mesh().visible = not _culled
+
+func populate_volume():
+	generator.populate_foliage(self)
+
+func apply_population(
+	transforms: Array[Transform3D], biomes: Texture2D,
+	terrain_global_position: Vector3, terrain_size: float
+):
+	var shape: Shape3D = get_node("Shape").shape
+	var size = shape.size.z / 2.0
+
+	var multimesh_node: MultiMeshInstance3D = get_node("MultiMesh")
+	var multimesh = MultiMesh.new()
+	multimesh.transform_format = MultiMesh.TRANSFORM_3D
+	multimesh.mesh = source.instance_mesh
+	multimesh_node.multimesh = multimesh
+
+	if source.instance_shader:
+		var mesh_shader = ShaderMaterial.new()
+		mesh_shader.shader = source.instance_shader
+		mesh_shader.set_shader_parameter("biomes", biomes)
+		mesh_shader.set_shader_parameter("terrain_size", terrain_size)
+		mesh_shader.set_shader_parameter("terrain_offset", terrain_global_position)
+		multimesh.mesh.surface_set_material(0, mesh_shader)
+	else:
+		multimesh.mesh.surface_set_material(0, source.instance_material)
+
+	multimesh.instance_count = transforms.size()
 	for i in transforms.size():
-		mesh.set_instance_transform(i, transforms[i]) 
-
-	var mesh_shader = mesh.mesh.surface_get_material(0)
-	mesh_shader.set_shader_parameter("biomes", _biomes)
-	mesh_shader.set_shader_parameter("terrain_size", _terrain_size)
-	mesh_shader.set_shader_parameter("terrain_offset", _terrain_offset)
-
-func _get_ground_position(shape: BoxShape3D, for_point: Vector3) -> Vector3:
-	var query = PhysicsRayQueryParameters3D.create(
-		Vector3(for_point.x, global_position.y + (shape.size.y / 2), for_point.z),
-		Vector3(for_point.x, global_position.y - (shape.size.y / 2), for_point.z)
-	)
-	query.collision_mask = CollisionLayerValues.PHYSICAL
-
-	var space = get_world_3d().direct_space_state
-	var result = space.intersect_ray(query)
-	if "position" in result:
-		return result.position
-
-	return Vector3.ZERO
+		multimesh.set_instance_transform(i, transforms[i]) 

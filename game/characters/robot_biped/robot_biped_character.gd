@@ -1,5 +1,6 @@
 class_name RobotBipedCharacter extends GroundCharacter
 
+var _item_action_active: bool = false
 var _typed_rig: RobotBipedRig = null
 var _main_hand_slot: InventorySlot = null
 
@@ -7,6 +8,8 @@ func _ready():
 	super._ready()
 	_typed_rig = rig
 	_main_hand_slot = inventory.get_slot("rhand")
+
+	perception_volumes.push_back($RadarPerception)
 
 func _process(delta):
 	super._process(delta)
@@ -31,6 +34,12 @@ func get_look_cast_ignore_rids() -> Array[RID]:
 
 	return rids
 
+func get_hand_slot() -> InventorySlot:
+	return _main_hand_slot
+
+func can_perform_actions():
+	return not _item_action_active
+
 func _pick_hand_ik_for_anim():
 	if _main_hand_slot.is_available() and not _typed_rig.main_hand_ik.is_busy():
 		return _typed_rig.main_hand_ik
@@ -41,14 +50,19 @@ func _pick_hand_ik_for_anim():
 		return null
 
 func take_item(item: Item):
+	if _item_action_active:
+		return
+
 	var slot = inventory.get_available_slot_for(item)
-	if not slot:
+	if slot == null:
 		return
 
 	var anim_chain = AnimChain.new()
 	var hand_ik = _pick_hand_ik_for_anim()
 	if hand_ik == null:
 		return
+
+	_item_action_active = true
 
 	var take_to_hand = func ():
 		hand_ik.reach_to(item.global_position, anim_chain.next)
@@ -62,12 +76,16 @@ func take_item(item: Item):
 
 	var finalize = func ():
 		item.update_attachment.rpc(slot.get_attachment_string())
+		_item_action_active = false
 		anim_chain.next.call()
 	anim_chain.add(finalize)
 
 	anim_chain.next.call()
 
 func drop_item_slot(target_slot: InventorySlot):
+	if _item_action_active:
+		return
+
 	var item = target_slot.item
 	if item == null:
 		return
@@ -79,6 +97,8 @@ func drop_item_slot(target_slot: InventorySlot):
 
 	if hand_ik == null:
 		return
+
+	_item_action_active = true
 
 	if target_slot != _main_hand_slot:
 		var take_to_hand = func ():
@@ -92,12 +112,16 @@ func drop_item_slot(target_slot: InventorySlot):
 
 	var drop = func ():
 		item.update_attachment.rpc("")
+		_item_action_active = false
 		anim_chain.next.call()
 	anim_chain.add(drop)
 
 	anim_chain.next.call()
 
 func move_item_slots(from_slot: InventorySlot, to_slot: InventorySlot):
+	if _item_action_active:
+		return
+
 	var item = from_slot.item
 	var replaced_item = to_slot.item
 	var replaced_item_dest_slot = inventory.get_available_slot_for(item)
@@ -108,6 +132,8 @@ func move_item_slots(from_slot: InventorySlot, to_slot: InventorySlot):
 	var hand_ik = _pick_hand_ik_for_anim()
 	if hand_ik == null:
 		return
+
+	_item_action_active = true
 
 	if from_slot != hand_ik.slot:
 		var move_hand_to_from = func ():
@@ -143,9 +169,17 @@ func move_item_slots(from_slot: InventorySlot, to_slot: InventorySlot):
 			anim_chain.next.call()
 		anim_chain.add(finalize_replace)
 
+	var finalize = func ():
+		_item_action_active = false
+		anim_chain.next.call()
+	anim_chain.add(finalize)
+
 	anim_chain.next.call()
 
 func manage_item_slot(target_slot: InventorySlot):
+	if _item_action_active:
+		return
+
 	# Take item to main hand slot.
 	if target_slot == _main_hand_slot or _typed_rig.main_hand_ik.is_busy():
 		return
@@ -158,6 +192,8 @@ func manage_item_slot(target_slot: InventorySlot):
 		return
 
 	var anim_chain = AnimChain.new()
+
+	_item_action_active = true
 
 	if main_hand_item_cant_put:
 		var active_dest_slot = inventory.get_available_slot_for(_main_hand_slot.item)
@@ -186,6 +222,7 @@ func manage_item_slot(target_slot: InventorySlot):
 			_main_hand_slot.item.update_attachment.rpc(target_slot.get_attachment_string())
 		if target_slot.item != null:
 			target_slot.item.update_attachment.rpc(_main_hand_slot.get_attachment_string())
+		_item_action_active = false
 		anim_chain.next.call()
 	anim_chain.add(finalize)
 

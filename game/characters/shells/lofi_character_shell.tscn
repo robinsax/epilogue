@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://df8k2keupque2"]
+
+[ext_resource type="Script" uid="uid://bjkqrk717vh6o" path="res://characters/shells/lofi_character_shell.gd" id="1_s63rp"]
+
+[node name="LoFiCharacterShell" type="StaticBody3D"]
+collision_mask = 65
+script = ExtResource("1_s63rp")

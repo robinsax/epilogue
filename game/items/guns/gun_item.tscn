@@ -22,6 +22,8 @@ vertical_recoil = 0.3
 horizontal_recoil = 0.1
 recoil_time = 0.4
 action_projectile_type = ""
+tags = Array[String](["gun"])
+hand_value = 2
 
 [node name="GunSynchronizer" type="MultiplayerSynchronizer" parent="." index="2"]
 replication_config = SubResource("SceneReplicationConfig_deppv")

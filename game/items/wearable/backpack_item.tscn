@@ -101,6 +101,8 @@ shadow_mesh = SubResource("ArrayMesh_0aafa")
 [node name="Item" instance=ExtResource("1_ktvlm")]
 size = 3
 label = "Daypack"
+rarity = 2
+hand_value = -1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02354154, 0.046720922, 0)

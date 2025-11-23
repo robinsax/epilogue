@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3s6ea5sgrtrt"]
+
+[ext_resource type="Script" uid="uid://b8vktgha0n5uk" path="res://meta/ai/ai_spawn.gd" id="1_yp3e3"]
+[ext_resource type="PackedScene" uid="uid://b3wg6k05cheyr" path="res://characters/shells/test_ai_shell.tscn" id="2_500ok"]
+[ext_resource type="PackedScene" uid="uid://dvedl0ggfokjh" path="res://meta/ai/test_ai_possession.tscn" id="3_c5dg4"]
+
+[node name="AISpawn" type="Node3D"]
+script = ExtResource("1_yp3e3")
+shell = ExtResource("2_500ok")
+possession = ExtResource("3_c5dg4")

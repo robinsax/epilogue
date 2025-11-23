@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://dej411f2grjd1"]
+
+[ext_resource type="PackedScene" uid="uid://7yln2fvmqakt" path="res://characters/shells/hifi_character_shell.tscn" id="1_tr1jt"]
+[ext_resource type="PackedScene" uid="uid://bcodp3agl6py1" path="res://characters/robot_biped/robot_biped_character.tscn" id="2_yvokx"]
+
+[node name="HiFiCharacterShell" instance=ExtResource("1_tr1jt")]
+
+[node name="Character" parent="." index="0" instance=ExtResource("2_yvokx")]

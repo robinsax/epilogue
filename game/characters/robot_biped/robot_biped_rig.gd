@@ -13,8 +13,8 @@ var _ragdoll: PhysicalBoneSimulator3D = null
 var _torso_bone: int = 0
 var _head_bone: int = 0
 var _move_time: float = 0
-var _eye: Node3D = null
 
+var eye: Node3D = null
 var main_hand_ik: ArmIK = null
 var off_hand_ik: ArmIK = null
 var front_position: Node3D = null
@@ -31,12 +31,12 @@ func _ready():
 	_torso_bone = _skeleton.find_bone("B_Torso")
 	_head_bone = _skeleton.find_bone("B_Head")
 	front_position = $Skeleton/B_Torso/FrontPosition
-	_eye = $Skeleton/B_Head/Eye
+	eye = $Skeleton/B_Torso/Eye
 
 	_last_position = global_position
 
-func _process(delta):
-	super._process(delta)
+func _physics_process(delta):
+	super._physics_process(delta)
 
 	if character.dead:
 		if not _ragdoll.active:
@@ -63,7 +63,7 @@ func _process(delta):
 		)
 	)
 	var torso_offset = 0
-	if not local_last_move.is_zero_approx() and character.is_on_floor():
+	if not local_last_move.is_zero_approx() and character.shell.is_on_floor():
 		var sin_time = _move_time / torso_move_bounce_speed
 		sin_time -= int(sin_time)
 		torso_offset += sin(sin_time * PI) * torso_move_bounce_amount
@@ -78,11 +78,8 @@ func _process(delta):
 	)
 	_skeleton.set_bone_pose(_torso_bone, torso_transform)
 
-	_eye.look_at(character.look_target)
-	var head_look_basis = (
-		Basis(Vector3.UP, _eye.global_rotation.y - global_rotation.y) *
-		Basis(Vector3.BACK, _eye.global_rotation.x - global_rotation.x)
-	)
+	eye.look_at(character.look_target, Vector3.UP)
+	var head_look_basis = eye.basis * Basis(Vector3.UP, PI / 2)
 
 	var head_rest_transform = _skeleton.get_bone_rest(_head_bone)
 	var head_transform = Transform3D(

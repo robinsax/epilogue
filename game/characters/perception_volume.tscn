@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://tbkdkcg1xfjh"]
+
+[ext_resource type="Script" uid="uid://b26s5g32eja3p" path="res://characters/perception_volume.gd" id="1_q4ke8"]
+
+[node name="PerceptionVolume" type="Area3D"]
+collision_layer = 0
+collision_mask = 34
+script = ExtResource("1_q4ke8")

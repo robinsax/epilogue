@@ -72,7 +72,6 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ur5jt")
 
 [node name="Item" instance=ExtResource("1_s4yhm")]
-collision_mask = 2
 character_low_ready_anchor = "HandgunLow"
 character_aim_anchor = "AimShoulder"
 biped_aim_radius = 0.4
@@ -80,7 +79,7 @@ horizontal_recoil = 0.2
 recoil_time = 0.5
 label = "Enforcer"
 in_slot_rotation = Vector3(0, 1.571, 1.57)
-tags = Array[String](["handgun"])
+tags = Array[String](["handgun", "gun"])
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
 shape = SubResource("BoxShape3D_s4yhm")

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2jhjuf8vq0a8"]
+
+[ext_resource type="PackedScene" uid="uid://b8tenhgyw1gnq" path="res://worlds/world.tscn" id="1_hb87q"]
+[ext_resource type="PackedScene" uid="uid://ch211kc6whah3" path="res://environment/desert/desert_environment.tscn" id="2_uenl2"]
+
+[node name="World" instance=ExtResource("1_hb87q")]
+
+[node name="Spawns" type="Node3D" parent="Static" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.662596, 19.932724, 18.945496)
+
+[node name="EnvironmentGenerator" parent="Static" index="1" instance=ExtResource("2_uenl2")]

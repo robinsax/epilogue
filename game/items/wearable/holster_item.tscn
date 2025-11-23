@@ -74,6 +74,8 @@ size = Vector3(0.2, 0.3, 0.2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.003725931)
 label = "Tac Holster"
 tags = Array[String](["holster"])
+rarity = 2
+hand_value = -1
 
 [node name="Holster" type="MeshInstance3D" parent="." index="2"]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.005458176, -0.013676226, 0.014740825)

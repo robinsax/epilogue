@@ -11,8 +11,11 @@ func _ready():
 	character = get_parent()
 	_look_target_tracker = $LookTargetTracker
 
-func _process(delta):
+func _physics_process(delta):
 	update_look(delta)
+
+func get_perception_volumes() -> Array[PerceptionVolume]:
+	return []
 
 func update_look(delta):
 	var look_target = character.look_target

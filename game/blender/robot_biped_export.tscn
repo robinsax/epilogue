@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://kh1u8yrncxw3"]
-
-[ext_resource type="PackedScene" uid="uid://tq4sgvwqk8th" path="res://blender/robot_biped.glb" id="1_arhmp"]
-
-[node name="robot_biped" instance=ExtResource("1_arhmp")]

@@ -29,7 +29,7 @@ func _ready():
 
 	start()
 
-func _process(delta):
+func _physics_process(delta):
 	if _character.dead:
 		stop()
 		return
@@ -51,7 +51,7 @@ func _process(delta):
 	if not _grounded:
 		_target_position = global_position + (Vector3.UP * 0.2)
 	
-func _maybe_step(_delta):
+func _maybe_step(delta):
 	var last_move = global_position - _last_position
 	_last_position = global_position
 
@@ -64,7 +64,7 @@ func _maybe_step(_delta):
 	var to = ideal_next_step - (Vector3.UP * ground_check_float_tolerance)
 	var from = ideal_next_step + (Vector3.UP * ground_check_offset)
 	var query = PhysicsRayQueryParameters3D.create(from, to)
-	query.collision_mask = CollisionLayerValues.PHYSICAL
+	query.collision_mask = _character.shell.get_collision_mask()
 	for collider in owner_colliders:
 		query.exclude.push_back(collider.get_rid())
 

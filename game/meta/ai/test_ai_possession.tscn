@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://dvedl0ggfokjh"]
+
+[ext_resource type="PackedScene" uid="uid://dyhh73qgorswk" path="res://meta/ai/ai_possession.tscn" id="1_ifleb"]
+[ext_resource type="Script" uid="uid://dp4n3lrsjfn4s" path="res://meta/ai/traits/wandering_ai_trait.gd" id="2_3aryf"]
+[ext_resource type="Script" uid="uid://yqpaldkdej4o" path="res://meta/ai/traits/looting_ai_trait.gd" id="3_sukp3"]
+[ext_resource type="Script" uid="uid://bnox3euf2gpae" path="res://meta/ai/traits/aggressive_ai_trait.gd" id="4_fvggt"]
+
+[node name="AIPossession" instance=ExtResource("1_ifleb")]
+
+[node name="AggressiveAITrait" type="Node" parent="." index="2"]
+script = ExtResource("4_fvggt")
+metadata/_custom_type_script = "uid://bnox3euf2gpae"
+
+[node name="LootingAITrait" type="Node" parent="." index="3"]
+script = ExtResource("3_sukp3")
+metadata/_custom_type_script = "uid://yqpaldkdej4o"
+
+[node name="WanderingAITrait" type="Node" parent="." index="4"]
+script = ExtResource("2_3aryf")
+metadata/_custom_type_script = "uid://dp4n3lrsjfn4s"

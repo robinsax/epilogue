@@ -16,7 +16,7 @@ properties/2/replication_mode = 1
 
 [node name="Item" type="RigidBody3D"]
 collision_layer = 2
-collision_mask = 3
+collision_mask = 67
 script = ExtResource("1_pxpuq")
 
 [node name="Inventory" type="Node" parent="."]

@@ -122,4 +122,13 @@ fire={
 
 3d_physics/layer_1="Physical"
 3d_physics/layer_2="Items"
+3d_physics/layer_3="Damage"
+3d_physics/layer_4="Characters"
 3d_physics/layer_5="World UI"
+3d_physics/layer_6="Foliage Impactors"
+3d_physics/layer_7="Fast Ground"
+3d_physics/layer_8="Slow Ground"
+
+[physics]
+
+3d/physics_engine="GodotPhysics3D"

@@ -12,8 +12,8 @@ class_name GunItem extends Item
 @export var horizontal_recoil: float = 0.1
 @export var recoil_time: float = 0.4
 
+var magazine_well: InventorySlot = null
 var _grip: Node3D = null
-var _magazine_well: InventorySlot = null
 var _offhand__grip: Node3D = null
 var _muzzle: Node3D = null
 var _aim_anchor: Node3D = null
@@ -44,7 +44,7 @@ func _ready():
 	_action_cycler_stop = $ActionCyclerStop
 	if _action_cycler:
 		_base_action_cycler_position = _action_cycler.position
-	_magazine_well = inventory.get_slot("magwell")
+	magazine_well = inventory.get_slot("magwell")
 
 func _process(delta):
 	if not is_animated:
@@ -168,8 +168,8 @@ func _animate_biped_manipulation(character: RobotBipedCharacter, rig: RobotBiped
 
 	var can_cycle = (
 		action_projectile_type == "" and _action_cycler != null and
-		not rig.off_hand_ik.is_busy() and _magazine_well.item != null and
-		_magazine_well.item.get_remaining_projectiles() > 0
+		not rig.off_hand_ik.is_busy() and magazine_well.item != null and
+		magazine_well.item.get_remaining_projectiles() > 0
 	)
 	if can_cycle:
 		_cycling_action = true
@@ -179,15 +179,18 @@ func _animate_biped_manipulation(character: RobotBipedCharacter, rig: RobotBiped
 	if action_projectile_type == "":
 		_action_cycler.position = _action_cycler_stop.position
 
+func is_chambered():
+	return action_projectile_type != ""
+
 @rpc("any_peer", "call_local")
 func _chamber():
 	if not is_multiplayer_authority():
 		return
 
-	if _magazine_well.item == null:
+	if magazine_well.item == null:
 		return
 
-	var next = _magazine_well.item.pop_next_projectile_type()
+	var next = magazine_well.item.pop_next_projectile_type()
 	if next != null:
 		action_projectile_type = next.resource_path
 
@@ -204,14 +207,15 @@ func _fire(recoil_seed: float):
 	if is_multiplayer_authority():
 		action_projectile_type = ""
 
-func reload_as_active(character: Character):
+func reload_as_active(character: Character) -> bool:
 	var available_mag_slot = character.inventory.get_slot_with_item_tag(
-		_magazine_well.required_tag, [_magazine_well]
+		magazine_well.required_tag, [magazine_well]
 	)
 	if available_mag_slot == null:
-		return
+		return false
 
-	character.move_item_slots(available_mag_slot, _magazine_well)
+	character.move_item_slots(available_mag_slot, magazine_well)
+	return true
 
 func get_hold_position():
 	return _grip.position

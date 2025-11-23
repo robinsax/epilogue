@@ -26,6 +26,12 @@
             "problemMatcher": []
         },
         {
+            "label": "Dev: Launch Host Game",
+            "type": "shell",
+            "command": "./scripts/dev/launch-host-game.sh",
+            "problemMatcher": []
+        },
+        {
             "label": "Dev: Launch Client Game",
             "type": "shell",
             "command": "./scripts/dev/launch-client-game.sh",
