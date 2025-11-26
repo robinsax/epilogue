@@ -1,13 +1,7 @@
-[gd_scene load_steps=7 format=4 uid="uid://ce03l6ufn0i3f"]
+[gd_scene load_steps=6 format=4 uid="uid://ce03l6ufn0i3f"]
 
 [ext_resource type="PackedScene" uid="uid://dt2x4ql81lcgn" path="res://environment/objects/static_object.tscn" id="1_oggbp"]
-[ext_resource type="Texture2D" uid="uid://b2kvgir3rcw6h" path="res://blender/rock_palette.png" id="2_a2si7"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qive6"]
-resource_name = "Material"
-cull_mode = 2
-albedo_texture = ExtResource("2_a2si7")
-roughness = 0.5
+[ext_resource type="Material" uid="uid://dmbcyel5of730" path="res://assets/common_material.tres" id="2_a2si7"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_7lhsm"]
 _surfaces = [{
@@ -31,7 +25,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 240,
 "index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgACQAKAAsADAANAA4ADwAQABEAEgATABQAFQAWABcAGAAZABoAGwAcAB0AHgAfACAAIQAiACMAJAAlACYAJwAoACkAKgArACwALQAuAC8AMAAxADIAMwA0ADUANgA3ADgAOQA6ADsAPAA9AD4APwBAAEEAQgBDAEQARQBGAEcASABJAEoASwBMAE0ATgBPAFAAUQBSAFMAVABVAFYAVwBYAFkAWgBbAFwAXQBeAF8AYABhAGIAYwBkAGUAZgBnAGgAaQBqAGsAbABtAG4AbwBwAHEAcgBzAHQAdQB2AHcAeAB5AHoAewB8AH0AfgB/AIAAgQCCAIMAhACFAIYAhwCIAIkAigCLAIwAjQCOAI8AkACRAJIAkwCUAJUAlgCXAJgAmQCaAJsAnACdAJ4AnwCgAKEAogCjAKQApQCmAKcAqACpAKoAqwCsAK0ArgCvALAAsQCyALMAtAC1ALYAtwC4ALkAugC7ALwAvQC+AL8AwADBAMIAwwDEAMUAxgDHAMgAyQDKAMsAzADNAM4AzwDQANEA0gDTANQA1QDWANcA2ADZANoA2wDcAN0A3gDfAOAA4QDiAOMA5ADlAOYA5wDoAOkA6gDrAOwA7QDuAO8A"),
-"material": SubResource("StandardMaterial3D_qive6"),
+"material": ExtResource("2_a2si7"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -47,10 +41,9 @@ data = PackedVector3Array(0, -1, 0, -0.23519999, -0.82369995, 0.4585, 0.4253, -0
 [node name="StaticObject" instance=ExtResource("1_oggbp")]
 
 [node name="Icosphere" type="MeshInstance3D" parent="." index="0"]
-transform = Transform3D(1, 0, 0, 0, 0.9014183, -0.43294913, 0, 0.43294913, 0.9014183, 0, 0.18446314, 0)
 mesh = SubResource("ArrayMesh_233t3")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
-transform = Transform3D(1, 0, 0, 0, 0.9014183, -0.43294913, 0, 0.43294913, 0.9014183, 0, 0.18446314, 0)
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0.0070221424, 0)
 shape = SubResource("ConcavePolygonShape3D_a2si7")

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://8ty1tojlndl7"]
+
+[ext_resource type="Script" uid="uid://c6f6ye0d7vkss" path="res://environment/generation/foliage_chunk.gd" id="1_2ginu"]
+
+[node name="FoliageVolume" type="Node3D"]
+script = ExtResource("1_2ginu")
+
+[node name="Meshes" type="Node3D" parent="."]

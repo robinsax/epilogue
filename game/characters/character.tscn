@@ -28,17 +28,27 @@ properties/6/replication_mode = 1
 properties/7/path = NodePath(".:dead")
 properties/7/spawn = true
 properties/7/replication_mode = 1
+properties/8/path = NodePath(".:is_world_observer")
+properties/8/spawn = true
+properties/8/replication_mode = 1
+properties/9/path = NodePath(".:energy")
+properties/9/spawn = true
+properties/9/replication_mode = 1
+properties/10/path = NodePath(".:checking_status")
+properties/10/spawn = true
+properties/10/replication_mode = 1
+properties/11/path = NodePath(".:look_zoomed")
+properties/11/spawn = true
+properties/11/replication_mode = 1
+properties/12/path = NodePath(".:chat")
+properties/12/spawn = true
+properties/12/replication_mode = 1
+properties/13/path = NodePath(".:in_inventory")
+properties/13/spawn = true
+properties/13/replication_mode = 1
 
 [node name="Character" type="Node3D"]
 script = ExtResource("1_54qew")
-speed = null
-interact_reach = null
-move_direction = null
-aim_target = null
-look_target = null
-aiming = null
-firing = null
-dead = null
 
 [node name="CharacterSync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_54qew")

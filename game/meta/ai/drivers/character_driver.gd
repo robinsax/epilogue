@@ -28,3 +28,6 @@ func sneak():
 
 func move_towards(global_position: Vector3):
 	pass
+
+func look_towards(global_position: Vector3):
+	pass

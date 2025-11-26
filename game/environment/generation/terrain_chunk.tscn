@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://diwdi0g1lohti"]
+
+[ext_resource type="Script" uid="uid://io41n7u0pe8j" path="res://environment/generation/terrain_chunk.gd" id="1_tpqb3"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_lggx6"]
+
+[node name="TerrainChunk" type="Node3D"]
+script = ExtResource("1_tpqb3")
+
+[node name="NavRegion" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_lggx6")
+
+[node name="Mesh" type="MeshInstance3D" parent="NavRegion"]
+skeleton = NodePath("../..")
+
+[node name="Objects" type="Node3D" parent="NavRegion"]
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+debug_color = Color(0.89691037, 0.26402873, 0.99999994, 0.5764706)
+
+[node name="Foliage" type="Node3D" parent="."]

@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dbdnmag8ldkcy"]
+[gd_scene load_steps=4 format=3 uid="uid://dbdnmag8ldkcy"]
 
 [ext_resource type="Script" uid="uid://cl4fusflpfito" path="res://environment/generation/environment_generator.gd" id="1_dok02"]
 [ext_resource type="Script" uid="uid://b5lmbnnqqsnbv" path="res://environment/generation/environment_generation_worker.gd" id="2_dok02"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dok02"]
+radius = 20.0
 
 [node name="EnvironmentGenerator" type="Node3D"]
 script = ExtResource("1_dok02")
@@ -20,6 +23,10 @@ metadata/_custom_type_script = "uid://b5lmbnnqqsnbv"
 
 [node name="ObjectSources" type="Node" parent="."]
 
-[node name="Foliage" type="Node3D" parent="."]
-
 [node name="Terrain" type="Node3D" parent="."]
+
+[node name="FoliageImpactorCast" type="ShapeCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.682942, 1.9177022, 3.0806046)
+shape = SubResource("SphereShape3D_dok02")
+collision_mask = 32
+debug_shape_custom_color = Color(0.84313726, 0, 0, 0.4862745)

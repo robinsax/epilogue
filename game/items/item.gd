@@ -1,5 +1,8 @@
 class_name Item extends RigidBody3D
 
+static var AUDIO_BASE = 0
+static var AUDIO_CUSTOM = 1
+
 static var SIZE_SMALL = 1
 static var SIZE_MEDIUM = 2
 static var SIZE_LARGE = 3
@@ -14,20 +17,43 @@ static var RARITY_RARE = 3
 @export var tags: Array[String] = []
 @export var rarity: int = 1
 @export var hand_value: int = 1
+@export var attach_clip_count: int = 4
 
+@export var repl_world_position: Vector3
+@export var repl_world_rotation: Vector3
 @export var attachment: String = ""
-var _last_attachment: String = ""
+var _last_attachment: String
+var _play_attachment: bool
 
-var inventory: Inventory = null
+var inventory: Inventory
+var base_audio: ClippedAudioPlayer
+var custom_audio: ClippedAudioPlayer
 
-var current_slot: InventorySlot = null
-var is_animated: bool = false
+var current_slot: InventorySlot
+var is_animated: bool
+var update_culled: bool
+var hard_culled_position: Vector3
 
 func _ready():
 	inventory = $Inventory
+	base_audio = $BaseAudio
+	custom_audio = $CustomAudio
 
 func _process(delta):
+	if _play_attachment:
+		base_audio.play_random_clip(0, attach_clip_count, true)
+		_play_attachment = false
+
 	_update_attachment()
+
+func _physics_process(delta: float):
+	if is_multiplayer_authority():
+		repl_world_position = global_position
+		repl_world_rotation = global_rotation
+	elif attachment.length() == 0:
+		global_position = repl_world_position
+		global_rotation = repl_world_rotation
+
 	_update_position()
 
 func _update_position():
@@ -65,12 +91,11 @@ func _update_attachment():
 		return
 	_last_attachment = attachment
 
+	_play_attachment = true
+
 	var is_detach = attachment.length() == 0
 	if is_detach:
-		set_physics_process(true)
-		set_physics_process_internal(true)
-		freeze = false
-		set_collision_mask_value(CollisionLayerValues.PHYSICAL, true)
+		_set_body_enabled(true)
 		linear_velocity = Vector3.ZERO
 		angular_velocity = Vector3.ZERO
 
@@ -83,14 +108,34 @@ func _update_attachment():
 	if is_detach:
 		return
 
-	set_physics_process(false)
-	set_physics_process_internal(false)
-	set_collision_mask_value(CollisionLayerValues.PHYSICAL, false)
-	freeze = true
+	_set_body_enabled(false)
+	collision_layer = CollisionLayers.WORLD_UI
 
 	current_slot = _resolve_attachment()
 	current_slot.item = self
 	current_slot.pending_item = null
+
+func _set_body_enabled(enabled: bool):
+	freeze = not enabled
+	sleeping = not enabled
+	set_physics_process_internal(enabled)
+	if enabled:
+		collision_layer = CollisionLayers.ITEMS | CollisionLayers.FOLIAGE_IMPACTORS
+		collision_mask = CollisionLayers.PHYSICAL
+	else:
+		collision_layer = 0
+		collision_mask = 0
+
+func set_culled(cull: bool):
+	update_culled = cull
+
+	_set_body_enabled(not cull and attachment.length() == 0)
+
+func update_as_attached(character: RobotBipedCharacter, delta: float):
+	return
+
+func wants_animate_biped(character: RobotBipedCharacter) -> bool:
+	return false
 
 func animate_biped_as_active(character: RobotBipedCharacter, rig: RobotBipedRig, delta: float):
 	pass
@@ -98,8 +143,11 @@ func animate_biped_as_active(character: RobotBipedCharacter, rig: RobotBipedRig,
 func reload_as_active(character: Character):
 	pass
 
-func get_hold_position():
+func get_hold_position() -> Vector3:
 	return Vector3.ZERO
+
+func get_detail_string() -> String:
+	return ""
 
 @rpc("any_peer", "call_local")
 func update_attachment(new_attachment: String):

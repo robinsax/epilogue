@@ -11,33 +11,37 @@ class_name GunItem extends Item
 @export var vertical_recoil: float = 0.3
 @export var horizontal_recoil: float = 0.1
 @export var recoil_time: float = 0.4
+@export var flash_time: float = 0.02
+@export var gunshot_clips: int = 1
 
-var magazine_well: InventorySlot = null
-var _grip: Node3D = null
-var _offhand__grip: Node3D = null
-var _muzzle: Node3D = null
-var _aim_anchor: Node3D = null
+var magazine_well: InventorySlot
+var _grip: Node3D
+var _offhand__grip: Node3D
+var _muzzle: Node3D
+var _aim_anchor: Node3D
 
 @export var action_projectile_type: String = ""
-var _action_cycler: Node3D = null
-var _action_cycler_grip: Node3D = null
-var _action_cycler_stop: Node3D = null
-var _cycling_action: bool = false
-var _action_cycling_time: float = 0.0
-var _base_action_cycler_position: Vector3 = Vector3.ZERO
+var _action_cycler: Node3D
+var _action_cycler_grip: Node3D
+var _action_cycler_stop: Node3D
+var _muzzle_flash_effect: VisualInstance3D
+var _cycling_action: bool
+var _action_cycling_time: float
+var _base_action_cycler_position: Vector3
 
-var _recoil_cooldown_time: float = 0.0
-var _fire_cooldown_time: float = 0.0
-var _recoil_seed: float = 0.0
-
-var _current_vertical_recoil: float = 0.0
-var _current_horizontal_recoil: float = 0.0
+var _recoil_cooldown_time: float
+var _fire_cooldown_time: float
+var _recoil_seed: float
+var _has_played_action_lock: bool
+var _current_vertical_recoil: float
+var _current_horizontal_recoil: float
 
 func _ready():
 	super._ready()
 	_grip = $Grip
 	_offhand__grip = $OffhandGrip
 	_muzzle = $Muzzle
+	_muzzle_flash_effect = get_node_or_null("Muzzle/Flash")
 	_aim_anchor = $AimAnchor
 	_action_cycler = $ActionCycler
 	_action_cycler_grip = $ActionCycler/ActionGrip
@@ -45,6 +49,8 @@ func _ready():
 	if _action_cycler:
 		_base_action_cycler_position = _action_cycler.position
 	magazine_well = inventory.get_slot("magwell")
+
+	_has_played_action_lock = true
 
 func _process(delta):
 	if not is_animated:
@@ -55,8 +61,14 @@ func _process(delta):
 
 	super._process(delta)
 
+func wants_animate_biped(character: RobotBipedCharacter) -> bool:
+	return true
+
 func animate_biped_as_active(character: RobotBipedCharacter, rig: RobotBipedRig, delta: float):
 	is_animated = true
+
+	if _recoil_cooldown_time < recoil_time - flash_time and _muzzle_flash_effect != null:
+		_muzzle_flash_effect.layers = 0
 
 	if _recoil_cooldown_time > 0.0:
 		_recoil_cooldown_time -= delta
@@ -128,7 +140,8 @@ func _animate_biped_manipulation(character: RobotBipedCharacter, rig: RobotBiped
 
 		if _fire_cooldown_time <= recycle_thresh:
 			if not was_past_recycle_thresh:
-				_chamber.rpc()
+				if is_multiplayer_authority():
+					_chamber.rpc(true)
 		else:
 			var sin_value = sin(PI * (1.0 - ((_fire_cooldown_time - recycle_thresh) / recycle_thresh)))
 
@@ -141,7 +154,7 @@ func _animate_biped_manipulation(character: RobotBipedCharacter, rig: RobotBiped
 			)
 
 		return
-	elif character.firing and action_projectile_type != "":
+	elif character.aiming and character.firing and action_projectile_type != "":
 		_fire.rpc(randf())
 		return
 
@@ -178,12 +191,17 @@ func _animate_biped_manipulation(character: RobotBipedCharacter, rig: RobotBiped
 
 	if action_projectile_type == "":
 		_action_cycler.position = _action_cycler_stop.position
+		if not _has_played_action_lock:
+			custom_audio.play_clip(1)
+			_has_played_action_lock = true
 
 func is_chambered():
 	return action_projectile_type != ""
 
 @rpc("any_peer", "call_local")
-func _chamber():
+func _chamber(from_firing: bool = false):
+	if not from_firing:
+		custom_audio.play_clip(0)
 	if not is_multiplayer_authority():
 		return
 
@@ -199,9 +217,14 @@ func _fire(recoil_seed: float):
 	_recoil_cooldown_time = recoil_time
 	_recoil_seed = recoil_seed
 	_fire_cooldown_time = fire_rate
+	_has_played_action_lock = false
 	if action_projectile_type == "":
 		return
 
+	if _muzzle_flash_effect != null:
+		_muzzle_flash_effect.layers = 1
+
+	custom_audio.play_random_clip(2, gunshot_clips)
 	World.current.spawn_projectile(load(action_projectile_type), _muzzle.global_position, global_rotation)
 
 	if is_multiplayer_authority():
@@ -219,3 +242,9 @@ func reload_as_active(character: Character) -> bool:
 
 func get_hold_position():
 	return _grip.position
+
+func get_detail_string() -> String:
+	if action_projectile_type == "":
+		return "Unloaded"
+	else:
+		return "Loaded"

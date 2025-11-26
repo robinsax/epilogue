@@ -1,83 +1,117 @@
 @tool
 class_name EnvironmentGenerator extends Node3D
 
-@export var world_chunks: int = 4
-@export var terrain_subdivisions: int = 1000
+static var FOLIAGE_IMPACTORS = 24
+
+@export var terrain_chunk_count: int = 4
+@export var foliage_chunk_count: int = 10
+@export var terrain_subdivisions: int = 500
 @export var terrain_scale: float = 1.0
 @export var terrain_shader: ShaderMaterial = null
+@export var global_room_tone: AudioStream = null
+
+@export var terrain_generate_distance: float = 200.0
+@export var foliage_generate_distance: float = 60.0
+@export var terrain_cull_distance: float = 200.0
+@export var objects_cull_distance: float = 100.0
+@export var foliage_cull_distance: float = 40.0
 
 @export_tool_button("Generate") var generate_action = _generate_action
-@export_tool_button("Reset") var reset_action = _reset
+@export_tool_button("Print Stats") var print_stats_action = _print_stats_action
 
 signal root_terrain_ready()
 
-var _volumes: Array[EnvironmentVolume] = []
-var _worker: EnvironmentGenerationWorker = null
-var _gen_seed: int = 0
-var _height_sampler: NoiseSourceSampler = null
-var _biome_samplers: Array[NoiseSourceSampler] = []
-var _foliage_sources: Array[FoliageSource] = []
-var _path_sources: Array[EnvironmentPathSource] = []
-var _object_sources: Array[EnvironmentObjectSource] = []
+var _worker: EnvironmentGenerationWorker
+var _gen_seed: int
+var _terrain_root: Node3D
+var _height_sampler: NoiseSource.Sampler
+var _biome_samplers: Array[NoiseSource.Sampler]
+var _foliage_sources: Array[FoliageSource]
+var _path_sources: Array[EnvironmentPathSource]
+var _object_sources: Array[EnvironmentObjectSource]
+var _observer_position: Vector3
+var _foliage_impactor_cast: ShapeCast3D
 
-var _cull_check_time: float = 0.0
+var _cull_check_time: float
+var _packed_impactors: Texture2D
+
+func _generate_action():
+	generate(int(randf() * 1000))
+
+func _print_stats_action():
+	var stats_str = ""
+	for key in Stats.stats:
+		stats_str += key + ": " + str(Stats.stats[key]) + "\n"
+
+	print(stats_str)
 
 func _ready():
+	_terrain_root = $Terrain
+	_worker = $Worker
+	_foliage_impactor_cast = $FoliageImpactorCast
+
+	for chunk in _terrain_root.get_children():
+		chunk.generator = self
+
 	if not Engine.is_editor_hint():
 		_generate_action()
 		var env: WorldEnvironment = get_node_or_null("Env")
 		env.environment.fog_enabled = true
 
 func _process(delta):
+	if _packed_impactors != null:
+		RenderingServer.global_shader_parameter_set("world_foliage_impactors", _packed_impactors)
+
 	if _cull_check_time > 0.0:
 		_cull_check_time -= delta
 	else:
 		_cull_check()
 		_cull_check_time = 1.0
 
+func _physics_process(delta: float) -> void:
+	_update_foliage_impactors()
+
+func _update_foliage_impactors():
+	_foliage_impactor_cast.global_position = _observer_position
+
+	Stats.stats["f/impacts"] = _foliage_impactor_cast.get_collision_count()
+
+	var packing_image = Image.create_empty(FOLIAGE_IMPACTORS, 1, false, Image.FORMAT_RGBF)
+	for i in _foliage_impactor_cast.get_collision_count():
+		var impactor_position = _foliage_impactor_cast.get_collision_point(i)
+		packing_image.set_pixel(i, 0, Color(impactor_position.x, impactor_position.y, impactor_position.z))
+
+	_packed_impactors = ImageTexture.create_from_image(packing_image)
+
 func _cull_check():
-	var observer = Vector3.ZERO
+	_observer_position = Vector3.ZERO
 	if Engine.is_editor_hint():
-		observer = EditorInterface.get_editor_viewport_3d(0).get_camera_3d().global_position
+		_observer_position = EditorInterface.get_editor_viewport_3d(0).get_camera_3d().global_position
 	else:
 		var camera = get_viewport().get_camera_3d()
 		if camera:
-			observer = camera.global_position
+			_observer_position = camera.global_position
+	Stats.stats["worldobs/pos"] = _observer_position
+	var observer_position = _observer_position
+	observer_position.y = 0.0
 
-	observer.y = 0.0
-	for volume in _volumes:
-		if volume == null:
+	var chunks = _terrain_root.get_children()
+	Stats.stats["c/all"] = chunks.size()
+	Stats.stats["o/active"] = 0
+	Stats.stats["o/culled"] = 0
+	Stats.stats["f/active"] = 0
+	Stats.stats["f/culled"] = 0
+	Stats.stats["t/active"] = 0
+	Stats.stats["t/culled"] = 0
+	Stats.stats["so/reg"] = 0
+	for chunk in chunks:
+		if chunk == null:
 			# Editor doing weird shit.
 			continue
 
-		var volume_position = volume.global_position
-		volume_position.y = 0.0
-		var distance = observer.distance_to(volume_position)
-		volume.update_volume_state(distance)
+		chunk.update_cull_state(observer_position)
 
-func _generate_action():
-	generate(int(randf() * 1000))
-
-func _reset():
-	var terrain_root = get_node("Terrain")
-	for child in terrain_root.get_children():
-		terrain_root.remove_child(child)
-
-	var foliage_root = get_node("Foliage")
-	for child in foliage_root.get_children():
-		foliage_root.remove_child(child)
-
-func _init_refs():
-	_volumes = []
-	var terrain_root = get_node("Terrain")
-	for node in terrain_root.get_children():
-		if node is TerrainVolume:
-			_volumes.push_back(node)
-	var foliage_root = get_node("Foliage")
-	for node in foliage_root.get_children():
-		if node is FoliageVolume:
-			_volumes.push_back(node)
-
+func _init_sources():
 	var heights: NoiseSource = get_node("NoiseSources/Heights")
 	heights.before_sampling(_gen_seed)
 	_height_sampler = heights.sampler()
@@ -111,9 +145,7 @@ func _init_refs():
 		_init_biome_channel_sampler("NoiseSources/BiomeC")
 	]
 
-	_worker = get_node("Worker")
-
-func _init_biome_channel_sampler(path: String) -> NoiseSourceSampler:
+func _init_biome_channel_sampler(path: String) -> NoiseSource.Sampler:
 	var source = get_node_or_null(path)
 	if source == null:
 		source = NoiseSource.new()
@@ -123,47 +155,70 @@ func _init_biome_channel_sampler(path: String) -> NoiseSourceSampler:
 
 func generate(gen_seed: int):
 	_gen_seed = gen_seed
-	_reset()
-	_init_refs()
 
-	var volume_scene = load("res://environment/generation/terrain_volume.tscn")
-	var terrain_root = get_node("Terrain")
+	Stats.stats["f/pop"] = 0
+
+	for child in _terrain_root.get_children():
+		_terrain_root.remove_child(child)
+	_init_sources()
+
+	var chunk_scene = load("res://environment/generation/terrain_chunk.tscn")
 	var terrain_size = terrain_scale * terrain_subdivisions
 
 	var rand = RandomNumberGenerator.new()
 	rand.seed = gen_seed
 
-	for x in world_chunks:
-		for z in world_chunks:
-			var terrain_volume = volume_scene.instantiate()
+	for x in terrain_chunk_count:
+		for z in terrain_chunk_count:
+			var chunk = chunk_scene.instantiate()
 			# TODO: AAAAAAAAAAA No
 			if x == 0 and z == 0:
-				terrain_volume.is_root = true
+				chunk.is_root = true
 
-			terrain_volume.init_volume(
-				self,
-				Vector3(terrain_size, 100.0, terrain_size), rand.randi_range(0, 1000),
-				terrain_size * 2
-			)
+			chunk.generator = self
+			chunk.gen_seed = rand.randi()
+			chunk.rand = RandomNumberGenerator.new()
+			chunk.rand.seed = chunk.gen_seed
 
-			_volumes.push_back(terrain_volume)
+			_terrain_root.add_child(chunk)
+			chunk.owner = get_tree().edited_scene_root
 
-			terrain_root.add_child(terrain_volume)
-			terrain_volume.owner = get_tree().edited_scene_root
+			chunk.position = Vector3(terrain_size * x, 0.0, terrain_size * z)
 
-			terrain_volume.position = Vector3(terrain_size * x, 0.0, terrain_size * z)
+func _generate_foliage_chunks(parent_terrain: TerrainChunk, gen_seed: int):
+	var terrain_size = terrain_subdivisions * terrain_scale
+	var chunk_scene = load("res://environment/generation/foliage_chunk.tscn")
 
-func populate_terrain(instance: TerrainVolume):
+	for x in foliage_chunk_count:
+		for z in foliage_chunk_count:
+			var size = terrain_size / foliage_chunk_count
+			var chunk_position = Vector3(x * size, 0.0, z * size)
+
+			var instance: FoliageChunk = chunk_scene.instantiate()
+			instance.parent_terrain = parent_terrain
+			instance.gen_seed = gen_seed
+
+			parent_terrain.add_foliage(instance)
+			instance.position = chunk_position
+
+func populate_terrain(instance: TerrainChunk):
 	var on_ready = func (result: EnvironmentGenerationWorker.TerrainGenerationResult):
 		var biomes_texture = ImageTexture.create_from_image(result.biomes_image)
-		instance.set_terrain(
-			result.mesh, result.fast_collider, result.slow_collider, biomes_texture, result.paths_image
-		)
+		instance.set_terrain(result.mesh, result.collider, biomes_texture, result.paths_image)
 
-		_generate_objects(instance)
+		var terrain_size = terrain_scale * terrain_subdivisions
 
-		for foliage_source in _foliage_sources:
-			_generate_foliage_source(instance, foliage_source)
+		# Init per-chunk-source shaders.
+		instance.foliage_source_shaders = [] as Array[ShaderMaterial]
+		for source in _foliage_sources:
+			var shader_mat = source.shader.duplicate()
+			shader_mat.set_shader_parameter("biomes", biomes_texture)
+			shader_mat.set_shader_parameter("terrain_size", terrain_size)
+			shader_mat.set_shader_parameter("terrain_offset", Vector2(instance.global_position.x, instance.global_position.z))
+			instance.foliage_source_shaders.push_back(shader_mat)
+
+		_populate_objects(instance)
+		_generate_foliage_chunks(instance, instance.rand.randi())
 
 		if instance.is_root:
 			root_terrain_ready.emit()
@@ -182,30 +237,7 @@ func populate_terrain(instance: TerrainVolume):
 
 	_worker.request_terrain_generation(params, on_ready)
 
-func _generate_foliage_source(parent_terrain: TerrainVolume, source: FoliageSource):
-	var foliage_root = get_node("Foliage")
-	var terrain_size = terrain_subdivisions * terrain_scale
-	var size = terrain_size / source.chunk_count
-
-	var volume_scene = load("res://environment/foliage/foliage_volume.tscn")
-
-	for x in source.chunk_count:
-		for z in source.chunk_count:
-			var volume_position = parent_terrain.position + Vector3(x * size, 0.0, z * size)
-
-			var instance: FoliageVolume = volume_scene.instantiate()
-			instance.init_volume(self, Vector3(size, 100.0, size), parent_terrain.gen_seed, source.cull_distance)
-			instance.source = source
-			instance.parent_terrain = parent_terrain
-
-			foliage_root.add_child(instance)
-			instance.owner = get_tree().edited_scene_root
-
-			instance.position = volume_position
-
-			_volumes.push_back(instance)
-
-func _generate_objects(parent_terrain: TerrainVolume):
+func _populate_objects(parent_terrain: TerrainChunk):
 	var passes: Array[EnvironmentGenerationWorker.EnvironmentObjectGenerationPass] = []
 	for source in _object_sources:
 		var instance = EnvironmentGenerationWorker.EnvironmentObjectGenerationPass.new()
@@ -229,36 +261,41 @@ func _generate_objects(parent_terrain: TerrainVolume):
 
 	_worker.request_object_generation(params, on_ready)
 
-func populate_foliage(instance: FoliageVolume):
-	var pass_nodes = instance.source.get_passes()
-	var passes: Array[EnvironmentGenerationWorker.FoliagePopulationPass] = []
-	for pass_node in pass_nodes:
-		var worker_pass = EnvironmentGenerationWorker.FoliagePopulationPass.new()
-		worker_pass.density_sampler = pass_node.density_noise.sampler()
-		worker_pass.density_cutoff = pass_node.density_cutoff
-		worker_pass.samples = pass_node.placement_samples
-
-		passes.push_back(worker_pass)
-
+func populate_foliage(instance: FoliageChunk):
 	var terrain_size = terrain_scale * terrain_subdivisions
+	var chunk_size = terrain_size / foliage_chunk_count
 
-	var params = EnvironmentGenerationWorker.FoliagePopulationParams.new()
-	params.passes = passes
-	params.gen_seed = instance.gen_seed
-	params.height_sampler = _height_sampler
-	params.global_position = instance.position
-	params.terrain_scale = terrain_scale
-	params.terrain_subdivisions = terrain_subdivisions
-	params.volume_size = terrain_size / instance.source.chunk_count
-	params.scale_max = instance.source.scale_max
-	params.scale_min = instance.source.scale_min
-	params.slope_limit = instance.source.slope_limit
-	params.paths_image = instance.parent_terrain.paths_image
-	params.terrain_global_position = instance.parent_terrain.global_position
+	for i in _foliage_sources.size():
+		var source = _foliage_sources[i]
 
-	var on_ready = func (transforms: Array[Transform3D]):
-		instance.apply_population(
-			transforms, instance.parent_terrain.biomes_texture, instance.parent_terrain.position, terrain_size
-		)
+		var pass_nodes = source.get_passes()
+		var passes: Array[EnvironmentGenerationWorker.FoliagePopulationPass] = []
+		for pass_node in pass_nodes:
+			var worker_pass = EnvironmentGenerationWorker.FoliagePopulationPass.new()
+			worker_pass.density_sampler = pass_node.density_noise.sampler()
+			worker_pass.density_cutoff = pass_node.density_cutoff
+			worker_pass.samples = pass_node.placement_samples
 
-	_worker.request_foliage_population_transforms(params, on_ready)
+			passes.push_back(worker_pass)
+
+		var params = EnvironmentGenerationWorker.FoliagePopulationParams.new()
+		params.passes = passes
+		params.gen_seed = instance.gen_seed
+		params.height_sampler = _height_sampler
+		params.global_position = instance.global_position
+		params.terrain_scale = terrain_scale
+		params.terrain_subdivisions = terrain_subdivisions
+		params.chunk_size = chunk_size
+		params.paths_image = instance.parent_terrain.paths_image
+		params.terrain_global_position = instance.parent_terrain.global_position
+		params.biomes_texture = instance.parent_terrain.biomes_texture
+		params.shader = instance.parent_terrain.foliage_source_shaders[i]
+		params.scale_max = source.scale_max
+		params.scale_min = source.scale_min
+		params.slope_limit = source.slope_limit
+		params.instance_mesh = source.instance_mesh
+
+		var on_ready = func (mesh: MultiMeshInstance3D):
+			instance.apply_population(mesh)
+
+		_worker.request_foliage_population(params, on_ready)

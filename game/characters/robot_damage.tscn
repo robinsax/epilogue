@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbj2y6m7idh0b"]
+
+[ext_resource type="PackedScene" uid="uid://5k3i31r0m7vd" path="res://assets/smoke.tscn" id="1_jnifj"]
+
+[sub_resource type="Curve" id="Curve_jnifj"]
+_data = [Vector2(0.6677852, 0.6718962), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="CurveTexture" id="CurveTexture_t7lmu"]
+curve = SubResource("Curve_jnifj")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jnifj"]
+velocity_limit_curve = SubResource("CurveTexture_t7lmu")
+gravity = Vector3(0, 3, 0)
+scale_min = 0.01
+scale_max = 0.08
+turbulence_enabled = true
+turbulence_noise_strength = 0.1
+turbulence_noise_scale = 0.147
+
+[node name="GPUParticles3D" instance=ExtResource("1_jnifj")]
+amount = 5
+lifetime = 0.7
+explosiveness = 0.38
+randomness = 0.37
+process_material = SubResource("ParticleProcessMaterial_jnifj")

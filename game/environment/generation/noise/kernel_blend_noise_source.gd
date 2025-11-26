@@ -5,8 +5,8 @@ class_name KernelBlendNoiseSource extends NoiseSource
 @export var bleed_max: bool = false
 @export var source: NoiseSource = null
 
-class KernelBlendNoiseSourceSampler extends NoiseSourceSampler:
-	var source: NoiseSourceSampler
+class Sampler extends NoiseSource.Sampler:
+	var source: NoiseSource.Sampler
 	var bleed_max: bool
 	var kernel_size: float
 
@@ -37,8 +37,8 @@ class KernelBlendNoiseSourceSampler extends NoiseSourceSampler:
 func before_sampling(gen_seed: int):
 	source.before_sampling(gen_seed)
 
-func sampler() -> NoiseSourceSampler:
-	var instance = KernelBlendNoiseSourceSampler.new()
+func sampler() -> NoiseSource.Sampler:
+	var instance = KernelBlendNoiseSource.Sampler.new()
 	instance.source = source.sampler()
 	instance.kernel_size = kernel_size
 	instance.bleed_max = bleed_max

@@ -1,14 +1,27 @@
-[gd_scene load_steps=8 format=4 uid="uid://bqiqc1sow8ip6"]
+[gd_scene load_steps=19 format=4 uid="uid://bqiqc1sow8ip6"]
 
 [ext_resource type="PackedScene" uid="uid://dt2x4ql81lcgn" path="res://environment/objects/static_object.tscn" id="1_d1sra"]
 [ext_resource type="PackedScene" uid="uid://wjq6ttt06id8" path="res://items/item_spawn.tscn" id="1_ji38u"]
-[ext_resource type="Texture2D" uid="uid://b63boe4c1hhj5" path="res://blender/generator_palette.png" id="1_vnpsr"]
+[ext_resource type="Script" uid="uid://chlfklklbc8mv" path="res://environment/objects/generator.gd" id="2_ol5dn"]
+[ext_resource type="Material" uid="uid://dmbcyel5of730" path="res://assets/common_material.tres" id="3_defky"]
+[ext_resource type="Shader" uid="uid://ucqwltxqbc8u" path="res://assets/common_material.gdshader" id="3_eok66"]
+[ext_resource type="PackedScene" uid="uid://cex2dexuwx6hf" path="res://environment/objects/button_interact_target.tscn" id="3_tkful"]
+[ext_resource type="Texture2D" uid="uid://ck8fclojo8lu6" path="res://palette.png" id="4_2bp2w"]
+[ext_resource type="PackedScene" uid="uid://5k3i31r0m7vd" path="res://assets/smoke.tscn" id="5_d1sra"]
+[ext_resource type="PackedScene" uid="uid://c0agw4cl7pn8y" path="res://environment/objects/object_interact_target.tscn" id="6_eswx4"]
+[ext_resource type="Script" uid="uid://c1pjly1gaapl2" path="res://meta/clipped_audio_player.gd" id="8_myg70"]
+[ext_resource type="AudioStream" uid="uid://dwcm475xh2y18" path="res://assets/sound/generator_run.wav" id="8_s362l"]
+[ext_resource type="AudioStream" uid="uid://bkcse2nas7hhq" path="res://assets/sound/generator_starts.wav" id="9_t84tp"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_baf8v"]
-resource_name = "Material"
-cull_mode = 2
-albedo_texture = ExtResource("1_vnpsr")
-roughness = 0.5
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_147s2"]
+render_priority = 0
+shader = ExtResource("3_eok66")
+shader_parameter/tex = ExtResource("4_2bp2w")
+shader_parameter/metallic = 0.25
+shader_parameter/specular = 0.7
+shader_parameter/roughness = 0.7
+shader_parameter/brightness_correct = 0.05
+shader_parameter/thermal_emit = 0.02
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_b4ynt"]
 _surfaces = [{
@@ -32,7 +45,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 894,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABQAEAAcABQAHAAgACQAKAAsACQAMAAoADQAOAA8ADQAQAA4AEQAQAA0AEQASABAAEwAUABUAEwAWABQAFwAYABkAFwAaABgAGwAcAB0AGwAeABwAHwAgACEAIQAgACIAIQAiACMAHwAkACAAIwAiACUAJgAkAB8AIwAlACYAJgAlACQAJwAkACUAKAAkACcAJwAlACkAKAAqACQAKQAlACsALAAqACgAKQArACwALAArACoALQAuAC8ALQAwAC4AMQAyADMAMQA0ADIANQA2ADcANQA4ADYAOQA6ADsAOQA8ADoAPQA+AD8APQBAAD4AQQBCAEMAQQBEAEIARQBGAEcARQBIAEYASQBKAEsASQBMAEoATQBOAE8ATwBOAFAATQBRAE4ATwBQAFIAUwBRAE0AUgBQAFQAUwBVAFEAUgBUAFYAVgBVAFMAVgBUAFUAVwBYAFkAWABXAFoAWABaAFsAXABdAF4AXABfAF0AYABfAFwAYABhAF8AYgBjAGQAYgBlAGMAZgBnAGgAZgBpAGcAagBrAGwAbABrAG0AagBuAGsAbABtAG8AcABuAGoAbwBtAHEAcAByAG4AbwBxAHMAcwByAHAAcwBxAHIAdAB1AHYAdQB0AHcAdQB3AHgAeQB6AHsAeQB8AHoAfQB+AH8AfQCAAH4AgQCCAIMAgQCEAIIAhQCGAIcAhwCGAIgAhQCJAIYAhwCIAIoAiwCJAIUAigCIAIwAiwCNAIkAigCMAI4AjgCNAIsAjgCMAI0AjwCQAJEAkACPAJIAkACSAJMAlACVAJYAlACXAJUAmACWAJUAmACVAJkAmgCWAJgAmgCbAJYAnACbAJoAnACdAJsAngCfAKAAngChAJ8AogCjAKQAogClAKMApgCnAKgAqQCmAKgApwCmAKoAqQCrAKYApwCqAKwAqwCpAK0AqgCuAKwArwCrAK0ArgCqALAArwCwAKsArgCwALEAsACvALEAsgCzALQAtACzALUAtgCzALIAtgC3ALMAuAC5ALoAuAC7ALkAvAC9AL4AvAC/AL0AwADBAMIAwADDAMEAxADFAMYAxADHAMUAyADJAMoAyADLAMkAzADNAM4AzADPAM0AzgDNANAAzgDQANEA0gDTANQA0gDVANMA1gDXANgA1gDZANcA2gDbANwA2gDdANsA3gDfAOAA3gDhAN8A4gDjAOQA5ADjAOUA4gDmAOMA5ADlAOcA6ADmAOIA5wDlAOkA6ADpAOYA5wDpAOgA6gDrAOwA6gDtAOsA7gDvAPAA7gDxAO8A8gDzAPQA8gD1APMA9gD3APgA9gD5APcA+gD7APwA+gD9APsA/gD/AAABAAH/AAEBAgEDAQQBAgEFAQMBBgEHAQgBBgEJAQcBCgELAQwBCgENAQsBDgEPARABDgERAQ8BEgETARQBEgEVARMBFgEXARgBFgEZARcBGgEbARwBHAEbAR0BGgEeARsBHAEdAR8BIAEeARoBHwEdASEBIAEiAR4BHwEhASMBIwEiASABIwEhASIBJAElASYBJgElAScBJAEoASUBJgEnASkBKgEoASQBKQEnASsBKgErASgBKQErASoBLAEtAS4BLAEvAS0BMAEsAS4BMAEuATEBMgEzATQBMgE1ATMBNgE3ATgBNgE5ATcBOQE6ATcBOQE7AToBPAE9AT4BPAE/AT0BQAFBAUIBQAFDAUEBRAFFAUYBRAFHAUUBSAFJAUoBSgFJAUsBSAFMAUkBSgFLAU0BTgFMAUgBTQFLAU8BTgFPAUwBTQFPAU4BUAFRAVIBUAFTAVEBVAFVAVYBVAFXAVUBWAFZAVoBWAFbAVkBXAFdAV4BXAFfAV0BYAFhAWIBYgFhAWMBYAFkAWEBYgFjAWUBZgFkAWABZQFjAWcBZgFnAWQBZQFnAWYBaAFpAWoBaAFrAWkBbAFtAW4BbAFvAW0BcAFxAXIBcAFzAXEBdAF1AXYBdAF3AXUBeAF5AXoBegF5AXsBeAF8AXkBegF7AX0BfgF8AXgBfQF7AX8BfgF/AXwBfQF/AX4BgAGBAYIBgAGDAYEBhAGFAYYBhAGHAYUBiAGJAYoBiAGLAYkBjAGNAY4BjAGPAY0BkAGRAZIBkgGRAZMBkAGUAZEBkgGTAZUBlgGUAZABlQGTAZcBlgGXAZQBlQGXAZYBmAGZAZoBmAGbAZkBnAGdAZ4BnAGfAZ0BoAGhAaIBoAGjAaEBpAGlAaYBpAGnAaUBqAGpAaoBqgGpAasBqAGsAakBqgGrAa0BrgGsAagBrQGrAa8BrgGvAawBrQGvAa4BsAGxAbIBsAGzAbEBtAG1AbYBtAG3AbUBuAG5AboBuAG7AbkBvAG9Ab4BvAG/Ab0B"),
-"material": SubResource("StandardMaterial3D_baf8v"),
+"material": ExtResource("3_defky"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -45,21 +58,68 @@ shadow_mesh = SubResource("ArrayMesh_b4ynt")
 [sub_resource type="BoxShape3D" id="BoxShape3D_defky"]
 size = Vector3(0.9, 1, 1.3)
 
-[node name="StaticObject" instance=ExtResource("1_d1sra")]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_d1sra"]
+properties/0/path = NodePath(".:is_running")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:fuel_remaining")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
-[node name="ItemSpawn" parent="." index="0" instance=ExtResource("1_ji38u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2563045, 0.66465014, 0)
+[sub_resource type="SphereShape3D" id="SphereShape3D_eswx4"]
+
+[node name="StaticObject" node_paths=PackedStringArray("process_objects") instance=ExtResource("1_d1sra")]
+script = ExtResource("2_ol5dn")
+fuel_burn_rate = 0.02
+running_material = SubResource("ShaderMaterial_147s2")
+is_running = false
+fuel_remaining = 0.0
+process_objects = [NodePath(".")]
+
+[node name="StartButton" parent="." index="0" instance=ExtResource("3_tkful")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.4902459, 0.92206156, 0.3873332)
+label = "Start"
+
+[node name="ItemSpawn" parent="." index="1" instance=ExtResource("1_ji38u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2563045, 1.1422076, 0)
 pool_key = "mechanical"
 
-[node name="ItemSpawn2" parent="." index="1" instance=ExtResource("1_ji38u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8963004, 0.66465014, 0.941836)
+[node name="ItemSpawn2" parent="." index="2" instance=ExtResource("1_ji38u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8963004, 1.1422076, 0.941836)
 pool_key = "mechanical"
 
-[node name="Cube" type="MeshInstance3D" parent="." index="2"]
-transform = Transform3D(-0.009751897, 0, 0.3998811, 0, 0.4, 0, -0.3998811, 0, -0.009751897, 0, 0.7439014, 0)
+[node name="Mesh" type="MeshInstance3D" parent="." index="3"]
+transform = Transform3D(-0.009751897, 0, 0.3998811, 0, 0.4, 0, -0.3998811, 0, -0.009751897, 0, 0.64748716, 0)
 mesh = SubResource("ArrayMesh_myg70")
 skeleton = NodePath("")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="3"]
-transform = Transform3D(-0.024379743, 0, 0.99970275, 0, 1, 0, -0.99970275, 0, -0.024379743, 0, 0.6641475, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="4"]
+transform = Transform3D(-0.024379743, 0, 0.99970275, 0, 1, 0, -0.99970275, 0, -0.024379743, 0, 0.56828964, 0)
 shape = SubResource("BoxShape3D_defky")
+
+[node name="Smoke" parent="." index="5" instance=ExtResource("5_d1sra")]
+transform = Transform3D(1, 8.3526935e-16, 0, -3.76435e-15, 1, -5.551115e-17, 0, 0, 1, -0.3942716, 1.2721761, -0.15963268)
+amount = 60
+local_coords = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="6"]
+replication_config = SubResource("SceneReplicationConfig_d1sra")
+
+[node name="FuelFill" parent="." index="7" instance=ExtResource("6_eswx4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5211924, 0.40747696, 0.3369751)
+tags = Array[String](["takesfuel"])
+label = "Fuel Fill"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelFill" index="0"]
+shape = SubResource("SphereShape3D_eswx4")
+
+[node name="RunSound" type="AudioStreamPlayer3D" parent="." index="8"]
+stream = ExtResource("8_s362l")
+
+[node name="StartSound" type="AudioStreamPlayer3D" parent="." index="9"]
+stream = ExtResource("9_t84tp")
+volume_db = -14.624
+script = ExtResource("8_myg70")
+clip_length = 2.5
+db_variance = 0.0
+metadata/_custom_type_script = "uid://c1pjly1gaapl2"

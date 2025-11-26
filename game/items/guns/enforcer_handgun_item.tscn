@@ -1,8 +1,12 @@
-[gd_scene load_steps=9 format=4 uid="uid://7722h4kqbf2f"]
+[gd_scene load_steps=14 format=4 uid="uid://7722h4kqbf2f"]
 
 [ext_resource type="PackedScene" uid="uid://b6vm1g8xuku5x" path="res://items/guns/gun_item.tscn" id="1_s4yhm"]
 [ext_resource type="PackedScene" uid="uid://dtaly3w02tiwl" path="res://items/inventory/inventory_slot.tscn" id="2_fkpfe"]
-[ext_resource type="Material" uid="uid://cc5jgblsf428o" path="res://base_material.tres" id="3_qw78m"]
+[ext_resource type="Material" uid="uid://dyiepninfu22c" path="res://assets/item_material.tres" id="3_thpve"]
+[ext_resource type="PackedScene" uid="uid://byjp5a3pcqvko" path="res://meta/clipped_audio_player.tscn" id="4_86tyo"]
+[ext_resource type="Shader" uid="uid://ucqwltxqbc8u" path="res://assets/common_material.gdshader" id="4_slr6c"]
+[ext_resource type="Texture2D" uid="uid://ck8fclojo8lu6" path="res://palette.png" id="5_qkvqr"]
+[ext_resource type="AudioStream" uid="uid://dxudcwmfmked8" path="res://assets/sound/handgun_custom.wav" id="5_ur5jt"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_s4yhm"]
 size = Vector3(0.3, 0.2, 0.1)
@@ -29,7 +33,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 588,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAIgAkACAAIgAlACQAJgAnACgAJgApACcAKgArACwAKgAtACsALgAvADAAMAAvADEALgAyAC8AMAAxADMANAAyAC4AMwAxADUANAA1ADIAMwA1ADQANgA3ADgANgA5ADcAOgA7ADwAOgA9ADsAPgA/AEAAPgBBAD8AQgBDAEQAQgBFAEMARgBHAEgARgBJAEcASgBLAEwASgBNAEsATgBPAFAATgBRAE8AUgBTAFQAUgBVAFMAVgBXAFgAVgBZAFcAWgBbAFwAWgBdAFsAXQBeAFsAXQBfAF4AXwBgAF4AXwBhAGAAYgBjAGQAYgBlAGMAZgBnAGgAZgBpAGcAaQBqAGcAaQBrAGoAawBsAGoAawBtAGwAbgBvAHAAbgBxAG8AcgBzAHQAcgB1AHMAdgB3AHgAdgB5AHcAegB7AHwAegB9AHsAfgB/AIAAfgCBAH8AggCDAIQAggCFAIMAhgCHAIgAhgCJAIcAigCLAIwAigCNAIsAjgCPAJAAjgCRAI8AkgCTAJQAkgCVAJMAlgCXAJgAlgCZAJcAmgCbAJwAmgCdAJsAngCfAKAAngChAJ8AoQCiAJ8AoQCjAKIApAClAKYApACnAKUAqACpAKoAqACrAKkArACtAK4ArACvAK0ArgCwAKwArgCxALAAsgCzALQAsgC1ALMAtAC2ALIAtAC3ALYAuAC5ALoAuAC7ALkAvAC9AL4AvAC/AL0AwADBAMIAwADDAMEAxADFAMYAxADHAMUAyADJAMoAyADLAMkAzADNAM4AzADPAM0A0ADRANIA0gDRANMA0gDTANQA0ADVANEA1gDVANAA1gDXANUA2ADZANoA2QDYANsA2wDYANwA2QDbAN0A3gDfAOAA3gDhAN8A3gDiAOEA3gDjAOIA5ADlAOYA5ADnAOUA6ADpAOoA6ADrAOkA7ADtAO4A7ADvAO0A7QDwAO4A7QDxAPAA7QDyAPEA7QDzAPIA9AD1APYA9AD3APUA9wD4APUA9wD5APgA+gD7APwA+gD9APsA/gD/AAAB/gABAf8AAgEDAQQBAgEFAQMBBgEHAQgBBgEJAQcBCgELAQwBCgENAQsBCgEOAQ0BDgEKAQ8BDQEOARABDQEQAREBEgETARQBEgEVARMBFgEXARgBGAEXARkBFgEaARcBGAEZARsBHAEaARYBGwEZAR0BHAEdARoBGwEdARwBHgEfASABHgEhAR8BIgEjASQBIgElASMBJgEnASgBJgEpAScBKgErASwBKgEtASsBLgEvATABLgExAS8BMgEzATQBMgE1ATMBNgE3ATgBOAE3ATkBNgE6ATcBOAE5ATsBPAE6ATYBOwE5AT0BPAE9AToBOwE9ATwBPgE/AUABPgFBAT8BQgFDAUQBQgFFAUMBRgFHAUgBRgFJAUcBSgFLAUwBSgFNAUsB"),
-"material": ExtResource("3_qw78m"),
+"material": ExtResource("3_thpve"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -38,6 +42,16 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_bb3je")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pn04h"]
+render_priority = 0
+shader = ExtResource("4_slr6c")
+shader_parameter/tex = ExtResource("5_qkvqr")
+shader_parameter/metallic = 0.25
+shader_parameter/specular = 0.7
+shader_parameter/roughness = 0.7
+shader_parameter/brightness_correct = 0.05
+shader_parameter/thermal_emit = 0.05
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ur5jt"]
 _surfaces = [{
@@ -61,7 +75,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 252,
 "index_data": PackedByteArray("AAABAAIAAAADAAEAAgAEAAAAAgAFAAQABgAHAAgABgAJAAcABwAKAAgABwALAAoADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAQABIAFAASABUAFgAXABgAFgAZABcAGgAbABwAGgAdABsAHgAfACAAHgAhAB8AIgAjACQAJAAjACUAIgAmACMAJAAlACcAKAAmACIAJwAlACkAKAApACYAJwApACgAKgArACwAKgAtACsALgAvADAALgAxAC8AMgAzADQAMgA1ADMANgA3ADgANgA5ADcAOgA7ADwAPQA7ADoAOwA9AD4AOwA+AD8APwA+AEAAOwA/AEEAQgBDAEQAQgBFAEMARABGAEIARABHAEYASABJAEoASABLAEkATABNAE4ATABPAE0ATgBQAEwATgBRAFAAUgBTAFQAUgBVAFMAVgBXAFgAVgBZAFcAWgBbAFwAWgBdAFsAXgBfAGAAXgBhAF8AYgBeAGAAYwBeAGIAYgBgAGQAYwBlAF4AZABgAGYAZwBlAGMAZABmAGcAZwBmAGUAaABpAGoAaABrAGkAbABtAG4AbABvAG0AcABxAHIAcABzAHEAdAB1AHYAdAB3AHUAeAB5AHoAeAB7AHkAfAB9AH4AfAB/AH0AgACBAIIAgACDAIEAhACFAIYAhACHAIUA"),
-"material": ExtResource("3_qw78m"),
+"material": SubResource("ShaderMaterial_pn04h"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -77,9 +91,11 @@ character_aim_anchor = "AimShoulder"
 biped_aim_radius = 0.4
 horizontal_recoil = 0.2
 recoil_time = 0.5
+gunshot_clips = 2
+size = 2
 label = "Enforcer"
 in_slot_rotation = Vector3(0, 1.571, 1.57)
-tags = Array[String](["handgun", "gun"])
+tags = Array[String](["handgun", "gun", "basic"])
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
 shape = SubResource("BoxShape3D_s4yhm")
@@ -93,13 +109,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.049885407, -0.061581776, 0)
 [node name="Muzzle" type="Node3D" parent="." index="5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14778562, 0.061316855, 0)
 
+[node name="Flash" type="OmniLight3D" parent="Muzzle" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.020949498, 0, 0)
+layers = 0
+light_color = Color(0.98039216, 0.87058824, 0, 1)
+light_energy = 4.972
+omni_range = 0.4
+
 [node name="AimAnchor" type="Node3D" parent="." index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0718233, -0.064758375, 0)
 
 [node name="MagWell" parent="." index="7" instance=ExtResource("2_fkpfe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.090871975, -0.036968455, 0)
 size = 1
+label = "Magazine Well"
 key = "magwell"
+ui_offset = Vector3(0.02, -0.03, 0)
 required_tag = "magpistol"
 ignore_item_rotation = true
 
@@ -118,3 +143,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.31658912, 0)
 
 [node name="ActionCyclerStop" type="Node3D" parent="." index="10"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09708771, -0.038, 0)
+
+[node name="ClippedAudioPlayer" parent="." index="12" instance=ExtResource("4_86tyo")]
+
+[node name="CustomAudio" parent="." index="14"]
+stream = ExtResource("5_ur5jt")

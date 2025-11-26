@@ -1,7 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://c25iia7kla0w1"]
+[gd_scene load_steps=7 format=3 uid="uid://c25iia7kla0w1"]
 
 [ext_resource type="PackedScene" uid="uid://bc3v6kttrr3hx" path="res://characters/character.tscn" id="1_63ov7"]
 [ext_resource type="Script" uid="uid://kvecnekq1nw8" path="res://characters/ground_character.gd" id="2_3ry4l"]
+[ext_resource type="AudioStream" uid="uid://bekxo4d26tlj4" path="res://assets/sound/footsteps.wav" id="3_d04eg"]
+[ext_resource type="Script" uid="uid://c1pjly1gaapl2" path="res://meta/clipped_audio_player.gd" id="3_lkw0s"]
+
+[sub_resource type="Curve" id="Curve_d04eg"]
+_limits = [0.0, 5.0, 0.0, 5.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(4.0714283, 5), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3ry4l"]
 properties/0/path = NodePath(".:jumping")
@@ -17,12 +24,19 @@ properties/3/path = NodePath(".:sprinting")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
-[node name="Character" instance=ExtResource("1_63ov7")]
+[node name="Character" node_paths=PackedStringArray("leg_cripple_hitboxes") instance=ExtResource("1_63ov7")]
 script = ExtResource("2_3ry4l")
 crouch_slowdown = 0.75
 strafe_slowdown = 0.75
+leg_cripple_slowdown = 0.5
+look_zoom_slowdown = 0.75
 sprint_speedup = 1.5
 jump_velocity = 3.0
+crouch_energy_burn = 0.1
+sprint_energy_burn = 0.5
+jump_energy_burn = 2.0
+footstep_curve = SubResource("Curve_d04eg")
+leg_cripple_hitboxes = []
 jumping = false
 crouching = false
 sprinting = false
@@ -30,3 +44,10 @@ lean = 0.0
 
 [node name="GroundCharacterSync" type="MultiplayerSynchronizer" parent="." index="1"]
 replication_config = SubResource("SceneReplicationConfig_3ry4l")
+
+[node name="Footsteps" type="AudioStreamPlayer3D" parent="." index="4"]
+stream = ExtResource("3_d04eg")
+volume_db = -22.0
+script = ExtResource("3_lkw0s")
+clip_length = 0.313
+metadata/_custom_type_script = "uid://c1pjly1gaapl2"

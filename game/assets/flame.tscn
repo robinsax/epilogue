@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://c88urtdj08n8q"]
+
+[ext_resource type="PlaneMesh" uid="uid://iynii3jmv7v5" path="res://assets/flame_plane.tres" id="1_rs060"]
+[ext_resource type="PackedScene" uid="uid://5k3i31r0m7vd" path="res://assets/smoke.tscn" id="2_m657l"]
+[ext_resource type="Script" uid="uid://cgm1o6h2l8e5g" path="res://assets/flame_light.gd" id="2_ml0ak"]
+
+[node name="flame" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.029664928, -0.26142204, -0.26961944, 0.59925896, 0.010280015, 0.013991528, -0.0029533408, -0.5399564, 0.13080372, 0, 0, 0)
+layers = 2
+mesh = ExtResource("1_rs060")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.03487824, -0.59616035, 0.029053299, 0.5989854, 0.03471614, -0.0016794313, -2.4693367e-05, 0.05820359, 0.29858515, 0, 0, 0)
+layers = 2
+mesh = ExtResource("1_rs060")
+skeleton = NodePath("../..")
+
+[node name="GPUParticles3D" parent="." instance=ExtResource("2_m657l")]
+transform = Transform3D(1, 3.76435e-15, 0, -3.76435e-15, 1, 0, 0, 0, 1, -0.011001587, 0.24410641, -0.04232669)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 1.0869777e-14, -6.0339385e-31, -1.0869777e-14, 1, -5.551115e-17, 0, 5.551115e-17, 1, 0.02594912, 0.3828345, -0.025685355)
+light_color = Color(0.9843137, 0.77254903, 0.45490196, 1)
+light_energy = 4.030449
+light_indirect_energy = 2.067
+light_size = 0.1
+shadow_enabled = true
+shadow_caster_mask = 4294967293
+script = ExtResource("2_ml0ak")
+
+[node name="Flame" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.006525369, -0.2346292, -0.18691845, 0.59990865, -1.31114195e-08, -0.005235723, 0.008189674, -0.18694691, 0.23459347, 0.0027651787, 0.24792016, 0.17233217)
+layers = 2
+mesh = ExtResource("1_rs060")

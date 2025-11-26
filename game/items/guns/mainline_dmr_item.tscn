@@ -1,19 +1,24 @@
-[gd_scene load_steps=11 format=4 uid="uid://idqwct8aitv6"]
+[gd_scene load_steps=13 format=4 uid="uid://idqwct8aitv6"]
 
 [ext_resource type="PackedScene" uid="uid://b6vm1g8xuku5x" path="res://items/guns/gun_item.tscn" id="1_y4stf"]
 [ext_resource type="PackedScene" uid="uid://dtaly3w02tiwl" path="res://items/inventory/inventory_slot.tscn" id="2_35nif"]
-[ext_resource type="Texture2D" uid="uid://bg56r5e8ebimg" path="res://blender/mainline_palette.png" id="3_110kd"]
-[ext_resource type="Material" uid="uid://cc5jgblsf428o" path="res://base_material.tres" id="4_5gu6l"]
+[ext_resource type="Material" uid="uid://dyiepninfu22c" path="res://assets/item_material.tres" id="2_ja4bv"]
+[ext_resource type="Shader" uid="uid://ucqwltxqbc8u" path="res://assets/common_material.gdshader" id="2_lthr1"]
+[ext_resource type="Texture2D" uid="uid://ck8fclojo8lu6" path="res://palette.png" id="3_wiv5b"]
+[ext_resource type="AudioStream" uid="uid://clweppu1je14n" path="res://assets/sound/dmr_custom.wav" id="5_ja4bv"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_s4yhm"]
 size = Vector3(0.8, 0.2, 0.1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eli5q"]
-resource_name = "Material"
-cull_mode = 2
-albedo_texture = ExtResource("3_110kd")
-roughness = 0.4
-texture_filter = 2
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_84kj8"]
+render_priority = 0
+shader = ExtResource("2_lthr1")
+shader_parameter/tex = ExtResource("3_wiv5b")
+shader_parameter/metallic = 0.25
+shader_parameter/specular = 0.7
+shader_parameter/roughness = 0.7
+shader_parameter/brightness_correct = 0.05
+shader_parameter/thermal_emit = 0.05
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_h43cp"]
 _surfaces = [{
@@ -37,7 +42,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 84,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGgAZABsAGAAcABkAGgAbAB0AHgAcABgAHQAbAB8AHgAfABwAHQAfAB4AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0A"),
-"material": SubResource("StandardMaterial3D_eli5q"),
+"material": SubResource("ShaderMaterial_84kj8"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -69,7 +74,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 702,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUABwAIAAUABwAJAAgACgAIAAkACwAIAAoACgAJAAwACwANAAgADgANAAsADAAJAA8ADAAPAA4ADgAPAA0ADwAQAA0ADwARABAAEQASABAAEQATABIAFAAVABYAFAAXABUAGAAZABoAGAAbABkAGgAcABgAGgAdABwAHQAeABwAHQAfAB4AIAAeAB8AIQAeACAAIAAfACIAIQAjAB4AJAAjACEAIgAfACUAIgAlACQAJAAlACMAJQAmACMAJQAnACYAJwAoACYAJwApACgAKgArACwAKgAtACsALgAvADAALgAxAC8AMgAzADQAMgA1ADMANgA3ADgANgA5ADcAOgA7ADwAOgA9ADsAPgA/AEAAPgBBAD8AQgBDAEQAQgBFAEMARgBHAEgARgBJAEcASgBLAEwASgBNAEsATgBPAFAATgBRAE8AUgBTAFQAUgBVAFMAVgBXAFgAWABXAFkAVgBaAFcAWABZAFsAXABaAFYAWwBZAF0AXABdAFoAWwBdAFwAXgBfAGAAXgBhAF8AYgBjAGQAYgBlAGMAZgBnAGgAZgBpAGcAagBrAGwAagBtAGsAbgBvAHAAcABvAHEAbgByAG8AcABxAHMAdAByAG4AcwBxAHUAdAB1AHIAcwB1AHQAdgB3AHgAdgB5AHcAegB7AHwAegB9AHsAfgB/AIAAfgCBAH8AggCDAIQAggCFAIMAhgCHAIgAhgCJAIcAigCLAIwAigCNAIsAjgCPAJAAjgCRAI8AkgCTAJQAkgCVAJMAlgCXAJgAmACXAJkAlgCaAJcAmACZAJsAnACaAJYAmwCZAJ0AnACdAJoAmwCdAJwAngCfAKAAngChAJ8AogCjAKQAogClAKMApgCnAKgApgCpAKcAqgCrAKwAqgCtAKsArgCvALAArgCxAK8AsgCzALQAsgC1ALMAtgC3ALgAtgC5ALcAugC7ALwAugC9ALsAvgC/AMAAvgDBAL8AwgDDAMQAwgDFAMMAxgDHAMgAxgDJAMcAygDLAMwAygDNAMsAzgDPANAAzgDRAM8A0gDTANQA1ADTANUA0gDWANMA1ADVANcA1wDVANgA1wDYANkA2gDWANIA2gDbANYA3ADbANoA3ADdANsA3gDdANwA3gDfAN0A4ADhAOIA4ADjAOEA5ADlAOYA5ADnAOUA6ADpAOoA6ADrAOkA7ADtAO4A7ADvAO0A8ADxAPIA8ADzAPEA9AD1APYA9AD3APUA9gD1APgA9gD4APkA+gD7APwA+gD9APsA/gD9APoA/gD/AP0AAAEBAQIBAAEDAQEBBAEFAQYBBAEHAQUBCAEJAQoBCAELAQkBDAENAQ4BDAEPAQ0BEAERARIBEAETAREBFAEVARYBFQEXARgBFQEZARcBFAEZARUBFAEaARkBFAEbARoBGgEbARwBGwEUAR0BGwEdAR4BHgEdAR8BHQEUASABIAEUASEBIgEjASQBIgElASMBJgElASIBJgEnASUBKAEnASYBKAEpAScBKgEpASgBKgErASkBLAErASoBLAEtASsBLgEtASwBLgEvAS0BMAExATIBMAEzATEBNAE1ATYBNAE3ATUBOAE5AToBOAE7ATkBPAE9AT4BPAE/AT0BQAFBAUIBQAFDAUEBRAFFAUYBRAFHAUUBSAFJAUoBSgFJAUsBSAFMAUkBSgFLAU0BTgFMAUgBTQFLAU8BTgFPAUwBTQFPAU4BUAFRAVIBUAFTAVEBVAFVAVYBVAFXAVUBWAFZAVoBWAFbAVkBXAFdAV4BXAFfAV0BYAFhAWIBYAFjAWEBZAFlAWYBZAFnAWUBaAFpAWoBaAFrAWkBbAFtAW4BbAFvAW0B"),
-"material": ExtResource("4_5gu6l"),
+"material": ExtResource("2_ja4bv"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -87,9 +92,11 @@ biped_dominant_shoulder_push = 0.35
 fire_rate = 0.1
 fire_recycle_time = 0.05
 vertical_recoil = 0.1
+flash_time = 0.05
 size = 3
 label = "Mainline DMR"
 in_slot_rotation = Vector3(0, 1.547, 1.547)
+tags = Array[String](["gun", "rifle", "basic"])
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
 shape = SubResource("BoxShape3D_s4yhm")
@@ -102,6 +109,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14116761, -0.06729163, 0)
 
 [node name="Muzzle" type="Node3D" parent="." index="5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4622206, 0.0501313, 0)
+
+[node name="Flash" type="OmniLight3D" parent="Muzzle" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.020949498, 0, 0)
+layers = 0
+light_color = Color(0.98039216, 0.87058824, 0, 1)
+light_energy = 4.972
+omni_range = 0.7
 
 [node name="AimAnchor" type="Node3D" parent="." index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33868402, -0.0105095655, 0)
@@ -119,6 +133,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18706167, 0.104, 0)
 
 [node name="MagWell" parent="." index="9" instance=ExtResource("2_35nif")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0075782835, -0.023087978, 0)
+size = 2
+label = "Magazine Well"
 key = "magwell"
 required_tag = "magdmr"
 ignore_item_rotation = true
@@ -127,3 +143,6 @@ ignore_item_rotation = true
 transform = Transform3D(-0.08, 0, -6.993822e-09, 0, 0.08, 0, 6.993822e-09, 0, -0.08, 0.026835516, 0.02127324, 0)
 mesh = SubResource("ArrayMesh_5gu6l")
 skeleton = NodePath("")
+
+[node name="CustomAudio" parent="." index="13"]
+stream = ExtResource("5_ja4bv")

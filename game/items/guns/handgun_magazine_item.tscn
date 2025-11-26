@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bcjaqmrmy6vk6" path="res://items/guns/magazine_item.tscn" id="1_wg81x"]
 [ext_resource type="PackedScene" uid="uid://d4cppxy2modci" path="res://projectiles/pistol_bullet_projectile.tscn" id="2_qf8v7"]
-[ext_resource type="Material" uid="uid://cc5jgblsf428o" path="res://base_material.tres" id="3_wp77c"]
+[ext_resource type="Material" uid="uid://dyiepninfu22c" path="res://assets/item_material.tres" id="3_i31dr"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_8lw2p"]
 _surfaces = [{
@@ -26,7 +26,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 156,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUABAAIAAcABAAJAAgACgALAAwACgANAAsADgAPABAADgARAA8ADgASABEADgATABIAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANAA3ADUAOAA5ADoAOAA7ADkAPAA9AD4APAA/AD0AQABBAEIAQABDAEEARABFAEYARABHAEUASABJAEoASABLAEkATABNAE4ATABPAE0AUABRAFIAUABTAFEAVABVAFYAVABXAFUAWABZAFoAWABbAFkAXABdAF4AXABfAF0AYABhAGIAYABjAGEA"),
-"material": ExtResource("3_wp77c"),
+"material": ExtResource("3_i31dr"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -43,7 +43,7 @@ size = Vector3(0.1, 0.2, 0.1)
 projectile_type = ExtResource("2_qf8v7")
 label = "Pistol Magazine"
 in_slot_rotation = Vector3(0, 1.574, 0)
-tags = Array[String](["magpistol"])
+tags = Array[String](["magpistol", "basic"])
 
 [node name="Cube" type="MeshInstance3D" parent="." index="2"]
 transform = Transform3D(-0.024113936, -0.006596826, -1.6610328e-09, -0.006596826, 0.024113936, 0, 2.1081072e-09, 5.7671284e-10, -0.019, -0.016660877, 0.036885187, 0)

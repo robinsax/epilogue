@@ -3,7 +3,7 @@ class_name EnvironmentGenerationWorker extends Node
 
 static var REQUEST_TYPE_TERRAIN = 1
 static var REQUEST_TYPE_OBJECT_GENERATION = 2
-static var REQUEST_TYPE_FOLIAGE_TRANSFORMS = 3
+static var REQUEST_TYPE_FOLIAGE = 3
 
 class GenerationRequest:
 	var type: int
@@ -21,11 +21,10 @@ class WorkerInstance:
 
 @export var worker_count: int = 2
 
-var _workers: Array[WorkerInstance] = []
-
-var _callbacks: Dictionary = Dictionary()
-var _queue: Array[GenerationRequest] = []
-var _call_id: int = 0
+var _workers: Array[WorkerInstance]
+var _callbacks: Dictionary
+var _queue: Array[GenerationRequest]
+var _call_id: int
 
 func _get_workers() -> Array[WorkerInstance]:
 	if _workers.size() > 0:
@@ -70,6 +69,7 @@ func _maybe_dequeue():
 				next = item
 
 		_queue.remove_at(_queue.find(next))
+		Stats.stats["envgen/q"] = _queue.size()
 		worker.active = true
 		worker.thread.start(_worker_compute.bind(next))
 
@@ -82,6 +82,7 @@ func _enqueue(type: int, params: Variant, callback: Callable):
 	request.call_id = _call_id
 
 	_queue.push_back(request)
+	Stats.stats["envgen/q"] = _queue.size()
 	_maybe_dequeue()
 
 func _worker_compute(request: GenerationRequest) -> GenerationResult:
@@ -89,8 +90,8 @@ func _worker_compute(request: GenerationRequest) -> GenerationResult:
 	result.type = request.type
 	result.call_id = request.call_id
 
-	if request.type == REQUEST_TYPE_FOLIAGE_TRANSFORMS:
-		result.data = compute_foliage_population_transforms(request.params)
+	if request.type == REQUEST_TYPE_FOLIAGE:
+		result.data = compute_foliage_population(request.params)
 	elif request.type == REQUEST_TYPE_OBJECT_GENERATION:
 		result.data = run_object_generator(request.params)
 	elif request.type == REQUEST_TYPE_TERRAIN:
@@ -99,7 +100,7 @@ func _worker_compute(request: GenerationRequest) -> GenerationResult:
 	return result
 
 func _make_ground_sampler(
-	height_sampler: NoiseSourceSampler, terrain_scale: float
+	height_sampler: NoiseSource.Sampler, terrain_scale: float
 ) -> QuadInterpolatedSampler:
 	var instance = QuadInterpolatedSampler.new()
 	instance.height_sampler = height_sampler
@@ -108,7 +109,7 @@ func _make_ground_sampler(
 	return instance
 
 class FoliagePopulationPass:
-	var density_sampler: NoiseSourceSampler
+	var density_sampler: NoiseSource.Sampler
 	var density_cutoff: Curve
 	var samples: int
 
@@ -118,18 +119,21 @@ class FoliagePopulationParams:
 	var passes: Array[FoliagePopulationPass]
 	var terrain_scale: float
 	var terrain_subdivisions: int
-	var volume_size: float
+	var terrain_global_position: Vector3
+	var chunk_size: float
 	var scale_min: float
 	var scale_max: float
 	var slope_limit: float
-	var height_sampler: NoiseSourceSampler
+	var shader: ShaderMaterial
+	var instance_mesh: Mesh
+	var height_sampler: NoiseSource.Sampler
+	var biomes_texture: Texture2D
 	var paths_image: Image
-	var terrain_global_position: Vector3
 
-func request_foliage_population_transforms(params: FoliagePopulationParams, callback: Callable):
-	_enqueue(REQUEST_TYPE_FOLIAGE_TRANSFORMS, params, callback)
+func request_foliage_population(params: FoliagePopulationParams, callback: Callable):
+	_enqueue(REQUEST_TYPE_FOLIAGE, params, callback)
 
-func compute_foliage_population_transforms(params: FoliagePopulationParams) -> Array[Transform3D]:
+func compute_foliage_population(params: FoliagePopulationParams) -> MultiMeshInstance3D:
 	var rand = RandomNumberGenerator.new()
 	rand.seed = params.gen_seed
 
@@ -139,7 +143,7 @@ func compute_foliage_population_transforms(params: FoliagePopulationParams) -> A
 
 	var transforms: Array[Transform3D] = []
 	for gen_pass in params.passes:
-		var sample_size = params.volume_size / float(gen_pass.samples)
+		var sample_size = params.chunk_size / float(gen_pass.samples)
 		for x in gen_pass.samples:
 			for z in gen_pass.samples:
 				var point = (
@@ -176,19 +180,31 @@ func compute_foliage_population_transforms(params: FoliagePopulationParams) -> A
 				)
 				transforms.push_back(transform)
 
-	return transforms
+	var multimesh_node: MultiMeshInstance3D = MultiMeshInstance3D.new()
+	var multimesh = MultiMesh.new()
+	multimesh.transform_format = MultiMesh.TRANSFORM_3D
+	multimesh.mesh = params.instance_mesh
+	multimesh_node.multimesh = multimesh
+
+	multimesh_node.material_override = params.shader
+
+	multimesh.instance_count = transforms.size()
+	for i in transforms.size():
+		multimesh.set_instance_transform(i, transforms[i]) 
+
+	return multimesh_node
 
 class EnvironmentObjectGenerationPass:
-	var generator: EnvironmentObjectGenerator
+	var generator: EnvironmentObjectSource.Generator
 	var placements: int
 
 class EnvironmentObjectGenerationParams:
 	var gen_seed: int
-	var height_sampler: NoiseSourceSampler
+	var height_sampler: NoiseSource.Sampler
 	var terrain_scale: float
 	var terrain_subdivisions: int
 	var global_position: Vector3
-	var biome_samplers: Array[NoiseSourceSampler]
+	var biome_samplers: Array[NoiseSource.Sampler]
 	var passes: Array[EnvironmentObjectGenerationPass]
 	var paths_image: Image
 
@@ -210,7 +226,7 @@ func run_object_generator(params: EnvironmentObjectGenerationParams) -> Node3D:
 		params.height_sampler, params.terrain_scale
 	)
 
-	var gen_params = EnvironmentObjectGenerator.Params.new()
+	var gen_params = EnvironmentObjectSource.GeneratorParams.new()
 	gen_params.biome_samplers = params.biome_samplers
 	gen_params.ground_sampler = ground_sampler
 	gen_params.height_sampler = params.height_sampler
@@ -238,7 +254,7 @@ func run_object_generator(params: EnvironmentObjectGenerationParams) -> Node3D:
 				if overlap:
 					continue
 
-				var paths_coord = floor((point_offset) / params.terrain_scale)
+				var paths_coord = floor(point_offset / params.terrain_scale)
 				var paths_pixel = params.paths_image.get_pixel(int(paths_coord.x), int(paths_coord.y))
 				if paths_pixel.r > 0.0 or paths_pixel.g > 0.0 or paths_pixel.b > 0.0:
 					continue
@@ -278,15 +294,14 @@ class TerrainGenerationParams:
 	var gen_seed: int
 	var terrain_subdivisions: int
 	var terrain_scale: float
-	var height_sampler: NoiseSourceSampler
-	var biome_samplers: Array[NoiseSourceSampler]
+	var height_sampler: NoiseSource.Sampler
+	var biome_samplers: Array[NoiseSource.Sampler]
 	var path_resolvers: Array[EnvironmentPathSource.Resolver]
 	var shader: ShaderMaterial
 
 class TerrainGenerationResult:
 	var mesh: Mesh
-	var slow_collider: CollisionObject3D
-	var fast_collider: CollisionObject3D
+	var collider: CollisionObject3D
 	var biomes_image: Image
 	var paths_image: Image
 
@@ -327,8 +342,8 @@ func generate_terrain(params: TerrainGenerationParams) -> TerrainGenerationResul
 	for i in params.path_resolvers.size():
 		params.path_resolvers[i].update_image(paths_image, i, path_params)
 
-	for x in params.terrain_subdivisions + 2:
-		for z in params.terrain_subdivisions + 2:
+	for x in params.terrain_subdivisions:
+		for z in params.terrain_subdivisions:
 			var color = Color(
 				biome_images[0].get_pixel(x, z).r,
 				biome_images[1].get_pixel(x, z).r,
@@ -343,14 +358,9 @@ func generate_terrain(params: TerrainGenerationParams) -> TerrainGenerationResul
 	shader_inst.set_shader_parameter("paths", ImageTexture.create_from_image(paths_image))
 
 	mesh_node.mesh = mesh
-	mesh_node.create_trimesh_collision()
-	var slow_collider = mesh_node.get_children()[0]
-	mesh_node.remove_child(slow_collider)
 
-	var fast_collider = _create_heightmap_collider(
-		params.terrain_subdivisions,
-		params.terrain_scale,
-		params.height_sampler,
+	var collider = _create_heightmap_collider(
+		params.terrain_subdivisions, params.terrain_scale, params.height_sampler,
 		params.offset
 	)
 
@@ -358,26 +368,20 @@ func generate_terrain(params: TerrainGenerationParams) -> TerrainGenerationResul
 	result.biomes_image = biome_images[0]
 	result.paths_image = paths_image
 	result.mesh = mesh
-	result.slow_collider = slow_collider
-	result.fast_collider = fast_collider
+	result.collider = collider
 
 	return result
 
 func _create_heightmap_collider(
-	terrain_subdivisions: int,
-	terrain_scale: float,
-	height_sampler: NoiseSourceSampler,
-	offset: Vector2
+	terrain_subdivisions: int, terrain_scale: float, height_sampler: NoiseSource.Sampler, offset: Vector2
 ) -> StaticBody3D:
 	var static_body = StaticBody3D.new()
 	
-	# Create HeightMapShape3D
 	var shape = HeightMapShape3D.new()
 	var map_size = terrain_subdivisions + 1
 	shape.map_width = map_size
 	shape.map_depth = map_size
 	
-	# Sample heights into float array
 	var map_data = PackedFloat32Array()
 	map_data.resize(map_size * map_size)
 	
@@ -388,7 +392,6 @@ func _create_heightmap_collider(
 	
 	shape.map_data = map_data
 	
-	# Create collision shape node
 	var collision_shape = CollisionShape3D.new()
 	collision_shape.shape = shape
 	collision_shape.scale = Vector3(terrain_scale, terrain_scale, terrain_scale)
@@ -398,7 +401,7 @@ func _create_heightmap_collider(
 	return static_body
 
 func _make_terrain_mesh(
-	offset: Vector2, terrain_scale: float, terrain_subdivisions: int, height_sampler: NoiseSourceSampler
+	offset: Vector2, terrain_scale: float, terrain_subdivisions: int, height_sampler: NoiseSource.Sampler
 ) -> ArrayMesh:
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)

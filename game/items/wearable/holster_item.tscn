@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=4 uid="uid://dywxb5ls3ypxt"]
+[gd_scene load_steps=10 format=4 uid="uid://dywxb5ls3ypxt"]
 
 [ext_resource type="PackedScene" uid="uid://6rin053u8ef8" path="res://items/item.tscn" id="1_mvti2"]
+[ext_resource type="Material" uid="uid://dyiepninfu22c" path="res://assets/item_material.tres" id="2_8xmbc"]
 [ext_resource type="Texture2D" uid="uid://dry1e703xg0th" path="res://blender/robot_biped_palette.png" id="2_ix3wx"]
 [ext_resource type="PackedScene" uid="uid://dtaly3w02tiwl" path="res://items/inventory/inventory_slot.tscn" id="3_2qdym"]
+[ext_resource type="AudioStream" uid="uid://cmx121ee5fj6y" path="res://assets/sound/wearable_base.wav" id="4_smh1v"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xffsc"]
 resource_name = "M_Base"
@@ -45,7 +47,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 192,
 "index_data": PackedByteArray("AAABAAIAAAADAAEAAgAEAAAAAgAFAAQABgAHAAgABgAJAAcACgALAAwACgANAAsADQAOAAsADQAPAA4AEAARABIAEAATABEAFAAVABYAFQAXABYAFAAYABUAGQAXABUAGgAYABQAFwAZABoAGgAbABgAGgAZABsAHAAdAB4AHwAcAB4AHAAgAB0AHwAhABwAIgAdACAAHwAiACEAIgAjAB0AIwAiAB8AJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANAA3ADUAOAA5ADoAOAA7ADkAPAA9AD4APAA/AD0AQABBAEIAQABDAEEARABFAEYARABHAEUASABJAEoASABLAEkATABNAE4ATgBNAE8ATABQAE0ATgBPAFEAUgBQAEwAUQBPAFMAUgBTAFAAUQBTAFIAVABVAFYAVABXAFUAWABZAFoAWABbAFkAXABdAF4AXABfAF0AYABhAGIAYABjAGEA"),
-"material": SubResource("StandardMaterial3D_xffsc"),
+"material": ExtResource("2_8xmbc"),
 "name": "M_Base",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -68,14 +70,16 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_r2jqy")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rrjox"]
-size = Vector3(0.2, 0.3, 0.2)
+size = Vector3(0.2, 0.2, 0.2)
 
 [node name="Item" instance=ExtResource("1_mvti2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.003725931)
+size = 2
 label = "Tac Holster"
-tags = Array[String](["holster"])
+tags = Array[String](["holster", "basic"])
 rarity = 2
 hand_value = -1
+attach_clip_count = 2
 
 [node name="Holster" type="MeshInstance3D" parent="." index="2"]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.005458176, -0.013676226, 0.014740825)
@@ -83,10 +87,15 @@ mesh = SubResource("ArrayMesh_2qdym")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.047980733, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.047980733, -0.009472653, 0)
 shape = SubResource("BoxShape3D_rrjox")
 
 [node name="InventorySlot" parent="." index="4" instance=ExtResource("3_2qdym")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.08877969, 0.027474493, 0.06634095)
-size = 1
+size = 2
+label = "Holster"
+ui_offset = Vector3(0.02, 0, 0)
 required_tag = "handgun"
+
+[node name="BaseAudio" parent="." index="5"]
+stream = ExtResource("4_smh1v")

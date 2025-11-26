@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbei4ignhpnuu"]
+
+[ext_resource type="AudioStream" uid="uid://drmd7a7xyh54j" path="res://assets/sound/static_fabric_rustle_clips.wav" id="1_50sxu"]
+[ext_resource type="Script" uid="uid://b5g8b1djq871o" path="res://assets/fabric_rustle.gd" id="2_50sxu"]
+
+[node name="FabricRustle" type="AudioStreamPlayer3D"]
+stream = ExtResource("1_50sxu")
+volume_db = -9.49
+script = ExtResource("2_50sxu")
+clip_length = 1.25
+metadata/_custom_type_script = "uid://c1pjly1gaapl2"

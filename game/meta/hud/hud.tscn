@@ -1,0 +1,780 @@
+[gd_scene load_steps=20 format=3 uid="uid://6v6fxt3gcvul"]
+
+[ext_resource type="Script" uid="uid://dofagaljgu5ce" path="res://meta/hud/hud.gd" id="1_p775d"]
+[ext_resource type="Texture2D" uid="uid://cwkfagnd20ehc" path="res://assets/ui/crosshair_small.png" id="2_p775d"]
+[ext_resource type="FontFile" uid="uid://cac730wch1g5j" path="res://assets/ui/Tiny5.ttf" id="3_guibb"]
+[ext_resource type="Texture2D" uid="uid://cc3n5yq4k018r" path="res://assets/ui/crosshair.png" id="3_xh11c"]
+[ext_resource type="Texture2D" uid="uid://dfjn14rwsq2gl" path="res://assets/ui/size.png" id="6_2jjyk"]
+[ext_resource type="Texture2D" uid="uid://b11q5i452l24i" path="res://assets/ui/handgun.png" id="6_sy6w6"]
+[ext_resource type="Texture2D" uid="uid://bcwyjgbeq3sxg" path="res://assets/ui/robot_energy.png" id="8_3r7ko"]
+[ext_resource type="Texture2D" uid="uid://dgi7cfuttsokc" path="res://assets/ui/key.png" id="9_61klm"]
+[ext_resource type="Texture2D" uid="uid://c47k3y268cd1u" path="res://assets/ui/robot_hp.png" id="9_k757x"]
+[ext_resource type="LabelSettings" uid="uid://dj5gvwc3bmdvl" path="res://assets/ui_font.tres" id="10_61klm"]
+[ext_resource type="Texture2D" uid="uid://elvo5wqn7mi5" path="res://assets/ui/augmentation.png" id="11_3ggtr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_guibb"]
+font_size = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_61klm"]
+font = ExtResource("3_guibb")
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_2jjyk"]
+font = ExtResource("3_guibb")
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_k757x"]
+font = ExtResource("3_guibb")
+font_size = 60
+
+[sub_resource type="LabelSettings" id="LabelSettings_3ggtr"]
+font = ExtResource("3_guibb")
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_arv5c"]
+font = ExtResource("3_guibb")
+font_size = 18
+
+[sub_resource type="LabelSettings" id="LabelSettings_3r7ko"]
+font = ExtResource("3_guibb")
+font_size = 20
+
+[sub_resource type="Theme" id="Theme_61klm"]
+default_font = ExtResource("3_guibb")
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p775d")
+
+[node name="DebugStats" type="Label" parent="."]
+layout_mode = 0
+offset_right = 1.0
+offset_bottom = 14.0
+label_settings = SubResource("LabelSettings_guibb")
+
+[node name="Cursor" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("2_p775d")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="CrosshairSmall" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("2_p775d")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Crosshair" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("3_xh11c")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Interact" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Main" type="Label" parent="Interact"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 15.0
+offset_top = 12.0
+offset_right = 355.0
+offset_bottom = 47.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Item"
+label_settings = SubResource("LabelSettings_61klm")
+
+[node name="Detail" type="Label" parent="Interact"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 15.0
+offset_top = 47.0
+offset_right = 254.0
+offset_bottom = 76.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Detail"
+label_settings = SubResource("LabelSettings_2jjyk")
+
+[node name="Type" type="TextureRect" parent="Interact"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 15.0
+offset_top = -7.0
+offset_right = 40.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_sy6w6")
+
+[node name="Size1" type="TextureRect" parent="Interact"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 15.0
+offset_top = 43.0
+offset_right = 22.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_2jjyk")
+
+[node name="Size2" type="TextureRect" parent="Interact"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 24.0
+offset_top = 43.0
+offset_right = 31.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_2jjyk")
+
+[node name="Size3" type="TextureRect" parent="Interact"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 33.0
+offset_top = 43.0
+offset_right = 40.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_2jjyk")
+
+[node name="Slot" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Detail" type="Label" parent="Slot"]
+texture_filter = 1
+layout_mode = 0
+offset_left = -279.0
+offset_top = 20.0
+offset_right = -40.0
+offset_bottom = 49.0
+text = "Detail"
+label_settings = SubResource("LabelSettings_2jjyk")
+horizontal_alignment = 2
+
+[node name="Type" type="TextureRect" parent="Slot"]
+texture_filter = 1
+layout_mode = 0
+offset_left = -34.0
+offset_top = 10.0
+offset_right = -6.0
+offset_bottom = 38.0
+texture = ExtResource("6_sy6w6")
+
+[node name="Size3" type="TextureRect" parent="Slot"]
+texture_filter = 1
+layout_mode = 0
+offset_left = -67.0
+offset_top = 13.0
+offset_right = -60.0
+offset_bottom = 20.0
+texture = ExtResource("6_2jjyk")
+
+[node name="Size2" type="TextureRect" parent="Slot"]
+texture_filter = 1
+layout_mode = 0
+offset_left = -58.0
+offset_top = 13.0
+offset_right = -51.0
+offset_bottom = 20.0
+texture = ExtResource("6_2jjyk")
+
+[node name="Size1" type="TextureRect" parent="Slot"]
+texture_filter = 1
+layout_mode = 0
+offset_left = -49.0
+offset_top = 13.0
+offset_right = -42.0
+offset_bottom = 20.0
+texture = ExtResource("6_2jjyk")
+
+[node name="StatusCheck" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Status" type="Control" parent="StatusCheck"]
+layout_mode = 1
+anchor_left = 0.35700002
+anchor_top = 0.508
+anchor_right = 0.35700002
+anchor_bottom = 0.508
+offset_left = -302.26404
+offset_top = -157.18402
+offset_right = -71.26404
+offset_bottom = 5.815979
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Energy" type="Control" parent="StatusCheck/Status"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = -97.0
+offset_top = 44.0
+offset_right = -34.0
+offset_bottom = 84.0
+
+[node name="Value" type="Label" parent="StatusCheck/Status/Energy"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -49.0
+offset_top = -24.0
+offset_right = 76.0
+offset_bottom = 44.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "90"
+label_settings = SubResource("LabelSettings_k757x")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Total" type="Label" parent="StatusCheck/Status/Energy"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = 24.0
+offset_right = 72.0
+offset_bottom = 59.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "/100"
+label_settings = SubResource("LabelSettings_3ggtr")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="StatusCheck/Status/Energy"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 139.0
+offset_top = -4.0
+offset_right = 167.0
+offset_bottom = 22.0
+grow_vertical = 2
+texture = ExtResource("8_3r7ko")
+
+[node name="HP" type="Control" parent="StatusCheck/Status"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 51.0
+offset_top = -46.5
+offset_right = 114.0
+offset_bottom = -6.5
+grow_vertical = 2
+
+[node name="Value" type="Label" parent="StatusCheck/Status/HP"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -15.5
+offset_right = 75.0
+offset_bottom = 52.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "90"
+label_settings = SubResource("LabelSettings_k757x")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Total" type="Label" parent="StatusCheck/Status/HP"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -51.0
+offset_top = 32.5
+offset_right = 71.0
+offset_bottom = 67.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "/100"
+label_settings = SubResource("LabelSettings_3ggtr")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="StatusCheck/Status/HP"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 138.0
+offset_top = 4.5
+offset_right = 166.0
+offset_bottom = 30.5
+grow_vertical = 2
+texture = ExtResource("9_k757x")
+
+[node name="ExtendedStatus" type="Control" parent="StatusCheck"]
+layout_mode = 1
+anchor_left = 0.35700002
+anchor_top = 0.508
+anchor_right = 0.35700002
+anchor_bottom = 0.508
+offset_left = -344.26404
+offset_top = -39.18402
+offset_right = -70.26404
+offset_bottom = 123.81598
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LoadingHint" type="Label" parent="StatusCheck/ExtendedStatus"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 78.0
+offset_top = 5.0
+offset_right = 175.0
+offset_bottom = 28.0
+text = "Diagnosing..."
+label_settings = SubResource("LabelSettings_arv5c")
+
+[node name="Hitboxes" type="Control" parent="StatusCheck/ExtendedStatus"]
+anchors_preset = 0
+offset_left = 224.0
+offset_top = 5.0
+offset_right = 276.0
+offset_bottom = 180.0
+
+[node name="EnergyBurn" type="Label" parent="StatusCheck/ExtendedStatus"]
+texture_filter = 1
+layout_mode = 0
+offset_left = -5.0
+offset_top = 4.0
+offset_right = 77.0
+offset_bottom = 27.0
+text = "-19/sec"
+label_settings = ExtResource("10_61klm")
+horizontal_alignment = 2
+
+[node name="Hotkeys" type="Control" parent="StatusCheck"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.67600006
+anchor_right = 0.5
+anchor_bottom = 0.67600006
+offset_left = -33.0
+offset_top = -0.048034668
+offset_right = 228.0
+offset_bottom = 145.95197
+
+[node name="1" type="Control" parent="StatusCheck/Hotkeys"]
+anchors_preset = 0
+offset_left = -33.0
+offset_right = 222.0
+offset_bottom = 33.0
+
+[node name="KeyBG" type="TextureRect" parent="StatusCheck/Hotkeys/1"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 34.0
+offset_top = 2.0
+offset_right = 63.0
+offset_bottom = 31.0
+texture = ExtResource("9_61klm")
+
+[node name="Type" type="TextureRect" parent="StatusCheck/Hotkeys/1"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 11.0
+offset_top = 8.0
+offset_right = 27.0
+offset_bottom = 24.0
+texture = ExtResource("6_sy6w6")
+
+[node name="Label" type="Label" parent="StatusCheck/Hotkeys/1"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 68.0
+offset_top = 2.0
+offset_right = 392.0
+offset_bottom = 31.0
+text = "Thing"
+label_settings = SubResource("LabelSettings_3r7ko")
+
+[node name="Key" type="Label" parent="StatusCheck/Hotkeys/1"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 38.0
+offset_top = 5.0
+offset_right = 60.0
+offset_bottom = 28.0
+text = "1"
+label_settings = ExtResource("10_61klm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="2" type="Control" parent="StatusCheck/Hotkeys"]
+anchors_preset = 0
+offset_left = -33.0
+offset_top = 33.0
+offset_right = 222.0
+offset_bottom = 66.0
+
+[node name="KeyBG" type="TextureRect" parent="StatusCheck/Hotkeys/2"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 34.0
+offset_top = 2.0
+offset_right = 63.0
+offset_bottom = 31.0
+texture = ExtResource("9_61klm")
+
+[node name="Type" type="TextureRect" parent="StatusCheck/Hotkeys/2"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 11.0
+offset_top = 8.0
+offset_right = 27.0
+offset_bottom = 24.0
+texture = ExtResource("6_sy6w6")
+
+[node name="Label" type="Label" parent="StatusCheck/Hotkeys/2"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 68.0
+offset_top = 2.0
+offset_right = 396.0
+offset_bottom = 31.0
+text = "Thing"
+label_settings = SubResource("LabelSettings_3r7ko")
+
+[node name="Key" type="Label" parent="StatusCheck/Hotkeys/2"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 38.0
+offset_top = 5.0
+offset_right = 60.0
+offset_bottom = 28.0
+text = "2"
+label_settings = ExtResource("10_61klm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="3" type="Control" parent="StatusCheck/Hotkeys"]
+anchors_preset = 0
+offset_left = -33.0
+offset_top = 65.0
+offset_right = 222.0
+offset_bottom = 98.0
+
+[node name="KeyBG" type="TextureRect" parent="StatusCheck/Hotkeys/3"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 34.0
+offset_top = 2.0
+offset_right = 63.0
+offset_bottom = 31.0
+texture = ExtResource("9_61klm")
+
+[node name="Type" type="TextureRect" parent="StatusCheck/Hotkeys/3"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 11.0
+offset_top = 8.0
+offset_right = 27.0
+offset_bottom = 24.0
+texture = ExtResource("6_sy6w6")
+
+[node name="Label" type="Label" parent="StatusCheck/Hotkeys/3"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 68.0
+offset_top = 2.0
+offset_right = 360.0
+offset_bottom = 31.0
+text = "Thing"
+label_settings = SubResource("LabelSettings_3r7ko")
+
+[node name="Key" type="Label" parent="StatusCheck/Hotkeys/3"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 38.0
+offset_top = 5.0
+offset_right = 60.0
+offset_bottom = 28.0
+text = "3"
+label_settings = ExtResource("10_61klm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="4" type="Control" parent="StatusCheck/Hotkeys"]
+anchors_preset = 0
+offset_left = -33.0
+offset_top = 98.0
+offset_right = 222.0
+offset_bottom = 131.0
+
+[node name="KeyBG" type="TextureRect" parent="StatusCheck/Hotkeys/4"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 34.0
+offset_top = 2.0
+offset_right = 63.0
+offset_bottom = 31.0
+texture = ExtResource("9_61klm")
+
+[node name="Type" type="TextureRect" parent="StatusCheck/Hotkeys/4"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 11.0
+offset_top = 8.0
+offset_right = 27.0
+offset_bottom = 24.0
+texture = ExtResource("6_sy6w6")
+
+[node name="Label" type="Label" parent="StatusCheck/Hotkeys/4"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 68.0
+offset_top = 2.0
+offset_right = 371.0
+offset_bottom = 31.0
+text = "Thing"
+label_settings = SubResource("LabelSettings_3r7ko")
+
+[node name="Key" type="Label" parent="StatusCheck/Hotkeys/4"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 38.0
+offset_top = 5.0
+offset_right = 60.0
+offset_bottom = 28.0
+text = "4"
+label_settings = ExtResource("10_61klm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="5" type="Control" parent="StatusCheck/Hotkeys"]
+anchors_preset = 0
+offset_left = -33.0
+offset_top = 131.0
+offset_right = 222.0
+offset_bottom = 164.0
+
+[node name="KeyBG" type="TextureRect" parent="StatusCheck/Hotkeys/5"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 34.0
+offset_top = 2.0
+offset_right = 63.0
+offset_bottom = 31.0
+texture = ExtResource("9_61klm")
+
+[node name="Type" type="TextureRect" parent="StatusCheck/Hotkeys/5"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 11.0
+offset_top = 8.0
+offset_right = 27.0
+offset_bottom = 24.0
+texture = ExtResource("6_sy6w6")
+
+[node name="Label" type="Label" parent="StatusCheck/Hotkeys/5"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 68.0
+offset_top = 2.0
+offset_right = 366.0
+offset_bottom = 31.0
+text = "Thing"
+label_settings = SubResource("LabelSettings_3r7ko")
+
+[node name="Key" type="Label" parent="StatusCheck/Hotkeys/5"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 38.0
+offset_top = 5.0
+offset_right = 60.0
+offset_bottom = 28.0
+text = "5"
+label_settings = ExtResource("10_61klm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ESP" type="Control" parent="StatusCheck"]
+layout_mode = 1
+anchor_left = 0.357
+anchor_top = 0.508
+anchor_right = 0.357
+anchor_bottom = 0.508
+offset_left = -325.26398
+offset_top = -229.18402
+offset_right = -109.26398
+offset_bottom = -125.18402
+
+[node name="Compass" type="Control" parent="StatusCheck/ESP"]
+layout_mode = 1
+anchor_left = 1.088
+anchor_top = 1.125
+anchor_right = 1.088
+anchor_bottom = 1.125
+offset_left = -105.00801
+offset_top = -112.0
+offset_right = -19.00801
+offset_bottom = -26.0
+pivot_offset = Vector2(43, 43)
+
+[node name="Arrow" type="TextureRect" parent="StatusCheck/ESP/Compass"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.49800003
+anchor_top = 0.50600004
+anchor_right = 0.49800003
+anchor_bottom = 0.50600004
+offset_left = -42.98025
+offset_top = -43.010002
+offset_right = 43.01975
+offset_bottom = 42.989998
+texture = ExtResource("11_3ggtr")
+
+[node name="Indicator" type="Label" parent="StatusCheck/ESP/Compass"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.15164
+offset_top = -42.5
+offset_right = -18.151642
+offset_bottom = -18.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(12, 10)
+text = "N"
+label_settings = ExtResource("10_61klm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Chat" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -179.0
+offset_top = -48.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Input" type="LineEdit" parent="Chat"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.006
+anchor_top = 0.125
+anchor_right = -0.006
+anchor_bottom = 0.125
+offset_left = -100.974
+offset_right = 166.026
+offset_bottom = 31.0
+theme = SubResource("Theme_61klm")
+placeholder_text = "Enter to chat"

@@ -21,5 +21,10 @@ func move_towards(global_position: Vector3):
 
 	_target.move_direction = Vector3.FORWARD
 
+func look_towards(global_position: Vector3):
+	_target.look_at(global_position)
+	_target.global_rotation.x = 0
+	_target.global_rotation.z = 0
+
 func sneak():
 	_target.crouching = true

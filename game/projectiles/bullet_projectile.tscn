@@ -1,6 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://vqm320x2xic2"]
+[gd_scene load_steps=11 format=3 uid="uid://vqm320x2xic2"]
 
 [ext_resource type="PackedScene" uid="uid://cj8vj3pnq8wqh" path="res://projectiles/projectile.tscn" id="1_hcvhw"]
+[ext_resource type="Script" uid="uid://cuhj61bywp1ah" path="res://projectiles/bullet_projectile.gd" id="2_ys3d3"]
+[ext_resource type="Shader" uid="uid://bgabjpume5hxw" path="res://assets/simple_material.gdshader" id="3_cpvwl"]
 
 [sub_resource type="Curve" id="Curve_ys3d3"]
 _limits = [0.0, 3.0, 0.0, 1.0]
@@ -32,21 +34,24 @@ scale_over_velocity_min = 0.01
 scale_over_velocity_max = 1.0
 scale_over_velocity_curve = SubResource("CurveTexture_cpvwl")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hcvhw"]
-albedo_color = Color(0.9039425, 0.75581264, 0, 0.8117647)
-emission_enabled = true
-emission = Color(0.8901961, 0.8901961, 0.36862746, 1)
-disable_receive_shadows = true
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7b7dl"]
+render_priority = 0
+shader = ExtResource("3_cpvwl")
+shader_parameter/base_color = Color(0.99999994, 0.90466547, 0.507812, 1)
+shader_parameter/thermal_emit = 100.0
+shader_parameter/emissive = Color(1, 0.90588236, 0.5058824, 1)
 
 [sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_ys3d3"]
-material = SubResource("StandardMaterial3D_hcvhw")
+material = SubResource("ShaderMaterial_7b7dl")
 size = 0.2
 section_length = 0.5
 
 [node name="Projectile" instance=ExtResource("1_hcvhw")]
+script = ExtResource("2_ys3d3")
+ricochet_amount = 1.0
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="." index="1"]
-transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, -0.8763919, 0, 0)
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 0.5, -0.8763919, 0, 0)
 amount = 6
 local_coords = true
 trail_enabled = true

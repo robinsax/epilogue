@@ -1,6 +1,7 @@
 shader_type spatial;
 
 #include "res://environment/desert/desert_base.gdshaderinc"
+#include "res://assets/lighting.gdshaderinc"
 
 uniform sampler2D heights;
 uniform sampler2D biomes;
@@ -49,5 +50,9 @@ void fragment() {
 	else {
 		vec2 detail_sample = downsample_point(world_pos.xz, 5.0);
 		ALBEDO -= vec3(1.0) * perlin(detail_sample) * biome_sample.g * 0.05;
+	}
+
+	if (view_modifier == 1) {
+		ALBEDO = vec3(max(ALBEDO.r, ALBEDO.g));
 	}
 }

@@ -1,8 +1,8 @@
 @tool
 class_name AdditiveNoiseSource extends NoiseSource
 
-class AdditiveNoiseSourceSampler extends NoiseSourceSampler:
-	var samplers: Array[NoiseSourceSampler]
+class Sampler extends NoiseSource.Sampler:
+	var samplers: Array[NoiseSource.Sampler]
 
 	func sample(offset: Vector2) -> float:
 		var value = 0.0
@@ -15,9 +15,9 @@ func before_sampling(gen_seed: int):
 	for source in get_children():
 		source.before_sampling(gen_seed)
 
-func sampler() -> NoiseSourceSampler:
-	var instance = AdditiveNoiseSourceSampler.new()
-	instance.samplers = [] as Array[NoiseSourceSampler]
+func sampler() -> NoiseSource.Sampler:
+	var instance = AdditiveNoiseSource.Sampler.new()
+	instance.samplers = [] as Array[NoiseSource.Sampler]
 	for source in get_children():
 		instance.samplers.push_back(source.sampler())
 

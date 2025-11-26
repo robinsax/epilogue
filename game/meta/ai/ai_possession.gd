@@ -29,7 +29,7 @@ func _ready():
 			_traits.push_back(node)
 
 func _process(delta):
-	if not ai_enabled:
+	if not ai_enabled or _character.update_culled:
 		return
 
 	if _start_time > 0.0:

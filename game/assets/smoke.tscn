@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://5k3i31r0m7vd"]
+
+[ext_resource type="Shader" uid="uid://bgabjpume5hxw" path="res://assets/simple_material.gdshader" id="1_bno2c"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rs060"]
+gravity = Vector3(0, 2.5, 0)
+scale_min = 0.02
+scale_max = 0.099999994
+turbulence_enabled = true
+turbulence_noise_strength = 0.3
+turbulence_noise_scale = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v2hc0"]
+render_priority = 0
+shader = ExtResource("1_bno2c")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/thermal_emit = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_ml0ak"]
+material = SubResource("ShaderMaterial_v2hc0")
+
+[node name="GPUParticles3D" type="GPUParticles3D"]
+transform = Transform3D(1, 8.3526935e-16, 0, -3.76435e-15, 1, -5.551115e-17, 0, 0, 1, 0, 0, 0)
+amount = 40
+lifetime = 8.0
+explosiveness = 0.03
+randomness = 0.14
+transform_align = 1
+process_material = SubResource("ParticleProcessMaterial_rs060")
+draw_pass_1 = SubResource("QuadMesh_ml0ak")

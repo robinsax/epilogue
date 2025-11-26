@@ -6,6 +6,7 @@
 script = ExtResource("1_m138w")
 
 [node name="CharactersSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://dej411f2grjd1", "uid://b3wg6k05cheyr")
 spawn_path = NodePath("../Characters")
 
 [node name="Characters" type="Node3D" parent="."]
@@ -15,7 +16,9 @@ spawn_path = NodePath("../Characters")
 [node name="Items" type="Node3D" parent="."]
 
 [node name="ItemsSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://dimooetl0h5ps")
+_spawnable_scenes = PackedStringArray("uid://dimooetl0h5ps", "uid://4c2n42nsknxw", "uid://dmavclc21vx6p", "uid://b8boognl71vve", "uid://b060bxqcsgagq", "uid://kutp5x2rbwui", "uid://72lok018lt4q", "uid://dywxb5ls3ypxt", "uid://de02147up6ff2", "uid://c3wics14g0o70", "uid://7p10njioyqtc", "uid://7722h4kqbf2f", "uid://bc3vk7fhuheyb", "uid://idqwct8aitv6")
 spawn_path = NodePath("../Items")
 
 [node name="Projectiles" type="Node3D" parent="."]
+
+[node name="LocalDynamic" type="Node3D" parent="."]

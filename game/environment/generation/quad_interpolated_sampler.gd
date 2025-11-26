@@ -1,7 +1,7 @@
 class_name QuadInterpolatedSampler extends Object
 
-var height_sampler: NoiseSourceSampler = null
-var terrain_scale: float = 0.0
+var height_sampler: NoiseSource.Sampler
+var terrain_scale: float
 
 func sample(sample_point: Vector2) -> float:
 	var x0 = int(floor(sample_point.x))
@@ -20,7 +20,7 @@ func sample(sample_point: Vector2) -> float:
 	var h0 = lerpf(h00, h10, fx)
 	var h1 = lerpf(h01, h11, fx)
 
-	# Quad interpolation doesn't exactly match tri interpolation (the mesh), so correct some minor floating:
+	# Correct some minor floating:
 	return lerpf(h0, h1, fz) - 0.025
 
 func sample_slope(sample_point: Vector2) -> float:

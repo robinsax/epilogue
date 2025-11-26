@@ -1,11 +1,14 @@
 class_name LoFiCharacterShell extends StaticBody3D
 
-var character: Character = null
-var _grounded: bool = false
-var _ground_hit: Dictionary = {}
+var character: Character
+var _grounded: bool
+var _ground_hit: Dictionary
 
 class Interface extends CharacterShellInterface:
-	var _shell: LoFiCharacterShell = null
+	var _shell: LoFiCharacterShell
+
+	func get_name() -> String:
+		return _shell.name
 
 	func get_floor_angle() -> float:
 		if not _shell._grounded:
@@ -37,7 +40,7 @@ class Interface extends CharacterShellInterface:
 		params.shape = _shell.character.collider.shape
 		params.transform = _shell.global_transform
 		params.motion = motion
-		params.collision_mask = CollisionLayerValues.PHYSICAL
+		params.collision_mask = CollisionLayers.PHYSICAL
 
 		var result = space_state.cast_motion(params)
 		
@@ -52,20 +55,6 @@ func _ready():
 	character.remove_child(character.collider)
 	add_child(character.collider)
 
-	_possess_if_owned()
-
-# TODO: No - copied.
-func _possess_if_owned():
-	var name_id = int(name)
-	var authority = name_id
-	# TODO: No.
-	if name_id == 0 or (name_id > 1 and name_id < 1000):
-		authority = 1
-	set_multiplayer_authority(authority)
-	if name_id == authority:
-		var possession = load("res://meta/player_possession.tscn").instantiate()
-		character.add_child(possession, true)
-
 func get_interface() -> CharacterShellInterface:
 	var interface = Interface.new()
 	interface._shell = self
@@ -73,10 +62,13 @@ func get_interface() -> CharacterShellInterface:
 	return interface
 
 func _physics_process(delta):
+	if character.update_culled:
+		return
+
 	var cast = PhysicsRayQueryParameters3D.create(
 		character.global_position,
 		character.global_position + (Vector3.DOWN * 1.0),
-		CollisionLayerValues.FAST_GROUND
+		CollisionLayers.FAST_GROUND
 	)
 	var space = get_world_3d().direct_space_state
 

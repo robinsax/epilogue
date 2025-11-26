@@ -1,0 +1,34 @@
+[gd_scene load_steps=7 format=3 uid="uid://c2uhfq4foo83a"]
+
+[ext_resource type="Script" uid="uid://c3ee2jjuhse2k" path="res://items/shield_generator_bubble.gd" id="1_jujee"]
+[ext_resource type="Shader" uid="uid://cawixym4n24lj" path="res://assets/shield.gdshader" id="1_rs3ko"]
+[ext_resource type="AudioStream" uid="uid://ds0qwlc5u2t3d" path="res://assets/sound/shield_bubble.wav" id="3_kwjwl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cuvib"]
+render_priority = 0
+shader = ExtResource("1_rs3ko")
+shader_parameter/base_color = Color(0.53333336, 0.43529412, 1, 1)
+shader_parameter/alpha_scale = 0.1
+
+[sub_resource type="SphereMesh" id="SphereMesh_kfnuy"]
+material = SubResource("ShaderMaterial_cuvib")
+radius = 1.0
+height = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jujee"]
+radius = 1.0
+
+[node name="ShieldGeneratorBubble" type="Area3D"]
+collision_layer = 512
+collision_mask = 516
+reverb_bus_amount = 1.0
+script = ExtResource("1_jujee")
+
+[node name="Shield" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_kfnuy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_jujee")
+
+[node name="Sounds" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_kwjwl")

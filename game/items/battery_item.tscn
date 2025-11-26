@@ -1,8 +1,20 @@
-[gd_scene load_steps=7 format=4 uid="uid://dimooetl0h5ps"]
+[gd_scene load_steps=11 format=4 uid="uid://dimooetl0h5ps"]
 
 [ext_resource type="PackedScene" uid="uid://by13nrk8a5ef1" path="res://items/useable_item.tscn" id="1_mebpp"]
 [ext_resource type="Script" uid="uid://ca52fv77solgo" path="res://items/battery_item.gd" id="2_1ctsk"]
-[ext_resource type="Material" uid="uid://cc5jgblsf428o" path="res://base_material.tres" id="3_n3420"]
+[ext_resource type="Shader" uid="uid://ucqwltxqbc8u" path="res://assets/common_material.gdshader" id="3_nbsud"]
+[ext_resource type="AudioStream" uid="uid://fcbyhmw6eswj" path="res://assets/sound/battery_custom.wav" id="4_b7k7j"]
+[ext_resource type="Texture2D" uid="uid://ck8fclojo8lu6" path="res://palette.png" id="4_lqsr4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b7vh3"]
+render_priority = 0
+shader = ExtResource("3_nbsud")
+shader_parameter/tex = ExtResource("4_lqsr4")
+shader_parameter/metallic = 0.25
+shader_parameter/specular = 0.7
+shader_parameter/roughness = 0.7
+shader_parameter/brightness_correct = 0.05
+shader_parameter/thermal_emit = 0.02
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_kwbsr"]
 _surfaces = [{
@@ -26,7 +38,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 204,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANAA3ADUAOAA5ADoAOgA5ADsAOAA8ADkAOgA7AD0APgA8ADgAPQA7AD8APgBAADwAPQA/AEEAQgBAAD4AQQA/AEMAQgBDAEAAQQBDAEIARABFAEYARQBEAEcARwBEAEgARQBHAEkASgBLAEwASgBNAEsATgBPAFAATgBRAE8AUgBTAFQAUgBVAFMAVgBXAFgAVgBZAFcAWgBbAFwAWgBdAFsAXgBfAGAAXwBeAGEAYQBeAGIAXwBhAGMAZABlAGYAZABnAGUAaABpAGoAaABrAGkAbABtAG4AbABvAG0AcABxAHIAcABzAHEAdAB1AHYAdAB3AHUA"),
-"material": ExtResource("3_n3420"),
+"material": SubResource("ShaderMaterial_b7vh3"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -40,9 +52,16 @@ shadow_mesh = SubResource("ArrayMesh_kwbsr")
 height = 0.2
 radius = 0.1
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_n3420"]
+properties/0/path = NodePath(".:charged")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="Item" instance=ExtResource("1_mebpp")]
 script = ExtResource("2_1ctsk")
+charged = true
 label = "Battery"
+tags = Array[String](["basic"])
 
 [node name="Cylinder" type="MeshInstance3D" parent="." index="0"]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
@@ -52,3 +71,10 @@ skeleton = NodePath("")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.027404785, 0)
 shape = SubResource("CylinderShape3D_1ctsk")
+
+[node name="BatterySync" type="MultiplayerSynchronizer" parent="." index="4"]
+replication_config = SubResource("SceneReplicationConfig_n3420")
+
+[node name="CustomAudio" parent="." index="6"]
+stream = ExtResource("4_b7k7j")
+clip_length = 2.5

@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bpbay1d4yxwxp"]
+
+[ext_resource type="Shader" uid="uid://cg3dxjwk1q067" path="res://characters/bug/bug_wing_material.gdshader" id="1_nclww"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_nclww")

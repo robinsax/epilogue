@@ -1,0 +1,10 @@
+[gd_resource type="PlaneMesh" load_steps=3 format=3 uid="uid://iynii3jmv7v5"]
+
+[ext_resource type="Shader" uid="uid://bv36dwijvk08f" path="res://assets/flame.gdshader" id="1_d1r85"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ml0ak"]
+render_priority = 0
+shader = ExtResource("1_d1r85")
+
+[resource]
+material = SubResource("ShaderMaterial_ml0ak")

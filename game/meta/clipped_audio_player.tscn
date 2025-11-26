@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://byjp5a3pcqvko"]
+
+[ext_resource type="Script" uid="uid://c1pjly1gaapl2" path="res://meta/clipped_audio_player.gd" id="1_ssjh3"]
+
+[node name="ClippedAudioPlayer" type="AudioStreamPlayer3D"]
+script = ExtResource("1_ssjh3")

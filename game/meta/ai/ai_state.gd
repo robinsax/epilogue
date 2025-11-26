@@ -30,8 +30,10 @@ func update(character: Character, delta: float):
 				add_knowledge(node)
 			else:
 				remove_knowledge(node)
-		if node is Character and node != character:
-			add_knowledge(node)
+		if node is HiFiCharacterShell or node is LoFiCharacterShell:
+			var target_character = node.get_children()[0]
+			if target_character != character:
+				add_knowledge(target_character)
 
 	fixation = null
 	fixation_weight = 0.0

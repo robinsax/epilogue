@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c6ci37u2j3hve"]
+
+[ext_resource type="Shader" uid="uid://dy5con0fvs66c" path="res://assets/fabric.gdshader" id="1_ltf5j"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ltf5j")
+shader_parameter/base_color = Color(0.15562126, 0.21925268, 0.045644797, 1)
+shader_parameter/tatter = 0.3

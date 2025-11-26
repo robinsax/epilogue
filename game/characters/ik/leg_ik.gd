@@ -8,17 +8,17 @@ class_name LegIK extends SkeletonIK3D
 @export var ground_check_offset: float = 1.0
 @export var ground_check_float_tolerance: float = 0.2
 
-var _character: GroundCharacter = null
+var _character: GroundCharacter
 
-var _target: Node3D = null
-var _target_position: Vector3 = Vector3.ZERO
-var _last_position: Vector3 = Vector3.ZERO
+var _target: Node3D
+var _target_position: Vector3
+var _last_position: Vector3
 
-var stepping_to: Vector3 = Vector3.ZERO
-var _stepping_from: Vector3 = Vector3.ZERO
-var _step_time: float = 0
+var stepping_to: Vector3
+var _stepping_from: Vector3
+var _step_time: float
 
-var _grounded: bool = false
+var _grounded: bool
 
 func _ready():
 	_target = $Target
@@ -27,9 +27,13 @@ func _ready():
 
 	_character = Character.find_parent_character(self)
 
+func _physics_process(delta):
+	if _character.update_culled:
+		stop()
+		return
 	start()
 
-func _physics_process(delta):
+	Stats.stats["ik/active"] += 1
 	if _character.dead:
 		stop()
 		return
@@ -40,7 +44,7 @@ func _physics_process(delta):
 		_step_time += delta
 		var step_progress = _step_time / step_duration
 		_target_position = _stepping_from + ((stepping_to - _stepping_from) * step_progress)
-		
+
 		var this_step_distance = (_stepping_from - stepping_to).length()
 		_target_position += Vector3.UP * sin(step_progress * PI) * step_vertical * this_step_distance
 		if _step_time > step_duration:

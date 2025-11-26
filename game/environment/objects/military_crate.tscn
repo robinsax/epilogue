@@ -1,14 +1,8 @@
-[gd_scene load_steps=8 format=4 uid="uid://bk882i5rykc3v"]
+[gd_scene load_steps=7 format=4 uid="uid://bk882i5rykc3v"]
 
 [ext_resource type="PackedScene" uid="uid://dt2x4ql81lcgn" path="res://environment/objects/static_object.tscn" id="1_7i8cl"]
-[ext_resource type="Texture2D" uid="uid://xq671ohqe5nk" path="res://blender/crate_palette.png" id="1_t31x0"]
+[ext_resource type="Material" uid="uid://dmbcyel5of730" path="res://assets/common_material.tres" id="2_4mpr1"]
 [ext_resource type="Script" uid="uid://de748jifx8rl6" path="res://items/item_spawn.gd" id="2_07unb"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_csyye"]
-resource_name = "Material.001"
-cull_mode = 2
-albedo_texture = ExtResource("1_t31x0")
-roughness = 0.5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ufg63"]
 _surfaces = [{
@@ -32,7 +26,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 108,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGgAZABsAGAAcABkAGgAbAB0AHgAcABgAHQAbAB8AHgAfABwAHQAfAB4AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0AMAAxADIAMgAxADMAMAA0ADEAMgAzADUANgA0ADAANQAzADcANgA3ADQANQA3ADYA"),
-"material": SubResource("StandardMaterial3D_csyye"),
+"material": ExtResource("2_4mpr1"),
 "name": "Material.001",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -57,13 +51,13 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0
 shape = SubResource("ConcavePolygonShape3D_juxm2")
 
 [node name="ItemSpawn" type="Node3D" parent="." index="2"]
-transform = Transform3D(-0.99813694, 0, -0.061013777, 0, 1, 0, 0.061013777, 0, -0.99813694, 0.49606693, 0.5971929, 0.025042322)
+transform = Transform3D(-0.99813694, 0, -0.061013777, 0, 1, 0, 0.061013777, 0, -0.99813694, 0.49606693, 0.8056414, 0.025042322)
 script = ExtResource("2_07unb")
 pool_key = "military"
 metadata/_custom_type_script = "uid://de748jifx8rl6"
 
 [node name="ItemSpawn2" type="Node3D" parent="." index="3"]
-transform = Transform3D(-0.99813694, 0, -0.061013777, 0, 1, 0, 0.061013777, 0, -0.99813694, -0.49606693, 0.5971929, 0.0856891)
+transform = Transform3D(-0.99813694, 0, -0.061013777, 0, 1, 0, 0.061013777, 0, -0.99813694, -0.49606693, 0.8056414, 0.0856891)
 script = ExtResource("2_07unb")
 pool_key = "military"
 metadata/_custom_type_script = "uid://de748jifx8rl6"

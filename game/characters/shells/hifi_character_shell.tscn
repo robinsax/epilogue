@@ -1,11 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://7yln2fvmqakt"]
+[gd_scene load_steps=3 format=3 uid="uid://7yln2fvmqakt"]
 
 [ext_resource type="Script" uid="uid://3eql0f25y4uu" path="res://characters/shells/hifi_character_shell.gd" id="1_rdqxa"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_78ig2"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="HiFiCharacterShell" type="CharacterBody3D"]
-collision_layer = 40
-collision_mask = 137
+collision_layer = 552
+collision_mask = 521
 floor_constant_speed = true
-floor_max_angle = 1.3089969
+floor_max_angle = 1.4381514
 platform_floor_layers = 4294967104
 script = ExtResource("1_rdqxa")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_78ig2")

@@ -7,17 +7,20 @@ class_name RobotBipedRig extends RobotRig
 @export var torso_move_bounce_speed: float = 0.3
 @export var head_aim_tilt: float = 0.2
 
-var _last_position: Vector3 = Vector3.ZERO
-var _skeleton: Skeleton3D = null
-var _ragdoll: PhysicalBoneSimulator3D = null
-var _torso_bone: int = 0
-var _head_bone: int = 0
-var _move_time: float = 0
+var _last_position: Vector3
+var _skeleton: Skeleton3D
+var _ragdoll: PhysicalBoneSimulator3D
+var _torso_bone: int
+var _head_bone: int
+var _move_time: float
 
-var eye: Node3D = null
-var main_hand_ik: ArmIK = null
-var off_hand_ik: ArmIK = null
-var front_position: Node3D = null
+var fists_left_anchor: Node3D
+var fists_right_anchor: Node3D
+var status_check_anchor: Node3D
+var eye: Node3D
+var main_hand_ik: ArmIK
+var off_hand_ik: ArmIK
+var front_position: Node3D
 
 var torso_aim_influence: Basis = Basis.IDENTITY
 var head_aim_influence: Basis = Basis.IDENTITY
@@ -33,9 +36,16 @@ func _ready():
 	front_position = $Skeleton/B_Torso/FrontPosition
 	eye = $Skeleton/B_Torso/Eye
 
+	fists_left_anchor = $Skeleton/B_Torso/FistsLeft
+	fists_right_anchor = $Skeleton/B_Torso/FistsRight
+	status_check_anchor = $Skeleton/B_Torso/StatusCheck
+
 	_last_position = global_position
 
 func _physics_process(delta):
+	if character.update_culled:
+		return
+
 	super._physics_process(delta)
 
 	if character.dead:
@@ -78,7 +88,16 @@ func _physics_process(delta):
 	)
 	_skeleton.set_bone_pose(_torso_bone, torso_transform)
 
-	eye.look_at(character.look_target, Vector3.UP)
+	var look_target = character.look_target
+	if character.in_inventory and look_target.y > eye.global_position.y - 0.2:
+		look_target = eye.global_position + Vector3.FORWARD.rotated(Vector3.UP, global_rotation.y)
+	if character.checking_status:
+		look_target = status_check_anchor.global_position
+	var local_target = (
+		(eye.global_position - look_target).rotated(Vector3.UP, -_skeleton.global_rotation.y)
+	)
+	if local_target.x < 0.0:
+		eye.look_at(look_target, Vector3.UP)
 	var head_look_basis = eye.basis * Basis(Vector3.UP, PI / 2)
 
 	var head_rest_transform = _skeleton.get_bone_rest(_head_bone)

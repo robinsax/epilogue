@@ -8,9 +8,9 @@ class_name MaskNoiseSource extends NoiseSource
 @export var masked_value: float = 0.0
 @export var additive_mask: bool = false
 
-class MaskNoiseSourceSampler extends NoiseSourceSampler:
-	var source: NoiseSourceSampler
-	var mask: NoiseSourceSampler
+class Sampler extends NoiseSource.Sampler:
+	var source: NoiseSource.Sampler
+	var mask: NoiseSource.Sampler
 	var cutoff: float
 	var negative: bool
 	var masked_value: float
@@ -36,8 +36,8 @@ func before_sampling(gen_seed: int):
 	mask.before_sampling(gen_seed)
 	source.before_sampling(gen_seed)
 
-func sampler() -> NoiseSourceSampler:
-	var instance = MaskNoiseSourceSampler.new()
+func sampler() -> NoiseSource.Sampler:
+	var instance = MaskNoiseSource.Sampler.new()
 	instance.source = source.sampler()
 	instance.mask = mask.sampler()
 	instance.cutoff = cutoff

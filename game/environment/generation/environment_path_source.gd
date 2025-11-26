@@ -9,11 +9,11 @@ class ResolverParams:
 	var offset: Vector2
 	var terrain_subdivisions: int
 	var terrain_scale: float
-	var height_sampler: NoiseSourceSampler
+	var height_sampler: NoiseSource.Sampler
 	var rand: RandomNumberGenerator
 
 class Resolver:
-	var noise_sampler: NoiseSourceSampler
+	var noise_sampler: NoiseSource.Sampler
 	var band_min: float
 	var band_max: float
 
@@ -27,9 +27,9 @@ class Resolver:
 					if component == 0:
 						pixel.r = 1.0
 					elif component == 1:
-						pixel.g == 1.0
+						pixel.g = 1.0
 					else:
-						pixel.b == 1.0
+						pixel.b = 1.0
 					image.set_pixel(x, z, pixel)
 
 		return image

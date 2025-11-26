@@ -1,5 +1,8 @@
 class_name CharacterShellInterface extends Object
 
+func get_name() -> String:
+	return ""
+
 func get_floor_angle() -> float:
 	return 0.0
 

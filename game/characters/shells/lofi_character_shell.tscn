@@ -1,7 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://df8k2keupque2"]
+[gd_scene load_steps=3 format=3 uid="uid://df8k2keupque2"]
 
 [ext_resource type="Script" uid="uid://bjkqrk717vh6o" path="res://characters/shells/lofi_character_shell.gd" id="1_s63rp"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_s63rp"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="LoFiCharacterShell" type="StaticBody3D"]
-collision_mask = 65
+collision_layer = 40
+collision_mask = 9
 script = ExtResource("1_s63rp")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_s63rp")

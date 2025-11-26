@@ -13,6 +13,9 @@ func _ready():
 func get_remaining_projectiles():
 	return _remaining
 
+func get_detail_string() -> String:
+	return str(get_remaining_projectiles()) + "/" + str(capacity)
+
 func pop_next_projectile_type() -> Resource:
 	if _remaining <= 0:
 		return null

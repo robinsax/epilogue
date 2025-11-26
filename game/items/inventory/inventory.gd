@@ -1,7 +1,9 @@
 class_name Inventory extends Node
 
-var _owner: Node3D = null
-var _slots: Array[InventorySlot] = []
+var update_culled: bool
+
+var _owner: Node3D
+var _slots: Array[InventorySlot]
 
 func _ready():
 	_owner = get_parent()
@@ -19,17 +21,28 @@ func _discover_slots(current: Node):
 func _process(delta):
 	pass
 
-func all_slots() -> Array[InventorySlot]:
-	var all = _slots.duplicate()
+func all_slots(include_requires_inventory_mode: bool = false) -> Array[InventorySlot]:
+	var all: Array[InventorySlot] = []
 	for slot in _slots:
+		if slot.access_requires_inventory_mode and not include_requires_inventory_mode:
+			continue
+
+		all.push_back(slot)
 		if slot.item != null:
-			all.append_array(slot.item.inventory.all_slots())
+			all.append_array(slot.item.inventory.all_slots(include_requires_inventory_mode))
 
 	return all
 
 func get_slot(key: String) -> InventorySlot:
-	for slot in all_slots():
+	for slot in all_slots(true):
 		if slot.key == key:
+			return slot
+
+	return null
+
+func get_slot_with_item(item: Item) -> InventorySlot:
+	for slot in all_slots(true):
+		if slot.item == item:
 			return slot
 
 	return null

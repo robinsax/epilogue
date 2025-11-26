@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://5ckq8l7b6exh"]
+
+[ext_resource type="PackedScene" uid="uid://1kqny0h1l1tw" path="res://projectiles/immediate_projectile.tscn" id="1_cbyol"]
+
+[node name="Projectile" instance=ExtResource("1_cbyol")]
+no_headshots = true
+kinetic_damage = 3.0

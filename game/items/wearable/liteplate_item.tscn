@@ -1,17 +1,9 @@
 [gd_scene load_steps=8 format=4 uid="uid://de02147up6ff2"]
 
 [ext_resource type="PackedScene" uid="uid://6rin053u8ef8" path="res://items/item.tscn" id="1_uarpo"]
-[ext_resource type="Texture2D" uid="uid://dry1e703xg0th" path="res://blender/robot_biped_palette.png" id="2_my7ge"]
+[ext_resource type="Material" uid="uid://dyiepninfu22c" path="res://assets/item_material.tres" id="2_mv5wq"]
 [ext_resource type="PackedScene" uid="uid://dtaly3w02tiwl" path="res://items/inventory/inventory_slot.tscn" id="3_ploqf"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xffsc"]
-resource_name = "M_Base"
-cull_mode = 2
-albedo_texture = ExtResource("2_my7ge")
-metallic = 0.23
-metallic_specular = 0.69
-roughness = 0.7
-texture_filter = 0
+[ext_resource type="AudioStream" uid="uid://cmx121ee5fj6y" path="res://assets/sound/wearable_base.wav" id="4_mv5wq"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_jncyt"]
 _surfaces = [{
@@ -35,7 +27,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 987,
 "index_data": PackedByteArray("AAABAAIAAwABAAAAAQADAAQABAADAAUABAAFAAYABAAGAAcACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEgATABAAEgAUABMAFAASABUAEAAWABEAFwAWABAAFgAXABgAFgAZABEAGAAXABoAGgAXABQAFAAVABoAGwAZABYAHAARABkAGQAbAB0AHQAbABoAHQAaAB4AGgAVAB4AHwAeABUAHwAcAB4AHAAgABEAHAAfACAAIAAfACEAIgAjACQAIgAlACMAJgAnACgAJwAmACkAJwApACoAKwAsAC0ALAArAC4ALAAuAC8AMAAxADIAMAAzADEANAA1ADYANAA3ADUANQA4ADYANQA5ADgAOgA7ADgAOgA4ADwAOQA8ADgAOQA9ADwAPgA9ADkAPgA/AD0AQABBAEIAQABDAEEAQQBEAEIAQQBFAEQARgBHAEQARgBEAEgARQBIAEQARQBJAEgASgBJAEUASgBLAEkATABNAE4ATABPAE0AUABRAFIAUABTAFEAVABVAFYAVABXAFUAWABUAFYAWQBUAFgAVABZAFoAWgBZAFsAXABdAF4AXABfAF0AYABeAF0AXABhAF8AXwBhAGIAYQBcAGMAYwBcAGQAYQBjAGUAZQBjAGYAZgBnAGUAaABnAGYAaABmAGkAaABqAGcAZwBqAGsAaABeAGoAagBeAGAAagBgAGwAXgBoAG0AbgBeAG0AbgBvAF4AcABvAG4AcABuAHEAcgBzAHQAdQBzAHIAcwB1AHYAdgB1AHcAdgB3AHgAdgB4AHkAegB7AHwAegB8AH0AegB9AH4AegB/AHsAewB/AIAAewCAAIEAggCDAIQAggCFAIMAhgCHAIgAhgCJAIcAigCLAIwAigCNAIsAjgCPAJAAjgCRAI8AkgCTAJQAkgCVAJMAlgCXAJgAlgCZAJcAmgCZAJYAmgCbAJkAmgCcAJsAmgCdAJwAngCfAKAAngChAJ8AoQCeAKIAogCeAKMAogCjAKQAogCkAKUApgCnAKgApgCpAKcAqgCrAKwAqgCtAKsArgCvALAArgCxAK8AsACvALIAsACyALMAtACzALIAtAC1ALMAtgC3ALgAtgC5ALcAugC2ALgAugC7ALYAugC8ALsAugC9ALwAvgC/AMAAvwDBAMAAvwDCAMEAvgDDAL8AxADDAL4AxADFAMMAxgDHAMgAyQDHAMYAxwDJAMoAxwDKAMsAxwDLAMwAxwDMAM0AzADOAM0AzADPAM4A0ADRANIA0ADTANEA1ADVANYA1ADXANUA2ADZANoA2ADbANkA3ADdAN4A3ADfAN0A3wDcAOAA4ADcAOEA4ADhAOIA4ADiAOMA5ADlAOYA5ADnAOUA6ADpAOoA6wDpAOgA6QDrAOwA7ADrAO0A7ADtAO4A7ADuAO8A8ADxAPIA8ADzAPEA8wDwAPQA9ADwAPUA9AD1APYA9AD2APcA+AD5APoA+AD7APkA/AD9AP4A/AD/AP0AAAEBAQIBAAEDAQEBBAEFAQYBBAEHAQUBCAEEAQkBCgEEAQgBBAELAQcBCgELAQQBBwELAQwBDQEMAQsBDAENAQ4BDQELAQ8BDwEOAQ0BCgEPAQsBDwEQAQ4BDwERARABEgEKARMBFAEKARIBFAEPAQoBFQEPARQBDwEWAREBFwEVARgBGQEVARcBGQEPARUBGQEWAQ8BFgEaARsBFgEcARoBFgEZARwBHAEZAR0BHQEZAR4BHwEgASEBHwEiASABIgEjASQBHwEjASIBHwElASMBJQEmAScBJQEoASYBHwEoASUBKQEfASoBKwEfASkBLAEfASsBLAErAS0BLgEfASwBLwEfAS4BLwEoAR8BMAEvATEBMgEvATABKAEvATIBMwEyATABNAEyATMBKAEyATUBMgE0ATYBMgE2ATUBKAE1ATYBNgE0ATcBKAE2ATgBOQE6ATsBOQE8AToBPQE+AT8BPwE+AUABPwFAAUEBPQFCAT4BQwFCAT0BQwE9AUQBQgFDAUUBRgFCAUUBRgFFAUcBSAFJAUoBSAFLAUkBTAFNAU4BTAFPAU0BUAFRAVIBUAFTAVEBVAFVAVYBVQFUAVcBVQFXAVgBWQFaAVsBXAFZAVsBWgFZAV0BXAFeAVkBWgFdAV8BYAFeAVwBWgFfAWEBYAFhAV4BWgFhAWABYgFjAWQBYgFlAWMBZgFnAWgBZgFpAWcBagFrAWwBagFtAWsBbgFvAXABbgFxAW8BcgFzAXQBcwF1AXYBdwF4AXkBdwF6AXgBdwF7AXoBegF7AXwBegF8AX0BfgF/AYABfgGBAX8BggGBAX4BgwGBAYIBgwGCAYQBgQGDAYUBgQGFAYYBhgGFAYcBiAGJAYoBiQGIAYsBiQGLAYwBjQGOAY8BjQGQAY4BkQGSAZMBkQGUAZIBlQGWAZcBlQGYAZYBmQGaAZsBmQGcAZoBnQGeAZ8BnQGgAZ4BoQGiAaMBoQGkAaIBpQGmAacBpQGoAaYBqQGqAasBqQGsAaoBrQGuAa8BrQGwAa4BsQGyAbMBsQG0AbIBtQG2AbcBtQG4AbYBuQG6AbsBuQG8AboBvQG+Ab8BvQHAAb4BwQHCAcMBwQHEAcIBxQHGAccBxQHIAcYB"),
-"material": SubResource("StandardMaterial3D_xffsc"),
+"material": ExtResource("2_mv5wq"),
 "name": "M_Base",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -46,7 +38,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_jncyt")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_my7ge"]
-size = Vector3(0.4, 0.4, 0.4)
+size = Vector3(0.3, 0.4, 0.4)
 
 [node name="Item" instance=ExtResource("1_uarpo")]
 size = 3
@@ -54,6 +46,7 @@ label = "LitePlate Plate Carrier"
 tags = Array[String](["vest"])
 rarity = 3
 hand_value = -1
+attach_clip_count = 2
 
 [node name="Plate" type="MeshInstance3D" parent="." index="2"]
 transform = Transform3D(-5.2453668e-08, 0, -1.2, 0, 1.2, 0, 1.2, 0, -5.2453668e-08, -0.014460012, -0.04751286, 0)
@@ -61,6 +54,7 @@ mesh = SubResource("ArrayMesh_ploqf")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.016573012, 0, 0)
 shape = SubResource("BoxShape3D_my7ge")
 
 [node name="InventorySlot" parent="." index="4" instance=ExtResource("3_ploqf")]
@@ -70,3 +64,6 @@ key = "magleft"
 [node name="InventorySlot2" parent="." index="5" instance=ExtResource("3_ploqf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14631271, -0.12884606, -0.082083784)
 key = "magright"
+
+[node name="BaseAudio" parent="." index="6"]
+stream = ExtResource("4_mv5wq")

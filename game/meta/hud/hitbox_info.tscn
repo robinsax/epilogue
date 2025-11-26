@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=3 uid="uid://c5wik5mktc822"]
+
+[ext_resource type="LabelSettings" uid="uid://dj5gvwc3bmdvl" path="res://assets/ui_font.tres" id="1_suls3"]
+[ext_resource type="Script" uid="uid://b7mdesau7f238" path="res://meta/hud/hitbox_info.gd" id="1_u82kn"]
+[ext_resource type="FontFile" uid="uid://cac730wch1g5j" path="res://assets/ui/Tiny5.ttf" id="2_b6n6w"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_k7epj"]
+font = ExtResource("2_b6n6w")
+font_size = 15
+
+[node name="HitboxInfo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_u82kn")
+
+[node name="Label" type="Label" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = -129.0
+offset_bottom = 23.0
+text = "Body Part"
+label_settings = ExtResource("1_suls3")
+horizontal_alignment = 2
+
+[node name="Values" type="Label" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = -129.0
+offset_top = 16.0
+offset_bottom = 39.0
+text = "30/30"
+label_settings = SubResource("LabelSettings_k7epj")
+horizontal_alignment = 2
+
+[node name="Status3" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 41.0
+offset_top = 7.0
+offset_right = 58.0
+offset_bottom = 24.0
+
+[node name="Status2" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 22.0
+offset_top = 7.0
+offset_right = 39.0
+offset_bottom = 24.0
+
+[node name="Status1" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 3.0
+offset_top = 7.0
+offset_right = 20.0
+offset_bottom = 24.0

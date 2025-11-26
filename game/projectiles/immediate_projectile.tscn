@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://1kqny0h1l1tw"]
+
+[ext_resource type="PackedScene" uid="uid://cj8vj3pnq8wqh" path="res://projectiles/projectile.tscn" id="1_7puh1"]
+[ext_resource type="Script" uid="uid://dggqq0tytid2f" path="res://projectiles/immediate_projectile.gd" id="2_ui4iy"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ui4iy"]
+
+[node name="Projectile" instance=ExtResource("1_7puh1")]
+script = ExtResource("2_ui4iy")
+no_headshots = false
+speed = 0.0
+
+[node name="CollisionShape3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_ui4iy")

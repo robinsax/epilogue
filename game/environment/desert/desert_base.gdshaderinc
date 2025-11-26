@@ -30,5 +30,5 @@ vec4 desert_color(vec4 biome_sample) {
 }
 
 float desert_wind(vec3 world_pos) {
-	return perlin(world_pos.xz * TIME * 0.001) * 0.5;
+	return perlin(world_pos.xz * TIME * 0.01) * 0.5;
 }

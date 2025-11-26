@@ -27,15 +27,16 @@ func _get_position() -> Vector3:
 		return _node.global_position
 	return _position
 
+var _debug_position: Vector3
 func debug_target() -> Vector3:
-	return _get_position()
+	return _debug_position
 
 func apply_active(character: Character, driver: CharacterDriver, state: AIState, delta: float):
 	var position = _get_position()
 	if _node != null:
 		state.fixate(_node, 0.1)
 
-	var move_delta = character.feet_position.global_position - position
+	var move_delta = character.global_position - position
 	move_delta.y = 0.0
 	_remaining_distance = move_delta.length()
 	if _remaining_distance <= _close_enough:
@@ -51,11 +52,11 @@ func apply_active(character: Character, driver: CharacterDriver, state: AIState,
 	if character.nav_agent.get_current_navigation_path().size() <= 1:
 		var final_miss = (character.nav_agent.get_final_position() - position).length()
 		if final_miss > _close_enough:
-			print("Abort ReachTarget, final miss ", final_miss)
 			# Give up.
 			done = true
 			return
 
 	var next = character.nav_agent.get_next_path_position()
+	_debug_position = next
 	driver.move_towards(next)
 	return false

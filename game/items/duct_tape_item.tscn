@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=4 uid="uid://dmavclc21vx6p"]
+[gd_scene load_steps=9 format=4 uid="uid://dmavclc21vx6p"]
 
 [ext_resource type="PackedScene" uid="uid://by13nrk8a5ef1" path="res://items/useable_item.tscn" id="1_hula0"]
-[ext_resource type="Material" uid="uid://cc5jgblsf428o" path="res://base_material.tres" id="2_nql70"]
+[ext_resource type="Script" uid="uid://dccjeu0hyn4tv" path="res://items/duct_tape_item.gd" id="2_ehcig"]
+[ext_resource type="Material" uid="uid://dyiepninfu22c" path="res://assets/item_material.tres" id="3_h7exb"]
+[ext_resource type="AudioStream" uid="uid://c7gi77e3uy85q" path="res://assets/sound/duct_tape_use.wav" id="4_h7exb"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_y1814"]
 _surfaces = [{
@@ -25,7 +27,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 288,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGwAZABgAGQAbABwAGQAcAB0AHgAfACAAHgAhAB8AHwAhACIAIwAhAB4AJAAhACMAIQAkACUAIQAlACYAJQAkACcAJQAnACgAJQAoACkAKQAoACoAJQApACsALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANAA3ADUANQA3ADgAOQA3ADQAOgA3ADkANwA6ADsANwA7ADwAOwA6AD0AOwA9AD4AOwA+AD8APwA+AEAAOwA/AEEAQgBDAEQAQwBCAEUARQBCAEYAQwBFAEcASABJAEoASABLAEkATABNAE4ATABPAE0AUABRAFIAUABTAFEAVABVAFYAVABXAFUAWABZAFoAWABbAFkAXABdAF4AXABfAF0AYABhAGIAYABjAGEAZABlAGYAZABnAGUAaABpAGoAaABrAGkAbABtAG4AbABvAG0AcABxAHIAcABzAHEAdAB1AHYAdAB3AHUAeAB5AHoAeAB7AHkAfAB9AH4AfAB/AH0AgACBAIIAgACDAIEAhACFAIYAhACHAIUAiACJAIoAiACLAIkAjACNAI4AjACPAI0AkACRAJIAkACTAJEAlACVAJYAlACXAJUAmACZAJoAmACbAJkAnACdAJ4AnACfAJ0AoAChAKIAoACjAKEApAClAKYApACnAKUA"),
-"material": ExtResource("2_nql70"),
+"material": ExtResource("3_h7exb"),
 "name": "Material.001",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -39,7 +41,18 @@ shadow_mesh = SubResource("ArrayMesh_y1814")
 height = 0.1
 radius = 0.1
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ehcig"]
+properties/0/path = NodePath(".:uses")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="Item" instance=ExtResource("1_hula0")]
+script = ExtResource("2_ehcig")
+restore_to = 1.0
+total_uses = 3
+uses = 3
+label = "Duct Tape"
+tags = Array[String](["basic"])
 
 [node name="Cylinder" type="MeshInstance3D" parent="." index="2"]
 transform = Transform3D(-6.5567085e-09, -0.045, 0, 0.15, -1.9670126e-09, 0, 0, 0, 0.15, 0, 0, 0)
@@ -49,3 +62,9 @@ skeleton = NodePath("")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="3"]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("CylinderShape3D_hula0")
+
+[node name="TapeSync" type="MultiplayerSynchronizer" parent="." index="4"]
+replication_config = SubResource("SceneReplicationConfig_ehcig")
+
+[node name="CustomAudio" parent="." index="6"]
+stream = ExtResource("4_h7exb")

@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://dmbcyel5of730"]
+
+[ext_resource type="Shader" uid="uid://ucqwltxqbc8u" path="res://assets/common_material.gdshader" id="1_mssna"]
+[ext_resource type="Texture2D" uid="uid://ck8fclojo8lu6" path="res://palette.png" id="2_bc1b4"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_mssna")
+shader_parameter/tex = ExtResource("2_bc1b4")
+shader_parameter/metallic = 0.25
+shader_parameter/specular = 0.7
+shader_parameter/roughness = 0.7
+shader_parameter/brightness_correct = 0.05

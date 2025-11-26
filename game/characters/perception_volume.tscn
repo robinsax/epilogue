@@ -4,5 +4,5 @@
 
 [node name="PerceptionVolume" type="Area3D"]
 collision_layer = 0
-collision_mask = 34
+collision_mask = 10
 script = ExtResource("1_q4ke8")

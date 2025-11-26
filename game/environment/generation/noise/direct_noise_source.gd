@@ -5,7 +5,7 @@ class_name DirectNoiseSource extends NoiseSource
 @export var scale: float = 1.0
 @export var base: float = 0.0
 
-class DirectNoiseSourceSampler extends NoiseSourceSampler:
+class Sampler extends NoiseSource.Sampler:
 	var noise: FastNoiseLite
 	var scale: float
 	var base: float
@@ -17,8 +17,8 @@ class DirectNoiseSourceSampler extends NoiseSourceSampler:
 func before_sampling(gen_seed: int):
 	noise.seed = gen_seed
 
-func sampler() -> NoiseSourceSampler:
-	var instance = DirectNoiseSourceSampler.new()
+func sampler() -> NoiseSource.Sampler:
+	var instance = DirectNoiseSource.Sampler.new()
 	instance.noise = noise.duplicate()
 	instance.scale = scale
 	instance.base = base

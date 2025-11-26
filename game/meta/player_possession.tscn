@@ -1,58 +1,52 @@
-[gd_scene load_steps=3 format=3 uid="uid://ce13562qn7kkp"]
+[gd_scene load_steps=7 format=3 uid="uid://ce13562qn7kkp"]
 
 [ext_resource type="PackedScene" uid="uid://bwkf78c3amv4k" path="res://meta/possession.tscn" id="1_ouqb2"]
 [ext_resource type="Script" uid="uid://dj5qywg0s6yn7" path="res://meta/player_possession.gd" id="2_sg46q"]
+[ext_resource type="PackedScene" uid="uid://6v6fxt3gcvul" path="res://meta/hud/hud.tscn" id="3_86qq0"]
+[ext_resource type="Shader" uid="uid://cb8ho1k1tqspj" path="res://assets/global_postprocess.gdshader" id="4_y808g"]
+
+[sub_resource type="Compositor" id="Compositor_86qq0"]
+compositor_effects = Array[CompositorEffect]([null])
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_44aex"]
+shader = ExtResource("4_y808g")
+shader_parameter/size = Vector2(8, 7)
 
 [node name="Possession" instance=ExtResource("1_ouqb2")]
 script = ExtResource("2_sg46q")
 camera_lean_carry = 0.15
 look_ray_length = 30.0
 camera_sprint_fov = 72.0
-inventory_rotate_rate = 360.0
+camera_zoom_fov = 40.0
+inventory_rotate_rate = 0.2
 inventory_camera_arm_length = 1.2
 
-[node name="CameraArm" type="SpringArm3D" parent="." index="0"]
+[node name="AudioListener" type="AudioListener3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.5, 0)
+current = true
+
+[node name="CameraArm" type="SpringArm3D" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.5, 0)
 spring_length = 1.8
 
 [node name="Camera" type="Camera3D" parent="CameraArm" index="0"]
+compositor = SubResource("Compositor_86qq0")
 
-[node name="HUD" type="Control" parent="CameraArm/Camera" index="0"]
-layout_mode = 3
+[node name="CanvasLayer" type="CanvasLayer" parent="CameraArm/Camera" index="0"]
+
+[node name="ColorRect" type="ColorRect" parent="CameraArm/Camera/CanvasLayer" index="0"]
+material = SubResource("ShaderMaterial_44aex")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
-[node name="Crosshair" type="CenterContainer" parent="CameraArm/Camera/HUD" index="0"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="HUDLayer" type="CanvasLayer" parent="CameraArm/Camera" index="1"]
 
-[node name="Label" type="Label" parent="CameraArm/Camera/HUD/Crosshair" index="0"]
-layout_mode = 2
-text = "::"
+[node name="HUD" parent="CameraArm/Camera/HUDLayer" index="0" instance=ExtResource("3_86qq0")]
+z_index = 2
 
-[node name="SlotInfo" type="Label" parent="CameraArm/Camera/HUD" index="1"]
-layout_mode = 0
-offset_left = 6.0
-offset_top = 12.0
-offset_right = 293.0
-offset_bottom = 55.0
-
-[node name="InteractInfo" type="Label" parent="CameraArm/Camera/HUD" index="2"]
-layout_mode = 0
-offset_left = 7.0
-offset_top = 59.0
-offset_right = 294.0
-offset_bottom = 100.0
-
-[node name="FPS" type="Label" parent="CameraArm/Camera/HUD" index="3"]
-layout_mode = 0
-offset_left = 1018.0
-offset_right = 1141.0
-offset_bottom = 23.0
+[node name="GlobalRoomTone" type="AudioStreamPlayer3D" parent="." index="2"]
+volume_db = -30.0
