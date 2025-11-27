@@ -11,8 +11,8 @@ var environment_generator: EnvironmentGenerator
 
 var _local_dynamic: Node3D
 var _observers: Array[Node3D]
-var _character_cull_targets: Array[Node3D]
-var _culled_items: Array[Item]
+var _culled_items: Array[Node3D]
+var _culled_characters: Array[Node3D]
 
 static var current: World = null
 
@@ -27,6 +27,8 @@ func _ready():
 	environment_generator = get_node_or_null("Static/EnvironmentGenerator")
 
 	_observers = []
+
+	Stats.stats["bug/pcalls"] = 0
 
 	World.current = self
 
@@ -43,57 +45,68 @@ func _process(delta: float):
 		# TODO: NO CULLS ON CLIENT?!?!
 		return
 
-	var culled_characters = 0
-	for cull_target in _character_cull_targets:
+	Stats.stats["ops/uncull"] = 0
+	Stats.stats["ops/cull"] = 0
+
+	_cull_type(characters, _culled_characters, character_update_cull_distance)
+
+	Stats.stats["c/culled"] = _culled_characters.size()
+	Stats.stats["c/active"] = characters.get_children().size()
+
+	_cull_type(items, _culled_items as Array[Node3D], item_update_cull_distance)
+
+	Stats.stats["i/culled"] = _culled_items.size()
+	Stats.stats["i/active"] = items.get_children().size()
+
+func _cull_type(root: Node3D, culled_set: Array[Node3D], cull_distance: float):
+	var tick_cull: Array[Node3D] = []
+	for target in root.get_children():
 		var cull = true
 		for observer in _observers:
-			if observer.global_position.distance_to(cull_target.global_position) < character_update_cull_distance:
+			if observer.global_position.distance_to(target.global_position) < cull_distance:
 				cull = false
 				break
 
-		cull_target.character.set_culled(cull)
 		if cull:
-			culled_characters += 1
+			tick_cull.push_back(target)
 
-	Stats.stats["c/culled"] = culled_characters
-	Stats.stats["c/all"] = characters.get_children().size()
-
-	var tick_cull_items: Array[Item] = []
-	for cull_target in items.get_children():
+	var tick_uncull: Array[Node3D] = []
+	for target in culled_set:
 		var cull = true
 		for observer in _observers:
-			if observer.global_position.distance_to(cull_target.global_position) < item_update_cull_distance:
-				cull = false
-				break
-
-		if cull:
-			tick_cull_items.push_back(cull_target)
-
-	var tick_unculled_items: Array[Item] = []
-	for item in _culled_items:
-		var cull = true
-		for observer in _observers:
-			if observer.global_position.distance_to(item.hard_culled_position) < item_update_cull_distance:
+			if observer.global_position.distance_to(target.hard_culled_position) < cull_distance:
 				cull = false
 				break
 
 		if cull:
 			continue
 
-		tick_unculled_items.push_back(item)
+		tick_uncull.push_back(target)
 
-	for item in tick_cull_items:
-		item.hard_culled_position = item.global_position
-		items.remove_child(item)
-		_culled_items.push_back(item)
+	for target in tick_cull:
+		Stats.stats["ops/cull"] += 1
+		target.hard_culled_position = target.global_position
+		root.remove_child(target)
+		_cull_toggle_node(target, true)
+		culled_set.push_back(target)
 
-	for item in tick_unculled_items:
-		items.add_child(item)
-		_culled_items.remove_at(_culled_items.find(item))
-		item.global_position = item.hard_culled_position
+	for target in tick_uncull:
+		Stats.stats["ops/uncull"] += 1
+		root.add_child(target)
+		culled_set.remove_at(culled_set.find(target))
+		_cull_toggle_node(target, false)
+		target.global_position = target.hard_culled_position
 
-	Stats.stats["i/culled"] = _culled_items.size()
-	Stats.stats["i/active"] = items.get_children().size()
+func _cull_toggle_node(node: Node, cull: bool):
+	if cull:
+		node.process_mode = Node.PROCESS_MODE_DISABLED
+	else:
+		node.process_mode = Node.PROCESS_MODE_INHERIT
+	node.set_process(not cull)
+	node.set_physics_process(not cull)
+
+	for child in node.get_children():
+		_cull_toggle_node(child, cull)
 
 func get_character(character_name: String) -> Character:
 	return characters.get_node(character_name).character
@@ -123,8 +136,6 @@ func spawn_character(shell: Node3D, global_pos: Vector3):
 	characters.add_child(shell, true)
 	if shell.get_node("Character").is_world_observer:
 		_observers.push_back(shell)
-	else:
-		_character_cull_targets.push_back(shell)
 
 	shell.global_position = global_pos
 

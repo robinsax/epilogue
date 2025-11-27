@@ -110,6 +110,9 @@ func _process(delta: float):
 		stats_str += key + ": " + str(Stats.stats[key]) + "\n"
 	_debug_stats.text = stats_str
 	Stats.stats["ik/active"] = 0
+	Stats.stats["bug/pcalls"] = 0
+	Stats.stats["robot/pcalls"] = 0
+
 
 	_cursor.visible = not _mouse_locked
 	_cursor.position = get_viewport().get_mouse_position()

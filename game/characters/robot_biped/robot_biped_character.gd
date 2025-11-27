@@ -38,6 +38,9 @@ func _ready():
 func _process(delta):
 	super._process(delta)
 
+	if "robot/pcalls" in Stats.stats:
+		Stats.stats["robot/pcalls"] += 1
+
 	if dead:
 		set_process(false)
 		set_physics_process(false)

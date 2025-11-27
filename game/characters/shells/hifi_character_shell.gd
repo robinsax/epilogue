@@ -1,6 +1,6 @@
 class_name HiFiCharacterShell extends CharacterBody3D
 
-var character: Character = null
+var character: Character
 
 class Interface extends CharacterShellInterface:
 	var _shell: HiFiCharacterShell

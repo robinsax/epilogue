@@ -62,6 +62,8 @@ func _physics_process(delta):
 func _process(delta):
 	super._process(delta)
 
+	Stats.stats["bug/pcalls"] += 1
+
 	if dead:
 		flying = false
 		_y_move = 0.0

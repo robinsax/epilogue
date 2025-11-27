@@ -171,7 +171,6 @@ pathfinding/max_threads=6
 
 [physics]
 
-3d/run_on_separate_thread=true
 3d/physics_engine="GodotPhysics3D"
 
 [rendering]

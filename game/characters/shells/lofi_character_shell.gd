@@ -4,6 +4,8 @@ var character: Character
 var _grounded: bool
 var _ground_hit: Dictionary
 
+var hard_culled_position: Vector3
+
 class Interface extends CharacterShellInterface:
 	var _shell: LoFiCharacterShell
 
