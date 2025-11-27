@@ -1,5 +1,65 @@
-[gd_scene load_steps=2 format=3 uid="uid://cx0u8infw6hmo"]
+[gd_scene load_steps=12 format=3 uid="uid://cx0u8infw6hmo"]
 
-[ext_resource type="PackedScene" uid="uid://bc3v6kttrr3hx" path="res://characters/character.tscn" id="1_oxn7s"]
+[ext_resource type="PackedScene" uid="uid://bc3v6kttrr3hx" path="res://characters/character.tscn" id="1_xpu8e"]
+[ext_resource type="Script" uid="uid://cdnymidu2ofmf" path="res://characters/bug/bug_character.gd" id="2_iutul"]
+[ext_resource type="PackedScene" uid="uid://4fp5b5oiq86l" path="res://characters/bug/bug_rig.tscn" id="2_u166n"]
+[ext_resource type="AudioStream" uid="uid://dug6sh4oow4p0" path="res://assets/sound/bug_damage.wav" id="4_7o6jm"]
+[ext_resource type="Script" uid="uid://c1pjly1gaapl2" path="res://meta/clipped_audio_player.gd" id="4_iutul"]
+[ext_resource type="PackedScene" uid="uid://tbkdkcg1xfjh" path="res://characters/perception_volume.tscn" id="6_0hsah"]
+[ext_resource type="AudioStream" uid="uid://bnq8icg28qafb" path="res://assets/sound/bug_fly.wav" id="7_mrrkm"]
+[ext_resource type="AudioStream" uid="uid://bfjsja7yamctn" path="res://assets/sound/bug_clips.wav" id="8_f763w"]
 
-[node name="Character" instance=ExtResource("1_oxn7s")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_xpu8e"]
+size = Vector3(0.79248047, 0.25191367, 0.35488892)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_mrrkm"]
+radius = 10.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_f763w"]
+properties/0/path = NodePath(".:flying")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Character" instance=ExtResource("1_xpu8e")]
+script = ExtResource("2_iutul")
+y_speed = 1.0
+flying = false
+grounded_cast_length = 0.25
+
+[node name="Rig" parent="." index="2" instance=ExtResource("2_u166n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.124890566, 0)
+
+[node name="NavAgent" parent="." index="3"]
+path_desired_distance = 2.0
+path_height_offset = 0.5
+
+[node name="Collider" type="CollisionShape3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.039450943, 0)
+shape = SubResource("BoxShape3D_xpu8e")
+
+[node name="FeetPosition" type="Node3D" parent="." index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3014214, 0.18449917, 0)
+
+[node name="HitSounds" type="AudioStreamPlayer3D" parent="." index="6"]
+stream = ExtResource("4_7o6jm")
+volume_db = -21.505
+script = ExtResource("4_iutul")
+metadata/_custom_type_script = "uid://c1pjly1gaapl2"
+
+[node name="PerceptionVolume" parent="." index="7" instance=ExtResource("6_0hsah")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PerceptionVolume" index="0"]
+shape = SubResource("SphereShape3D_mrrkm")
+
+[node name="FlySound" type="AudioStreamPlayer3D" parent="." index="8"]
+stream = ExtResource("7_mrrkm")
+
+[node name="Clips" type="AudioStreamPlayer3D" parent="." index="9"]
+stream = ExtResource("8_f763w")
+volume_db = -12.903
+script = ExtResource("4_iutul")
+clip_length = 0.313
+metadata/_custom_type_script = "uid://c1pjly1gaapl2"
+
+[node name="BugSync" type="MultiplayerSynchronizer" parent="." index="10"]
+replication_config = SubResource("SceneReplicationConfig_f763w")

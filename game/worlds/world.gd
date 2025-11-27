@@ -101,9 +101,10 @@ func get_character(character_name: String) -> Character:
 func get_item(item_name: String) -> Item:
 	return items.get_node(item_name)
 
-func spawn_projectile(projectile_type: Resource, global_pos: Vector3, global_rot: Vector3):
+func spawn_projectile(projectile_type: Resource, global_pos: Vector3, global_rot: Vector3, source: Character = null):
 	var instance = projectile_type.instantiate()
 	projectiles.add_child(instance, true)
+	instance.source = source
 	instance.global_position = global_pos
 	instance.global_rotation = global_rot
 	instance.is_cosmetic = not is_multiplayer_authority()

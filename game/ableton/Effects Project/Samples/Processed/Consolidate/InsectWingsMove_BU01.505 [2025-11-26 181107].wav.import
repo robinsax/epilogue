@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ci33sq64w2ykp"
+path="res://.godot/imported/InsectWingsMove_BU01.505 [2025-11-26 181107].wav-048cb6d4ac6f203b82a7f71fde327c03.sample"
+
+[deps]
+
+source_file="res://ableton/Effects Project/Samples/Processed/Consolidate/InsectWingsMove_BU01.505 [2025-11-26 181107].wav"
+dest_files=["res://.godot/imported/InsectWingsMove_BU01.505 [2025-11-26 181107].wav-048cb6d4ac6f203b82a7f71fde327c03.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

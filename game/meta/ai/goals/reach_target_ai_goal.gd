@@ -1,7 +1,7 @@
 class_name ReachTargetAIGoal extends AIGoal
 
 var _node: Node3D = null
-var _close_enough: float = 1.0
+var _close_enough: float = 2.0
 var _wait_after: float = 1.0
 var _position: Vector3 = Vector3.ZERO
 var _remaining_distance: float = 0.0
@@ -14,7 +14,7 @@ static func create(destination: Variant, priority: float, ext: Dictionary) -> Re
 		instance._node = destination
 	else:
 		instance._position = destination
-	instance._close_enough = ext.get("close_enough", 1.0)
+	instance._close_enough = ext.get("close_enough", 2.0)
 	instance._wait_after = ext.get("wait_after", 0.0)
 
 	return instance

@@ -38,6 +38,10 @@ func _ready():
 func _process(delta):
 	super._process(delta)
 
+	if dead:
+		set_process(false)
+		set_physics_process(false)
+
 	_update_hands_state(delta)
 
 func _update_hands_state(delta):
@@ -57,8 +61,11 @@ func _update_hands_state(delta):
 	if item_anim:
 		_main_hand_slot.item.animate_biped_as_active(self, _typed_rig, delta)
 	elif punch_time > 0.0 or aiming:
-		_typed_rig.off_hand_ik.root_global_position = _typed_rig.fists_left_anchor.global_position
-		_typed_rig.main_hand_ik.root_global_position = _typed_rig.fists_right_anchor.global_position
+		var offset = Vector3.ZERO
+		if look_target.y - global_position.y < -0.4:
+			offset.y -= 0.3
+		_typed_rig.off_hand_ik.root_global_position = _typed_rig.fists_left_anchor.global_position + offset
+		_typed_rig.main_hand_ik.root_global_position = _typed_rig.fists_right_anchor.global_position + offset
 
 		var do_punch = aiming and firing and can_perform_actions()
 		if do_punch:
@@ -77,7 +84,7 @@ func _update_hands_state(delta):
 			if do_punch:
 				World.current.spawn_projectile(
 					load("res://projectiles/punch_projectile.tscn"),
-					hand_ik.root_global_position, Vector3.ZERO
+					hand_ik.root_global_position, Vector3.ZERO, self
 				)
 				energy -= punch_energy_burn
 
@@ -324,5 +331,4 @@ func stow_active_item():
 	anim_chain.next.call()
 
 func do_hit_cosmetics(from: Projectile):
-	if from is ImmediateProjectile:
-		_hit_recv_sounds.play_random_clip(0, 2)
+	_hit_recv_sounds.play_random_clip(0, 2)

@@ -4,6 +4,8 @@ class_name Projectile extends Area3D
 @export var speed: float = 40.0
 @export var lifespan: float = 4.0
 
+var source: Character
+
 var is_cosmetic: bool
 var _hits: Array[Character]
 var _life_time: float
@@ -23,6 +25,9 @@ func _physics_process(delta):
 
 func handle_hit(hit: Node3D):
 	if hit is CharacterHitbox:
+		if hit.character == source:
+			return
+
 		if _hits.find(hit.character) == -1:
 			if not is_cosmetic:
 				hit.inform_damage.rpc(kinetic_damage)

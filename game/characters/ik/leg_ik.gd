@@ -8,7 +8,7 @@ class_name LegIK extends SkeletonIK3D
 @export var ground_check_offset: float = 1.0
 @export var ground_check_float_tolerance: float = 0.2
 
-var _character: GroundCharacter
+var _character: Character
 
 var _target: Node3D
 var _target_position: Vector3
@@ -53,8 +53,8 @@ func _physics_process(delta):
 		_maybe_step(delta)
 
 	if not _grounded:
-		_target_position = global_position + (Vector3.UP * 0.2)
-	
+		_target_position = _character.rig.get_ungrounded_leg_ik_target(self)
+
 func _maybe_step(delta):
 	var last_move = global_position - _last_position
 	_last_position = global_position

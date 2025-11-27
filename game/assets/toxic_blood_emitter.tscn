@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdesaf53biig1"]
+
+[ext_resource type="Shader" uid="uid://bgabjpume5hxw" path="res://assets/simple_material.gdshader" id="1_jsonq"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_npyie"]
+direction = Vector3(0, 10, 0)
+spread = 18.658
+initial_velocity_min = 0.19999999
+initial_velocity_max = 0.39999998
+scale_min = 0.19999999
+scale_max = 0.7
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mwf3v"]
+render_priority = 0
+shader = ExtResource("1_jsonq")
+shader_parameter/base_color = Color(0.5107382, 0.7969985, 1.2321472e-05, 1)
+shader_parameter/thermal_emit = 0.01
+shader_parameter/emissive = Color(0.42158777, 0.4812122, 0.14244756, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jsonq"]
+material = SubResource("ShaderMaterial_mwf3v")
+size = Vector3(0.08, 0.08, 0.09)
+
+[node name="ToxicBlood" type="GPUParticles3D"]
+amount = 10
+explosiveness = 0.51
+randomness = 0.59
+transform_align = 1
+process_material = SubResource("ParticleProcessMaterial_npyie")
+draw_pass_1 = SubResource("BoxMesh_jsonq")

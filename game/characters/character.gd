@@ -4,6 +4,7 @@ class_name Character extends Node3D
 @export var interact_reach: float = 1.5
 @export var initial_energy: float = 200.0
 @export var passive_energy_burn: float = 0.5
+@export var grounded_cast_length: float = 1.0
 
 var collider: CollisionShape3D
 var rig: Rig
@@ -33,6 +34,7 @@ var augmentation_slots: Array[InventorySlot]
 var feet_position: Node3D
 var velocity: Vector3
 var energy_burn_rate: float
+var bound_to_ground: bool
 var _last_energy: float
 var _chat_time: float
 
@@ -94,15 +96,11 @@ func _check_death():
 
 	if energy <= 0:
 		dead = true
-		set_process(false)
-		set_physics_process(false)
 		return
 
 	for hitbox in hitboxes:
 		if hitbox.current_hitpoints <= 0 and hitbox.is_cripple_lethal:
 			dead = true
-			set_process(false)
-			set_physics_process(false)
 			break
 
 func _physics_process(delta):
@@ -207,3 +205,6 @@ func update_energy(delta: float):
 		return
 
 	energy = clamp(energy + delta, 0.0, initial_energy)
+
+func get_leg_ik_step_distance():
+	return get_current_speed() * 2.0

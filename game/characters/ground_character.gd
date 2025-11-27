@@ -30,6 +30,8 @@ func _ready():
 	super._ready()
 	footsteps_audio = $Footsteps
 
+	bound_to_ground = true
+
 	_base_rig_y = rig.position.y
 	_collider_base_height = collider.shape.height
 
@@ -97,6 +99,3 @@ func get_current_speed():
 		current *= sprint_speedup
 
 	return current
-
-func get_leg_ik_step_distance():
-	return get_current_speed() * 2.0

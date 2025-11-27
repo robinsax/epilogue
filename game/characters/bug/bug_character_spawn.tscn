@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cb1sh68384gsq"]
+
+[ext_resource type="Script" uid="uid://d17t4xawxtked" path="res://characters/bug/bug_character_spawn.gd" id="1_ue0q0"]
+
+[node name="BugCharacterSpawn" type="Node3D"]
+script = ExtResource("1_ue0q0")

@@ -22,25 +22,24 @@ class Interface extends CharacterShellInterface:
 		return _shell.collision_mask
 
 	func physics_update_move(velocity: Vector3, delta: float):
-		if _shell._grounded:
+		if _shell.character.bound_to_ground and _shell._grounded:
 			velocity.y = max(velocity.y, -1.0)
 
-		# Manual collision check using shape cast or ray
 		var motion = velocity * delta
 		var safe_motion = _get_safe_motion(motion)
 
 		_shell.global_position += safe_motion
-		if "position" in _shell._ground_hit and velocity.y <= 0.0:
-			_shell.global_position.y = _shell._ground_hit.position.y - _shell.character.feet_position.position.y
+		if _shell.character.bound_to_ground:
+			if "position" in _shell._ground_hit and velocity.y <= 0.0:
+				_shell.global_position.y = _shell._ground_hit.position.y - _shell.character.feet_position.position.y
 
 	func _get_safe_motion(motion: Vector3) -> Vector3:
-		# Use PhysicsDirectSpaceState3D for queries
 		var space_state = _shell.get_world_3d().direct_space_state
 		var params = PhysicsShapeQueryParameters3D.new()
 		params.shape = _shell.character.collider.shape
 		params.transform = _shell.global_transform
 		params.motion = motion
-		params.collision_mask = CollisionLayers.PHYSICAL
+		params.collision_mask = CollisionLayers.PHYSICAL | CollisionLayers.CHARACTERS
 
 		var result = space_state.cast_motion(params)
 		
@@ -67,7 +66,7 @@ func _physics_process(delta):
 
 	var cast = PhysicsRayQueryParameters3D.create(
 		character.global_position,
-		character.global_position + (Vector3.DOWN * 1.0),
+		character.global_position + (Vector3.DOWN * character.grounded_cast_length),
 		CollisionLayers.FAST_GROUND
 	)
 	var space = get_world_3d().direct_space_state

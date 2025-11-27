@@ -23,3 +23,6 @@ func update_look(delta):
 		_look_target_tracker.global_position = look_target
 	else:
 		_look_target_tracker.position = Vector3.ZERO
+
+func get_ungrounded_leg_ik_target(leg: LegIK):
+	return leg.global_position + (Vector3.UP * 0.2)
